@@ -7,7 +7,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import com.jj.sensorcollector.data.sensors.ISensorManager
+import com.jj.sensorcollector.domain.sensors.ISensorManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

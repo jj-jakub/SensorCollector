@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.sensors
+package com.jj.sensorcollector.domain.sensors
 
 interface ISensorManager {
 
