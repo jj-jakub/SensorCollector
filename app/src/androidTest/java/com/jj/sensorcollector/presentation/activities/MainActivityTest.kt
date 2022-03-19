@@ -1,4 +1,4 @@
-package com.jj.templateproject.presentation.activities
+package com.jj.sensorcollector.presentation.activities
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -9,8 +9,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.jj.templateproject.R
-import com.jj.templateproject.data.utils.getAboutVersionText
+import com.jj.sensorcollector.R
+import com.jj.sensorcollector.data.utils.getAboutVersionText
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

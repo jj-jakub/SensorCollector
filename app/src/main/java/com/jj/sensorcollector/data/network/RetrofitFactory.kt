@@ -1,4 +1,4 @@
-package com.jj.templateproject.data.network
+package com.jj.sensorcollector.data.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient

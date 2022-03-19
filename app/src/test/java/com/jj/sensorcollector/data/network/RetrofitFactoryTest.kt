@@ -1,4 +1,4 @@
-package com.jj.templateproject.data.network
+package com.jj.sensorcollector.data.network
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

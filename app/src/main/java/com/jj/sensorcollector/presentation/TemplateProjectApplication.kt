@@ -1,9 +1,9 @@
-package com.jj.templateproject.presentation
+package com.jj.sensorcollector.presentation
 
 import android.app.Application
-import com.jj.templateproject.di.koin.KoinLauncher
+import com.jj.sensorcollector.di.koin.KoinLauncher
 
-class TemplateProjectApplication : Application() {
+class SensorCollectorApplication : Application() {
 
     private val koinLauncher = KoinLauncher()
 

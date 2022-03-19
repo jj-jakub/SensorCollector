@@ -1,4 +1,4 @@
-package com.jj.templateproject.di.koin
+package com.jj.sensorcollector.di.koin
 
 import android.content.Context
 import org.koin.android.ext.koin.androidContext

@@ -1,6 +1,6 @@
-package com.jj.templateproject.data.text
+package com.jj.sensorcollector.data.text
 
-import com.jj.templateproject.BuildConfig
+import com.jj.sensorcollector.BuildConfig
 
 class VersionTextProvider {
 
