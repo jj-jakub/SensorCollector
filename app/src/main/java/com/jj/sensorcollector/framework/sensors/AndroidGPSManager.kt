@@ -7,14 +7,13 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import com.jj.sensorcollector.data.sensors.GPSDataCollector
-import com.jj.sensorcollector.domain.sensors.ISensorManager
-import com.jj.sensorcollector.domain.sensors.SensorData
 import com.jj.sensorcollector.domain.sensors.SensorData.GPSData
+import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
 
-class GPSManager(
+class AndroidGPSManager(
         private val context: Context,
         private val gpsDataCollector: GPSDataCollector
-) : ISensorManager<SensorData.GPSData> {
+) : GPSManager {
 
     private val listener = object : LocationListener {
         override fun onLocationChanged(location: Location) {

@@ -1,7 +1,4 @@
-package com.jj.sensorcollector.domain.sensors
-
-import com.jj.sensorcollector.domain.sensors.SensorData.AccelerometerData
-import kotlinx.coroutines.flow.SharedFlow
+package com.jj.sensorcollector.domain.sensors.interfaces
 
 interface ISensorManager <T> {
 

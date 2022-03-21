@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.data.sensors
 
 import com.jj.sensorcollector.domain.sensors.IGlobalSensorManager
-import com.jj.sensorcollector.domain.sensors.ISensorManager
+import com.jj.sensorcollector.domain.sensors.interfaces.ISensorManager
 import com.jj.sensorcollector.domain.sensors.SensorData.AccelerometerData
 import com.jj.sensorcollector.domain.sensors.SensorData.GPSData
 

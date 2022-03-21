@@ -6,13 +6,13 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.jj.sensorcollector.data.sensors.AccelerometerDataCollector
-import com.jj.sensorcollector.domain.sensors.ISensorManager
 import com.jj.sensorcollector.domain.sensors.SensorData.AccelerometerData
+import com.jj.sensorcollector.domain.sensors.interfaces.AccelerometerManager
 
-class AccelerometerManager(
+class AndroidAccelerometerManager(
         private val context: Context,
         private val accelerometerDataCollector: AccelerometerDataCollector
-) : ISensorManager<AccelerometerData> {
+) : AccelerometerManager {
 
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
