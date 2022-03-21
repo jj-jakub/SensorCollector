@@ -9,7 +9,7 @@ class KoinLauncher {
     fun startKoin(applicationContext: Context) {
         startKoin {
             androidContext(applicationContext)
-            modules(mainModule)
+            modules(mainModule, useCaseModule)
         }
     }
 }

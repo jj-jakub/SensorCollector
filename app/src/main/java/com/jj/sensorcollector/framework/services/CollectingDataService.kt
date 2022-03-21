@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.lifecycleScope
+import com.jj.sensorcollector.domain.result.UseCaseResult
 import com.jj.sensorcollector.domain.sensors.IGlobalSensorManager
+import com.jj.sensorcollector.domain.usecases.sensors.SensorUseCases
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.services.CollectingDataService.Companion.ServiceAction.START_COLLECTING_ACCELEROMETER
 import com.jj.sensorcollector.framework.services.CollectingDataService.Companion.ServiceAction.START_COLLECTING_GPS
 import com.jj.sensorcollector.framework.services.CollectingDataService.Companion.ServiceAction.STOP_COLLECTING_ACCELEROMETER
 import com.jj.sensorcollector.framework.services.CollectingDataService.Companion.ServiceAction.STOP_COLLECTING_GPS
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 const val NOTIFICATION_MAIN_ID = 1
@@ -29,6 +30,7 @@ class CollectingDataService : LifecycleService() {
 
     private val globalSensorManager: IGlobalSensorManager by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
+    private val sensorUseCases: SensorUseCases by inject()
 
     private val isWorking = MutableStateFlow(false)
 
@@ -59,19 +61,31 @@ class CollectingDataService : LifecycleService() {
     }
 
     private fun onStartCollectingAccelerometer() {
-        globalSensorManager.startAccelerometer()
+        val result = sensorUseCases.startAccelerometerUseCase()
+        handleUseCaseResult(result)
     }
 
     private fun onStartCollectingGPS() {
-        globalSensorManager.startGPS()
+        val result = sensorUseCases.startGPSUseCase()
+        handleUseCaseResult(result)
     }
 
     private fun onStopCollectingAccelerometer() {
-        globalSensorManager.stopAccelerometer()
+        val result = sensorUseCases.stopAccelerometerUseCase()
+        handleUseCaseResult(result)
     }
 
     private fun onStopCollectingGPS() {
-        globalSensorManager.stopGPS()
+        val result = sensorUseCases.stopGPSUseCase()
+        handleUseCaseResult(result)
+    }
+
+    private fun handleUseCaseResult(result: UseCaseResult<Unit>) {
+        result.onSuccess {
+            Toast.makeText(this@CollectingDataService, "Success", Toast.LENGTH_SHORT).show()
+        }.onError {
+            Toast.makeText(this@CollectingDataService, "Error, ${this.exception}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroy() {

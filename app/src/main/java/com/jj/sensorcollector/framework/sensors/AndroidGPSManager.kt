@@ -1,11 +1,11 @@
 package com.jj.sensorcollector.framework.sensors
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import com.jj.sensorcollector.data.sensors.GPSDataCollector
 import com.jj.sensorcollector.domain.sensors.SensorData.GPSData
 import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
@@ -35,16 +35,14 @@ class AndroidGPSManager(
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun start() {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        try {
-            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
-        } catch (e: SecurityException) {
-            Log.e("ABAB", "Failed to register for GPS updates", e)
-        }
+        locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
     }
 
     override fun stop() {
-        TODO("Not yet implemented")
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        locationManager?.removeUpdates(listener)
     }
 }
