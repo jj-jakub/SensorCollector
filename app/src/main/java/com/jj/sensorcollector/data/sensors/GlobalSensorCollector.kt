@@ -24,4 +24,8 @@ class GlobalSensorCollector(
             }
         }
     }
+
+    fun ping() {
+        /* no-op */
+    }
 }
