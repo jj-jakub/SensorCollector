@@ -8,6 +8,7 @@ import android.hardware.SensorManager
 import com.jj.sensorcollector.data.sensors.AccelerometerDataCollector
 import com.jj.sensorcollector.domain.sensors.SensorData.AccelerometerData
 import com.jj.sensorcollector.domain.sensors.interfaces.AccelerometerManager
+import java.util.Date
 
 class AndroidAccelerometerManager(
         private val context: Context,
@@ -16,7 +17,7 @@ class AndroidAccelerometerManager(
 
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
-            accelerometerDataCollector.onDataReceived(AccelerometerData(event.values[0], event.values[1], event.values[2]))
+            accelerometerDataCollector.onDataReceived(AccelerometerData(Date().time, event.values[0], event.values[1], event.values[2]))
         }
 
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

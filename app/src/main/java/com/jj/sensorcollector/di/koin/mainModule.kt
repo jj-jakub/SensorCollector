@@ -1,6 +1,8 @@
 package com.jj.sensorcollector.di.koin
 
+import androidx.room.Room
 import com.jj.sensorcollector.data.GlobalEventsCollector
+import com.jj.sensorcollector.data.database.SamplesDatabase
 import com.jj.sensorcollector.data.network.RetrofitFactory
 import com.jj.sensorcollector.data.sensors.AccelerometerDataCollector
 import com.jj.sensorcollector.data.sensors.GPSDataCollector
@@ -18,6 +20,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val mainModule = module {
+
+    single { Room.databaseBuilder(androidContext(), SamplesDatabase::class.java, "samples_database.db").build() }
 
     single { RetrofitFactory() }
     single { VersionTextProvider() }

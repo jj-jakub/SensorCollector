@@ -9,6 +9,7 @@ import android.os.Bundle
 import com.jj.sensorcollector.data.sensors.GPSDataCollector
 import com.jj.sensorcollector.domain.sensors.SensorData.GPSData
 import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
+import java.util.Date
 
 class AndroidGPSManager(
         private val context: Context,
@@ -17,7 +18,7 @@ class AndroidGPSManager(
 
     private val listener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            gpsDataCollector.onDataReceived(GPSData(location.latitude, location.longitude))
+            gpsDataCollector.onDataReceived(GPSData(Date().time, location.latitude, location.longitude))
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
