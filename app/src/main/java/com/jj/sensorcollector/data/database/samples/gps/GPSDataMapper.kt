@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.database.samples
+package com.jj.sensorcollector.data.database.samples.gps
 
 import com.jj.sensorcollector.domain.sensors.SensorData.GPSData
 

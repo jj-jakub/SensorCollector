@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.database.samples
+package com.jj.sensorcollector.data.database.samples.gps
 
 import androidx.room.Dao
 import androidx.room.Insert

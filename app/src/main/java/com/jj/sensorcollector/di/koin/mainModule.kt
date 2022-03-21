@@ -33,12 +33,12 @@ val mainModule = module {
     single { AccelerometerDataCollector() }
     single { GPSDataCollector() }
 
-    single { GlobalSensorCollector(get(), get()) }
+    single { GlobalSensorCollector(get(), get(), get()) }
     single { NotificationManagerBuilder() }
 
-    single<EventsCollector> { GlobalEventsCollector() }
+    single<EventsCollector> { GlobalEventsCollector(get()) }
 
-    single<SamplesRepository> { DefaultSamplesRepository(get<SamplesDatabase>().gpsDataDao) }
+    single<SamplesRepository> { DefaultSamplesRepository(get<SamplesDatabase>().gpsDataDao, get<SamplesDatabase>().accelerationDataDao) }
     single<GlobalEventsRepository> { DefaultGlobalEventRepository(get<SamplesDatabase>().globalEventDataDao) }
 
     single<IGlobalSensorManager> { GlobalSensorManager(get(), get(), get()) }

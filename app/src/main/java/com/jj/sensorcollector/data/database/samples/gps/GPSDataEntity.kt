@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.database.samples
+package com.jj.sensorcollector.data.database.samples.gps
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
