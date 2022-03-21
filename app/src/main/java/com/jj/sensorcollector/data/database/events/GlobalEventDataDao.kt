@@ -13,7 +13,7 @@ interface GlobalEventDataDao {
     suspend fun insert(event: GlobalEventEntity)
 
     @Query("SELECT * FROM globalevententity")
-    fun getAccelerationSamples(): Flow<List<GlobalEventEntity>>
+    fun getGlobalEvents(): Flow<List<GlobalEventEntity>>
 
     @Query("DELETE FROM globalevententity")
     suspend fun deleteAllFromTable()

@@ -13,7 +13,7 @@ interface GPSDataDao {
     suspend fun insert(gpsDataEntity: GPSDataEntity)
 
     @Query("SELECT * FROM gpsdataentity")
-    fun getAccelerationSamples(): Flow<List<GPSDataEntity>>
+    fun getGPSSamples(): Flow<List<GPSDataEntity>>
 
     @Query("DELETE FROM gpsdataentity")
     suspend fun deleteAllFromTable()

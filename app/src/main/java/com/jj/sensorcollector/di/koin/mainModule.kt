@@ -4,13 +4,17 @@ import androidx.room.Room
 import com.jj.sensorcollector.data.GlobalEventsCollector
 import com.jj.sensorcollector.data.database.SamplesDatabase
 import com.jj.sensorcollector.data.network.RetrofitFactory
+import com.jj.sensorcollector.data.repository.DefaultGlobalEventRepository
+import com.jj.sensorcollector.data.repository.DefaultSamplesRepository
 import com.jj.sensorcollector.data.sensors.AccelerometerDataCollector
 import com.jj.sensorcollector.data.sensors.GPSDataCollector
 import com.jj.sensorcollector.data.sensors.GlobalSensorCollector
 import com.jj.sensorcollector.data.sensors.GlobalSensorManager
 import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.domain.events.EventsCollector
+import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.IGlobalSensorManager
+import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.domain.sensors.interfaces.AccelerometerManager
 import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
@@ -33,6 +37,9 @@ val mainModule = module {
     single { NotificationManagerBuilder() }
 
     single<EventsCollector> { GlobalEventsCollector() }
+
+    single<SamplesRepository> { DefaultSamplesRepository(get<SamplesDatabase>().gpsDataDao) }
+    single<GlobalEventsRepository> { DefaultGlobalEventRepository(get<SamplesDatabase>().globalEventDataDao) }
 
     single<IGlobalSensorManager> { GlobalSensorManager(get(), get(), get()) }
     single<AccelerometerManager> { AndroidAccelerometerManager(androidContext(), get()) }
