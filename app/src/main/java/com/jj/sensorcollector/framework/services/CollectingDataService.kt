@@ -7,7 +7,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import com.jj.sensorcollector.domain.sensors.ISensorManager
+import com.jj.sensorcollector.domain.sensors.IGlobalSensorManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ const val NOTIFICATION_SERVICE_CHANNEL_NAME = "Service notification"
 
 class CollectingDataService : LifecycleService() {
 
-    private val sensorManager: ISensorManager by inject()
+    private val globalSensorManager: IGlobalSensorManager by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
 
     private val isWorking = MutableStateFlow(false)
