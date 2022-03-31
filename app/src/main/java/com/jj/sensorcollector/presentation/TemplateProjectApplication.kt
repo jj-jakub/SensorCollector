@@ -8,6 +8,7 @@ import com.jj.sensorcollector.di.koin.KoinLauncher
 import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.framework.services.CollectingDataService
+import com.jj.sensorcollector.playground1.data.SampleAnalyzer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -22,13 +23,15 @@ class SensorCollectorApplication : Application() {
     private val samplesRepository: SamplesRepository by inject()
     private val globalEventsRepository: GlobalEventsRepository by inject()
     private val csvFileCreator: CSVFileCreator by inject()
+    private val sampleAnalyzer: SampleAnalyzer by inject()
 
     override fun onCreate() {
         super.onCreate()
         koinLauncher.startKoin(this)
         globalSensorCollector.ping()
-        CollectingDataService.startCollectingGPS(this)
-        CollectingDataService.startCollectingAccelerometer(this)
+        sampleAnalyzer.startAnalysis()
+//        CollectingDataService.startCollectingGPS(this)
+//        CollectingDataService.startCollectingAccelerometer(this)
 
         CoroutineScope(Dispatchers.IO).launch {
             samplesRepository.getAccelerationSamples().collect {

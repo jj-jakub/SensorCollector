@@ -22,7 +22,15 @@ import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.sensors.AndroidAccelerometerManager
 import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
+import com.jj.sensorcollector.playground1.data.DefaultAccelerometerRepository
+import com.jj.sensorcollector.playground1.data.SampleAnalyzer
+import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer1
+import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer2
+import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer3
+import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
+import com.jj.sensorcollector.playground1.framework.presentation.AccelerometerDataViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val mainModule = module {
@@ -47,4 +55,16 @@ val mainModule = module {
     single<IGlobalSensorManager> { GlobalSensorManager(get(), get(), get()) }
     single<AccelerometerManager> { AndroidAccelerometerManager(androidContext(), get()) }
     single<GPSManager> { AndroidGPSManager(androidContext(), get()) }
+
+    single<com.jj.sensorcollector.playground1.domain.AccelerometerManager> {
+        com.jj.sensorcollector.playground1.framework.AndroidAccelerometerManager(
+            androidContext()
+        )
+    }
+
+    single<AccelerometerRepository> { DefaultAccelerometerRepository(get()) }
+
+    single { SampleAnalyzer(get(), AccAnalyzer1(), AccAnalyzer2(), AccAnalyzer3()) }
+
+    viewModel { AccelerometerDataViewModel(get()) }
 }
