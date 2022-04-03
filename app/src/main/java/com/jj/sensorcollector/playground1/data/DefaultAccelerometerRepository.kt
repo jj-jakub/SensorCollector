@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.data
 
-import com.jj.sensorcollector.playground1.domain.AccelerometerManager
+import com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager
 import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.SensorData
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
@@ -11,7 +11,7 @@ class DefaultAccelerometerRepository(
     private val accelerometerService: AccelerometerService
 ) : AccelerometerRepository {
 
-    override fun collectAccelerometerSamples(): Flow<SensorData> = accelerometerManager.collectAccelerometerSamples()
+    override fun collectAccelerometerSamples(): Flow<SensorData> = accelerometerManager.collectSensorSamples()
 
     override suspend fun sendSample() = accelerometerService.sendSample()
 }

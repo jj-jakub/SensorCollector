@@ -65,8 +65,8 @@ val mainModule = module {
     single<AccelerometerManager> { AndroidAccelerometerManager(androidContext(), get()) }
     single<GPSManager> { AndroidGPSManager(androidContext(), get()) }
 
-    single<com.jj.sensorcollector.playground1.domain.AccelerometerManager> {
-        com.jj.sensorcollector.playground1.framework.AndroidAccelerometerManager(
+    single<com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager> {
+        com.jj.sensorcollector.playground1.framework.data.AndroidAccelerometerManager(
             androidContext()
         )
     }
