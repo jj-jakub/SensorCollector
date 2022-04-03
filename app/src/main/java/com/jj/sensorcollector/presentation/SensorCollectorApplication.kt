@@ -31,8 +31,8 @@ class SensorCollectorApplication : Application() {
         super.onCreate()
         koinLauncher.startKoin(this)
         globalSensorCollector.ping()
-        sampleAnalyzer.startAnalysis()
-        initializator
+//        sampleAnalyzer.startAnalysis()
+//        initializator
 //        CollectingDataService.startCollectingGPS(this)
 //        CollectingDataService.startCollectingAccelerometer(this)
 

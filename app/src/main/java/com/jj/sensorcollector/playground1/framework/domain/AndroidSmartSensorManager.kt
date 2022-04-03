@@ -28,14 +28,17 @@ abstract class AndroidSmartSensorManager(
     private var sensor: Sensor? = sensorManager?.getDefaultSensor(sensorType)
 
     override fun onActive() {
+        super.onActive()
         if (sensorManager == null) initializeSensorManager()
         sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
+        Log.d("ABABX", "listener for sensor $sensorType registered")
     }
 
     override fun onInactive() {
-        Log.d("ABABX", "${hashCode()} onInactive SType: $sensorType, ctx: $context")
+        super.onInactive()
         if (sensorManager == null) initializeSensorManager()
         sensorManager?.unregisterListener(sensorListener, sensor)
+        Log.d("ABABX", "listener for sensor $sensorType unregistered")
     }
 
     private fun initializeSensorManager() {
@@ -50,7 +53,7 @@ abstract class AndroidSmartSensorManager(
 
     protected abstract fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData
 
-    private val sensorListener = object : SensorEventListener {
+    open val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(p0: SensorEvent?) {
             val sensorData = convertSensorEvent(p0)
             sensorSamples.tryEmit(sensorData)

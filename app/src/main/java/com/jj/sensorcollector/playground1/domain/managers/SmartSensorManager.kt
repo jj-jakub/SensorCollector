@@ -37,9 +37,13 @@ abstract class SmartSensorManager(private val sensorType: Int) : ISensorManager 
 
     override fun collectSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
 
-    abstract fun onActive()
+    open fun onActive() {
+        Log.d("ABABX", "listener for sensor $sensorType has become active")
+    }
 
-    abstract fun onInactive()
+    open fun onInactive() {
+        Log.d("ABABX", "listener for sensor $sensorType has become inactive")
+    }
 
     private suspend fun StateFlow<Int>.actdisact(onActive: () -> Unit, onInActive: () -> Unit) {
         coroutineScope {

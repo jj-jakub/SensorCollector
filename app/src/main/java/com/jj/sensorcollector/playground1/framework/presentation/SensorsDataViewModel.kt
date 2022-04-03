@@ -28,9 +28,9 @@ class SensorsDataViewModel(
     val magneticFieldSamples = _magneticFieldSamples.asSharedFlow()
 
     init {
-        observeMagneticFieldSamples()
-        observeGyroscopeSamples()
         observeAccelerometerSamples()
+        observeGyroscopeSamples()
+        observeMagneticFieldSamples()
     }
 
     private fun observeAccelerometerSamples() {
