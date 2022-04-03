@@ -1,9 +1,8 @@
 package com.jj.sensorcollector.playground1.data
 
-import android.util.Log
 import com.jj.sensorcollector.playground1.domain.AccSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
-import com.jj.sensorcollector.playground1.framework.SensorData
+import com.jj.sensorcollector.playground1.domain.SensorData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -32,7 +31,7 @@ class SampleAnalyzer(
 
             val finalResult = result1 * result2 * result3
 
-            Log.d("ABAB", "Final analysis: $finalResult")
+//            Log.d("ABAB", "Final analysis: $finalResult")
         }
     }
 }

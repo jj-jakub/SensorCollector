@@ -23,11 +23,20 @@ import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.sensors.AndroidAccelerometerManager
 import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
 import com.jj.sensorcollector.playground1.data.DefaultAccelerometerRepository
+import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer1
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer2
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer3
+import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerService
+import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSampleXAnalyzer
+import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultScreenStateCollector
+import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSoundManager
 import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
+import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
+import com.jj.sensorcollector.playground1.domain.managers.SampleXAnalyzer
+import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
+import com.jj.sensorcollector.playground1.domain.managers.SoundManager
 import com.jj.sensorcollector.playground1.framework.presentation.AccelerometerDataViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -62,9 +71,16 @@ val mainModule = module {
         )
     }
 
-    single<AccelerometerRepository> { DefaultAccelerometerRepository(get()) }
+    single<AccelerometerRepository> { DefaultAccelerometerRepository(get(), get()) }
 
     single { SampleAnalyzer(get(), AccAnalyzer1(), AccAnalyzer2(), AccAnalyzer3()) }
+
+    single<SampleXAnalyzer> { DefaultSampleXAnalyzer(get()) }
+    single<ScreenStateCollector> { DefaultScreenStateCollector() }
+    single<SoundManager> { DefaultSoundManager() }
+    single { Initializator(get(), get(), get()) }
+
+    single<AccelerometerService> { DefaultAccelerometerService() }
 
     viewModel { AccelerometerDataViewModel(get()) }
 }

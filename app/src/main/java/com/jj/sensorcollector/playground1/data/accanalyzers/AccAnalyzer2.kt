@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.accanalyzers
 
 import com.jj.sensorcollector.playground1.domain.AccSampleAnalyzer
-import com.jj.sensorcollector.playground1.framework.SensorData
+import com.jj.sensorcollector.playground1.domain.SensorData
 
 class AccAnalyzer2: AccSampleAnalyzer {
 

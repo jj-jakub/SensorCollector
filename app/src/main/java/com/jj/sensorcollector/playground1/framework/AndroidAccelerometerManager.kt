@@ -8,27 +8,18 @@ import android.hardware.SensorManager
 import android.util.Log
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
 import com.jj.sensorcollector.playground1.domain.AccelerometerManager
+import com.jj.sensorcollector.playground1.domain.SensorData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.lang.Exception
-
-sealed class SensorData {
-    data class AccSample(val x: Float?, val y: Float?, val z: Float?): SensorData()
-    data class Error(val msg: String, val e: Exception?): SensorData()
-}
 
 class AndroidAccelerometerManager(
     private val context: Context
@@ -83,7 +74,7 @@ class AndroidAccelerometerManager(
 
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(p0: SensorEvent?) {
-            Log.d("ABAB", "p0: $p0")
+//            Log.d("ABAB", "p0: $p0")
             val sensorData = SensorData.AccSample(p0?.values?.first(), p0?.values?.get(1), p0?.values?.get(2))
             _accelerometerSamples.tryEmit(sensorData)
         }
