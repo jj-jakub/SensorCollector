@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <service android:name=".framework.services.CollectingDataService" />
+        <service android:name=".playground1.framework.service.SensorCollectorService" />
     </application>
 
 </manifest>

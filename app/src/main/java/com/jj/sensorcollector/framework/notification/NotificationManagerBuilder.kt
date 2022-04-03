@@ -25,24 +25,30 @@ const val NOTIFICATION_SERVICE_CHANNEL_NAME = "Service notification"
 
 class NotificationManagerBuilder {
 
-    private fun createMainNotification(context: Context, contentTitle: String,
-            contentText: String, subText: String): Notification {
+    private fun createMainNotification(
+        context: Context, contentTitle: String,
+        contentText: String, subText: String
+    ): Notification {
         val channelId = NOTIFICATION_MAIN_CHANNEL_ID
         createNotificationChannel(context, NOTIFICATION_MAIN_CHANNEL_ID, NOTIFICATION_MAIN_CHANNEL_NAME)
         val intent = createMainActivityIntent(context)
         return createNotification(context, intent, channelId, contentTitle, contentText, subText)
     }
 
-    private fun createCollectingServiceNotification(context: Context, contentTitle: String,
-            contentText: String, subText: String): Notification {
+    private fun createCollectingServiceNotification(
+        context: Context, contentTitle: String,
+        contentText: String, subText: String
+    ): Notification {
         val channelId = NOTIFICATION_SERVICE_CHANNEL_ID
         createNotificationChannel(context, NOTIFICATION_SERVICE_CHANNEL_ID, NOTIFICATION_SERVICE_CHANNEL_NAME)
         val intent = createMainActivityIntent(context)
         return createNotification(context, intent, channelId, contentTitle, contentText, subText)
     }
 
-    private fun createNotification(context: Context, intent: Intent, channelId: String,
-            contentTitle: String, contentText: String, subText: String) =
+    private fun createNotification(
+        context: Context, intent: Intent, channelId: String,
+        contentTitle: String, contentText: String, subText: String
+    ) =
         NotificationCompat.Builder(context, channelId).apply {
             setContentTitle(contentTitle ifIsEmpty "SensorManagers application is running")
             contentText ifNotEmpty { setContentText(contentText) }
@@ -52,11 +58,20 @@ class NotificationManagerBuilder {
             setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher_background))
             setSmallIcon(R.drawable.ic_launcher_background)
             setChannelId(channelId)
-            setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
+            setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            )
         }.build()
 
-    private fun createNotificationChannel(context: Context, notificationChannelId: String,
-            notificationChannelName: String) {
+    private fun createNotificationChannel(
+        context: Context, notificationChannelId: String,
+        notificationChannelName: String
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(notificationChannelId, notificationChannelName, NotificationManager.IMPORTANCE_HIGH)
@@ -69,8 +84,10 @@ class NotificationManagerBuilder {
         addCategory(Intent.CATEGORY_LAUNCHER)
     }
 
-    fun notifyMainNotification(context: Context, contentTitle: String = "", contentText: String = "",
-            subText: String = "") {
+    fun notifyMainNotification(
+        context: Context, contentTitle: String = "", contentText: String = "",
+        subText: String = ""
+    ) {
         val mainNotification = createMainNotification(context, contentTitle, contentText, subText)
         NotificationManagerCompat.from(context).notify(NOTIFICATION_MAIN_ID, mainNotification)
     }
@@ -79,12 +96,16 @@ class NotificationManagerBuilder {
         NotificationManagerCompat.from(context).cancel(NOTIFICATION_MAIN_ID)
     }
 
-    fun getServiceNotification(context: Context, contentTitle: String = "",
-            contentText: String = "", subText: String = "") =
+    fun getServiceNotification(
+        context: Context, contentTitle: String = "",
+        contentText: String = "", subText: String = ""
+    ) =
         createCollectingServiceNotification(context, contentTitle, contentText, subText)
 
-    fun notifyServiceNotification(context: Context, contentTitle: String = "Service is running in background",
-            contentText: String = "", subText: String = "") {
+    fun notifyServiceNotification(
+        context: Context, contentTitle: String = "Service is running in background",
+        contentText: String = "", subText: String = ""
+    ) {
         val serviceNotification = getServiceNotification(context, contentTitle, contentText, subText)
         NotificationManagerCompat.from(context).notify(NOTIFICATION_SERVICE_ID, serviceNotification)
     }

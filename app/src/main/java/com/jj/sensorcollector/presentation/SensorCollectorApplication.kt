@@ -10,6 +10,7 @@ import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.framework.services.CollectingDataService
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
+import com.jj.sensorcollector.playground1.framework.service.SensorCollectorService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -30,7 +31,8 @@ class SensorCollectorApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         koinLauncher.startKoin(this)
-        globalSensorCollector.ping()
+//        globalSensorCollector.ping()
+        SensorCollectorService.startCollectingAccelerometer(this) // TODO Extract me
 //        sampleAnalyzer.startAnalysis()
 //        initializator
 //        CollectingDataService.startCollectingGPS(this)
