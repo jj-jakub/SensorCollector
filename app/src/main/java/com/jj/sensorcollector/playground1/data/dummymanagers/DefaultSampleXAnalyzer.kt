@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.dummymanagers
 
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
+import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.SensorData
 import com.jj.sensorcollector.playground1.domain.managers.SampleXAnalyzer
 import kotlinx.coroutines.CoroutineScope

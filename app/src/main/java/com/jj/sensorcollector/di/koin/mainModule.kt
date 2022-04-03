@@ -22,7 +22,7 @@ import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.sensors.AndroidAccelerometerManager
 import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
-import com.jj.sensorcollector.playground1.data.DefaultAccelerometerRepository
+import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRepository
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer1
@@ -32,12 +32,18 @@ import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerService
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSampleXAnalyzer
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultScreenStateCollector
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSoundManager
-import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
+import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
+import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
+import com.jj.sensorcollector.playground1.data.repository.DefaultSensorsRepository
+import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
 import com.jj.sensorcollector.playground1.domain.managers.SampleXAnalyzer
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
-import com.jj.sensorcollector.playground1.framework.presentation.AccelerometerDataViewModel
+import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
+import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
+import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
+import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -71,8 +77,23 @@ val mainModule = module {
         )
     }
 
-    single<AccelerometerRepository> { DefaultAccelerometerRepository(get(), get()) }
+    single<com.jj.sensorcollector.playground1.domain.managers.GyroscopeManager> {
+        com.jj.sensorcollector.playground1.framework.data.AndroidGyroscopeManager(
+            androidContext()
+        )
+    }
 
+    single<com.jj.sensorcollector.playground1.domain.managers.MagneticFieldManager> {
+        com.jj.sensorcollector.playground1.framework.data.AndroidMagneticFieldManager(
+            androidContext()
+        )
+    }
+
+    single<AccelerometerRepository> { DefaultAccelerometerRepository(get(), get()) }
+    single<GyroscopeRepository> { DefaultGyroscopeRepository(get()) }
+    single<MagneticFieldRepository> { DefaultMagneticFieldRepository(get()) }
+
+    single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
     single { SampleAnalyzer(get(), AccAnalyzer1(), AccAnalyzer2(), AccAnalyzer3()) }
 
     single<SampleXAnalyzer> { DefaultSampleXAnalyzer(get()) }
@@ -82,5 +103,5 @@ val mainModule = module {
 
     single<AccelerometerService> { DefaultAccelerometerService() }
 
-    viewModel { AccelerometerDataViewModel(get()) }
+    viewModel { SensorsDataViewModel(get()) }
 }

@@ -16,4 +16,61 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/accSampleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Accelerometer:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainLabel" />
+
+    <TextView
+        android:id="@+id/accSampleValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/accSampleLabel"
+        app:layout_constraintTop_toTopOf="@+id/accSampleLabel"
+        tools:text="Acc value" />
+
+    <TextView
+        android:id="@+id/gyrSampleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Gyroscope:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accSampleValue" />
+
+    <TextView
+        android:id="@+id/gyrSampleValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gyrSampleLabel"
+        app:layout_constraintTop_toTopOf="@+id/gyrSampleLabel"
+        tools:text="Gyr value" />
+
+    <TextView
+        android:id="@+id/mfieldSampleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Magnetic field:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gyrSampleLabel" />
+
+    <TextView
+        android:id="@+id/mfieldSampleValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mfieldSampleLabel"
+        app:layout_constraintTop_toTopOf="@+id/mfieldSampleLabel"
+        tools:text="MF value" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

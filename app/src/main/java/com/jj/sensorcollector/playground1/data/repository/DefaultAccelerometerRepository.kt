@@ -1,7 +1,7 @@
-package com.jj.sensorcollector.playground1.data
+package com.jj.sensorcollector.playground1.data.repository
 
 import com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager
-import com.jj.sensorcollector.playground1.domain.AccelerometerRepository
+import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.SensorData
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
 import kotlinx.coroutines.flow.Flow
