@@ -22,6 +22,7 @@ import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.sensors.AndroidAccelerometerManager
 import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
+import com.jj.sensorcollector.playground1.framework.data.AndroidAnalyzerStarter
 import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRepository
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
@@ -35,6 +36,7 @@ import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSoundManager
 import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultSensorsRepository
+import com.jj.sensorcollector.playground1.domain.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
 import com.jj.sensorcollector.playground1.domain.managers.SampleXAnalyzer
@@ -95,7 +97,7 @@ val mainModule = module {
 
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
     single { SampleAnalyzer(get(), AccAnalyzer1(), AccAnalyzer2(), AccAnalyzer3()) }
-
+    single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
     single<SampleXAnalyzer> { DefaultSampleXAnalyzer(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }

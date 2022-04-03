@@ -6,6 +6,7 @@ import com.jj.sensorcollector.playground1.domain.repository.AccelerometerReposit
 import com.jj.sensorcollector.playground1.domain.SensorData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -16,12 +17,19 @@ class SampleAnalyzer(
     private val analyzer3: AccSampleAnalyzer
 ) {
 
+    private var collectorJob: Job? = null
+
     fun startAnalysis() {
-        CoroutineScope(Dispatchers.IO).launch {
+        collectorJob = CoroutineScope(Dispatchers.IO).launch {
             accelerometerRepository.collectAccelerometerSamples().collect {
                 onSampleAvailable(it)
             }
         }
+    }
+
+    fun stopAnalysis() {
+        collectorJob?.cancel()
+        collectorJob = null
     }
 
     private fun onSampleAvailable(sensorData: SensorData) {

@@ -3,13 +3,8 @@ package com.jj.sensorcollector.playground1.framework.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
-import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.SensorData
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

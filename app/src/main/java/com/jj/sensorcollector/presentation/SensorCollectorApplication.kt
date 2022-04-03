@@ -2,15 +2,14 @@ package com.jj.sensorcollector.presentation
 
 import android.app.Application
 import android.util.Log
-import com.jj.sensorcollector.domain.csv.CSVFileCreator
 import com.jj.sensorcollector.data.sensors.GlobalSensorCollector
 import com.jj.sensorcollector.di.koin.KoinLauncher
+import com.jj.sensorcollector.domain.csv.CSVFileCreator
 import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
-import com.jj.sensorcollector.framework.services.CollectingDataService
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
-import com.jj.sensorcollector.playground1.framework.service.SensorCollectorService
+import com.jj.sensorcollector.playground1.domain.AnalyzerStarter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -27,12 +26,13 @@ class SensorCollectorApplication : Application() {
     private val csvFileCreator: CSVFileCreator by inject()
     private val sampleAnalyzer: SampleAnalyzer by inject()
     private val initializator: Initializator by inject()
+    private val analyzerStarter: AnalyzerStarter by inject()
 
     override fun onCreate() {
         super.onCreate()
         koinLauncher.startKoin(this)
 //        globalSensorCollector.ping()
-        SensorCollectorService.startCollectingAccelerometer(this) // TODO Extract me
+        analyzerStarter.startPermanentAccelerometerAnalysis()
 //        sampleAnalyzer.startAnalysis()
 //        initializator
 //        CollectingDataService.startCollectingGPS(this)
@@ -59,10 +59,10 @@ class SensorCollectorApplication : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             csvFileCreator.createCSVFile(samplesRepository.getAccelerationSamples().first().map {
                 listOf(
-                        it.x.toString().replace(".", ","),
-                        it.y.toString().replace(".", ","),
-                        it.z.toString().replace(".", ","),
-                        it.time.toString()
+                    it.x.toString().replace(".", ","),
+                    it.y.toString().replace(".", ","),
+                    it.z.toString().replace(".", ","),
+                    it.time.toString()
                 )
             }, fileName = "/AccelerationSamples.csv")
         }
@@ -70,9 +70,9 @@ class SensorCollectorApplication : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             csvFileCreator.createCSVFile(samplesRepository.getGPSSamples().first().map {
                 listOf(
-                        it.lat.toString().replace(".", ","),
-                        it.lng.toString().replace(".", ","),
-                        it.time.toString()
+                    it.lat.toString().replace(".", ","),
+                    it.lng.toString().replace(".", ","),
+                    it.time.toString()
                 )
             }, fileName = "/GPSSamples.csv")
         }
@@ -80,8 +80,8 @@ class SensorCollectorApplication : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             csvFileCreator.createCSVFile(globalEventsRepository.getGlobalEvents().first().map {
                 listOf(
-                        it.eventType,
-                        it.eventTime.toString()
+                    it.eventType,
+                    it.eventTime.toString()
                 )
             }, fileName = "/Events.csv")
         }

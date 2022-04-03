@@ -32,7 +32,7 @@ class SensorCollectorService : LifecycleService() {
     }
 
     private fun onStopCollectingAccelerometer() {
-//        TODO("Not yet implemented")
+        sampleAnalyzer.stopAnalysis()
     }
 
     companion object {
