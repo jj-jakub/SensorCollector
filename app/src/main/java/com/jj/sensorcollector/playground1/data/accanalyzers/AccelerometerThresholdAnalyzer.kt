@@ -1,14 +1,20 @@
 package com.jj.sensorcollector.playground1.data.accanalyzers
 
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import com.jj.sensorcollector.playground1.domain.samples.AccSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.SensorData
+import com.jj.sensorcollector.playground1.domain.samples.AccThresholdAnalyzer
 import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.samples.AnalysedValue
 import com.jj.sensorcollector.playground1.domain.samples.AnalysisResult
-import com.jj.sensorcollector.playground1.domain.samples.ThresholdValues
+import com.jj.sensorcollector.playground1.domain.samples.ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL
+import com.jj.sensorcollector.playground1.domain.samples.ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL
 import kotlin.math.abs
 
-class AccAnalyzer2: AccSampleAnalyzer {
+class AccelerometerThresholdAnalyzer : AccThresholdAnalyzer {
 
     override fun analyze(sensorData: SensorData.AccSample): AnalysedSample.AnalysedAccSample {
         val analysedX = analyzeFloat(sensorData.x)
@@ -25,13 +31,13 @@ class AccAnalyzer2: AccSampleAnalyzer {
         val absValue = abs(floatValue.toDouble())
 
         val analysisResult = when {
-            absValue < ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL -> {
+            absValue < ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL -> {
                 AnalysisResult.Normal
             }
-            absValue >= ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL && absValue < ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL -> {
+            absValue >= ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL && absValue < ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL -> {
                 AnalysisResult.AboveThreshold
             }
-            absValue > ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL -> {
+            absValue > ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL -> {
                 AnalysisResult.Critical
             }
             else -> {

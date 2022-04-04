@@ -1,5 +1,6 @@
 package com.jj.sensorcollector.di.koin
 
+import android.text.Spannable
 import androidx.room.Room
 import com.jj.sensorcollector.data.GlobalEventsCollector
 import com.jj.sensorcollector.data.csv.DefaultCSVFileCreator
@@ -29,6 +30,7 @@ import com.jj.sensorcollector.playground1.data.SampleAnalyzer
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer1
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer2
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer3
+import com.jj.sensorcollector.playground1.data.accanalyzers.AccelerometerThresholdAnalyzer
 import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerService
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSampleXAnalyzer
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultScreenStateCollector
@@ -45,7 +47,10 @@ import com.jj.sensorcollector.playground1.domain.managers.SoundManager
 import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
+import com.jj.sensorcollector.playground1.domain.samples.AccThresholdAnalyzer
+import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
+import com.jj.sensorcollector.playground1.framework.ui.text.AndroidTextCreator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -91,7 +96,8 @@ val mainModule = module {
         )
     }
 
-    single<AccelerometerRepository> { DefaultAccelerometerRepository(get(), get()) }
+    single<AccThresholdAnalyzer> { AccelerometerThresholdAnalyzer() }
+    single<AccelerometerRepository> { DefaultAccelerometerRepository(get(), get(), get()) }
     single<GyroscopeRepository> { DefaultGyroscopeRepository(get()) }
     single<MagneticFieldRepository> { DefaultMagneticFieldRepository(get()) }
 
@@ -105,5 +111,6 @@ val mainModule = module {
 
     single<AccelerometerService> { DefaultAccelerometerService() }
 
-    viewModel { SensorsDataViewModel(get()) }
+    single<TextCreator<Spannable>> { AndroidTextCreator() }
+    viewModel { SensorsDataViewModel(get(), get()) }
 }

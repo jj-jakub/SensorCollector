@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data
 
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.AccSampleAnalyzer
+import com.jj.sensorcollector.playground1.domain.samples.AccSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.SensorData
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +38,9 @@ class SampleAnalyzer(
             val result2 = analyzer2.analyze(sensorData)
             val result3 = analyzer3.analyze(sensorData)
 
-            val finalResult = result1 * result2 * result3
+            val finalResult = (result1.analysedX.value ?: 1f) *
+                (result2.analysedY.value ?: 1f) *
+                (result3.analysedZ.value ?: 1f)
 
             Log.d("ABAB", "Final analysis: $finalResult")
         }
