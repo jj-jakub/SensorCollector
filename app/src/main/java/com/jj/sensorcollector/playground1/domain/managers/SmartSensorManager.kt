@@ -35,13 +35,13 @@ abstract class SmartSensorManager(private val sensorType: Int) : ISensorManager 
             )
     }
 
-    override fun collectSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
+    override fun collectRawSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
 
-    open fun onActive() {
+    protected open fun onActive() {
         Log.d("ABABX", "listener for sensor $sensorType has become active")
     }
 
-    open fun onInactive() {
+    protected open fun onInactive() {
         Log.d("ABABX", "listener for sensor $sensorType has become inactive")
     }
 

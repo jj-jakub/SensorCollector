@@ -8,7 +8,6 @@ import com.jj.sensorcollector.playground1.domain.SensorData
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.ui.DomainColor
-import com.jj.sensorcollector.playground1.domain.ui.UISample
 import com.jj.sensorcollector.playground1.domain.ui.text.TextComponent
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toDomainColor
@@ -41,7 +40,7 @@ class SensorsDataViewModel(
 
     private fun observeAccelerometerSamples() {
         viewModelScope.launch {
-            sensorsRepository.collectAnalyzedAccelerometerSamples().collect {
+            sensorsRepository.collectAnalysedAccelerometerSamples().collect {
                 if (it is AnalysedSample.AnalysedAccSample) {
                     _accelerometerSamples.tryEmit(
                         textCreator.buildColoredString(

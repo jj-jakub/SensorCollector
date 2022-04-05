@@ -9,5 +9,5 @@ class DefaultGyroscopeRepository(
     private val gyroscopeManager: GyroscopeManager
 ) : GyroscopeRepository {
 
-    override fun collectGyroscopeSamples(): Flow<SensorData> = gyroscopeManager.collectSensorSamples()
+    override fun collectGyroscopeSamples(): Flow<SensorData> = gyroscopeManager.collectRawSensorSamples()
 }

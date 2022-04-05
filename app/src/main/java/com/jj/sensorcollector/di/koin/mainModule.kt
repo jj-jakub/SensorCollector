@@ -27,17 +27,15 @@ import com.jj.sensorcollector.playground1.framework.data.AndroidAnalyzerStarter
 import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRepository
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
-import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer1
-import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer2
-import com.jj.sensorcollector.playground1.data.accanalyzers.AccAnalyzer3
 import com.jj.sensorcollector.playground1.data.accanalyzers.AccelerometerThresholdAnalyzer
 import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerService
-import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSampleXAnalyzer
+import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultScreenStateCollector
 import com.jj.sensorcollector.playground1.data.dummymanagers.DefaultSoundManager
 import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultSensorsRepository
+import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
 import com.jj.sensorcollector.playground1.domain.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
@@ -48,6 +46,7 @@ import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.AccThresholdAnalyzer
+import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidTextCreator
@@ -58,6 +57,7 @@ import org.koin.dsl.module
 val mainModule = module {
 
     single { Room.databaseBuilder(androidContext(), SamplesDatabase::class.java, "samples_database.db").build() }
+    single { Room.databaseBuilder(androidContext(), AnalysedSamplesDatabase::class.java, "analysed_samples_database.db").build() }
 
     single { RetrofitFactory() }
     single { VersionTextProvider() }
@@ -96,15 +96,21 @@ val mainModule = module {
         )
     }
 
-    single<AccThresholdAnalyzer> { AccelerometerThresholdAnalyzer() }
-    single<AccelerometerRepository> { DefaultAccelerometerRepository(get(), get(), get()) }
+    single<TimeProvider> { DefaultTimeProvider() }
+    single<AccThresholdAnalyzer> { AccelerometerThresholdAnalyzer(get()) }
+    single<AccelerometerRepository> {
+        DefaultAccelerometerRepository(
+            accelerometerManager = get(),
+            accelerometerService = get(),
+            analysedAccelerometerSampleDao = get<AnalysedSamplesDatabase>().analysedAccelerometerSampleDao
+        )
+    }
     single<GyroscopeRepository> { DefaultGyroscopeRepository(get()) }
     single<MagneticFieldRepository> { DefaultMagneticFieldRepository(get()) }
 
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
-    single { SampleAnalyzer(get(), AccAnalyzer1(), AccAnalyzer2(), AccAnalyzer3()) }
+    single { SampleAnalyzer(get(), get(), get()) }
     single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
-    single<SampleXAnalyzer> { DefaultSampleXAnalyzer(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }
     single { Initializator(get(), get(), get()) }

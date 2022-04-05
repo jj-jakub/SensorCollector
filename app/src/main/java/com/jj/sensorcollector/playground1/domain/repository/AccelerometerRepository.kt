@@ -6,8 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccelerometerRepository {
 
-    fun collectAccelerometerSamples(): Flow<SensorData>
+    fun collectRawAccelerometerSamples(): Flow<SensorData>
     fun collectAnalysedAccelerometerSamples(): Flow<AnalysedSample>
+
+    suspend fun insertAnalysedAccelerometerSample(analysedAccSample: AnalysedSample.AnalysedAccSample)
 
     suspend fun sendSample()
 }

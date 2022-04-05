@@ -12,11 +12,13 @@ class DefaultSensorsRepository(
     private val accelerometerRepository: AccelerometerRepository,
     private val gyroscopeRepository: GyroscopeRepository,
     private val magneticFieldRepository: MagneticFieldRepository
-): SensorsRepository {
+) : SensorsRepository {
 
-    override fun collectAccelerometerSamples(): Flow<SensorData> = accelerometerRepository.collectAccelerometerSamples()
+    override fun collectRawAccelerometerSamples(): Flow<SensorData> = accelerometerRepository.collectRawAccelerometerSamples()
 
-    override fun collectAnalyzedAccelerometerSamples(): Flow<AnalysedSample> = accelerometerRepository.collectAnalysedAccelerometerSamples()
+    override fun collectAnalysedAccelerometerSamples(): Flow<AnalysedSample> = accelerometerRepository.collectAnalysedAccelerometerSamples()
+    override suspend fun insertAnalysedAccelerometerSample(analysedAccSample: AnalysedSample.AnalysedAccSample) =
+        accelerometerRepository.insertAnalysedAccelerometerSample(analysedAccSample)
 
     override suspend fun sendAccelerometerSample() = accelerometerRepository.sendSample()
 

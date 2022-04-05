@@ -1,9 +1,10 @@
 package com.jj.sensorcollector.playground1.data
 
-import android.util.Log
-import com.jj.sensorcollector.playground1.domain.samples.AccSampleAnalyzer
-import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.SensorData
+import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
+import com.jj.sensorcollector.playground1.domain.samples.AccThresholdAnalyzer
+import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
+import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -11,17 +12,17 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SampleAnalyzer(
-    private val accelerometerRepository: AccelerometerRepository,
-    private val analyzer1: AccSampleAnalyzer,
-    private val analyzer2: AccSampleAnalyzer,
-    private val analyzer3: AccSampleAnalyzer
+    private val sensorsRepository: SensorsRepository,
+    private val accThresholdAnalyzer: AccThresholdAnalyzer,
+    private val timeProvider: TimeProvider
 ) {
 
     private var collectorJob: Job? = null
 
     fun startAnalysis() {
         collectorJob = CoroutineScope(Dispatchers.IO).launch {
-            accelerometerRepository.collectAccelerometerSamples().collect {
+            // Consider it to have independent collector that runs forever
+            sensorsRepository.collectRawAccelerometerSamples().collect {
                 onSampleAvailable(it)
             }
         }
@@ -32,17 +33,17 @@ class SampleAnalyzer(
         collectorJob = null
     }
 
-    private fun onSampleAvailable(sensorData: SensorData) {
-        if (sensorData is SensorData.AccSample) {
-            val result1 = analyzer1.analyze(sensorData)
-            val result2 = analyzer2.analyze(sensorData)
-            val result3 = analyzer3.analyze(sensorData)
+    private suspend fun onSampleAvailable(sensorData: SensorData) {
+        val analysedSample = when (sensorData) {
+            is SensorData.AccSample -> accThresholdAnalyzer.analyze(sensorData)
+            is SensorData.Error -> AnalysedSample.Error(sensorData, sensorData.msg, timeProvider.getNowMillis())
+            else -> AnalysedSample.Error(sensorData, "WrongSample", timeProvider.getNowMillis())
+        }
 
-            val finalResult = (result1.analysedX.value ?: 1f) *
-                (result2.analysedY.value ?: 1f) *
-                (result3.analysedZ.value ?: 1f)
-
-            Log.d("ABAB", "Final analysis: $finalResult")
+        if (analysedSample is AnalysedSample.AnalysedAccSample)
+            sensorsRepository.insertAnalysedAccelerometerSample(analysedSample)
+        else {
+            // TODO Handle analysis errors!!!
         }
     }
 }

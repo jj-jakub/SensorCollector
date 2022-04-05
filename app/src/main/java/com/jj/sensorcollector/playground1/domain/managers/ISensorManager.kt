@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ISensorManager {
 
-    fun collectSensorSamples(): Flow<SensorData>
+    fun collectRawSensorSamples(): Flow<SensorData>
 }
