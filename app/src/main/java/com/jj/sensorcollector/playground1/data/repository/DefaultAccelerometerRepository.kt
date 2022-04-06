@@ -17,7 +17,6 @@ class DefaultAccelerometerRepository(
     private val analysedAccelerometerSampleDao: AnalysedAccelerometerSampleDao,
 ) : AccelerometerRepository {
 
-    @Deprecated("This is not source of truth", replaceWith = ReplaceWith("collectAnalysedAccelerometerSamples"))
     override fun collectRawAccelerometerSamples(): Flow<SensorData> = accelerometerManager.collectRawSensorSamples()
 
     override fun collectAnalysedAccelerometerSamples(): Flow<AnalysedSample> =
