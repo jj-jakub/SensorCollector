@@ -10,7 +10,7 @@ import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.domain.ui.text.TextComponent
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
-import com.jj.sensorcollector.playground1.framework.ui.samples.AndroidAnalysedAccUIData
+import com.jj.sensorcollector.playground1.framework.domain.ui.samples.AndroidAnalysedAccUIData
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toDomainColor
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
