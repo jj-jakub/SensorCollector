@@ -40,7 +40,7 @@ class BaseLinearChart @JvmOverloads constructor(
                 dataSet.addEntry(Entry(dataSet.entryCount.toFloat(), value))
             }
         }
-        with(baseLinearChartBinding.accelerometerDataChart) {
+        with(baseLinearChartBinding.chart1) {
             setVisibleXRangeMaximum(10F)
             lineDataSetX?.entryCount?.toFloat()?.let { xPos -> moveViewToX(xPos) }
             data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
@@ -49,7 +49,7 @@ class BaseLinearChart @JvmOverloads constructor(
     }
 
     fun setupChart() {
-        with(baseLinearChartBinding.accelerometerDataChart) {
+        with(baseLinearChartBinding.chart1) {
             lineDataSetX = getDataSet("X", DomainColor.Red) //TODO Constant
             lineDataSetY = getDataSet("Y", DomainColor.Green) //TODO Constant
             lineDataSetZ = getDataSet("Z", DomainColor.Yellow) //TODO Constant
