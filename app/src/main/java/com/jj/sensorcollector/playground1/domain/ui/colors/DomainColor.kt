@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.domain.ui
+package com.jj.sensorcollector.playground1.domain.ui.colors
 
 sealed class DomainColor {
     object Red: DomainColor()

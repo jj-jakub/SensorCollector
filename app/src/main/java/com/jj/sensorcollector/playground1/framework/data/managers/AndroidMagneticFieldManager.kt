@@ -1,11 +1,11 @@
-package com.jj.sensorcollector.playground1.framework.data
+package com.jj.sensorcollector.playground1.framework.data.managers
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
-import com.jj.sensorcollector.playground1.domain.SensorData
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.managers.MagneticFieldManager
-import com.jj.sensorcollector.playground1.framework.domain.AndroidSmartSensorManager
+import com.jj.sensorcollector.playground1.framework.domain.managers.AndroidSmartSensorManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 

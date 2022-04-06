@@ -1,9 +1,9 @@
 package com.jj.sensorcollector.playground1.data
 
-import com.jj.sensorcollector.playground1.domain.SensorData
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
-import com.jj.sensorcollector.playground1.domain.samples.AccThresholdAnalyzer
-import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
+import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -5,21 +5,21 @@ import com.jj.sensorcollector.playground1.data.database.accelerometer.toAccelera
 import com.jj.sensorcollector.playground1.data.database.accelerometer.toAnalysedAccSample
 import com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
-import com.jj.sensorcollector.playground1.domain.SensorData
-import com.jj.sensorcollector.playground1.domain.api.AccelerometerService
-import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class DefaultAccelerometerRepository(
     private val accelerometerManager: AccelerometerManager,
-    private val accelerometerService: AccelerometerService,
+    private val accelerometerAPI: AccelerometerAPI,
     private val analysedAccelerometerSampleDao: AnalysedAccelerometerSampleDao,
 ) : AccelerometerRepository {
 
     override fun collectRawAccelerometerSamples(): Flow<SensorData> = accelerometerManager.collectRawSensorSamples()
 
-    override fun collectAnalysedAccelerometerSamples(): Flow<AnalysedSample> =
+    override fun collectAnalysedAccelerometerSamples(): Flow<AnalysedSample.AnalysedAccSample> =
         analysedAccelerometerSampleDao.getLatestAnalysedAccelerationSampleEntity()
             .map { entity -> entity.toAnalysedAccSample() }
 
@@ -27,5 +27,5 @@ class DefaultAccelerometerRepository(
     override suspend fun insertAnalysedAccelerometerSample(analysedAccSample: AnalysedSample.AnalysedAccSample) =
         analysedAccelerometerSampleDao.insert(analysedAccSample.toAccelerationDataEntity())
 
-    override suspend fun sendSample() = accelerometerService.sendSample()
+    override suspend fun sendSample() = accelerometerAPI.sendSample()
 }

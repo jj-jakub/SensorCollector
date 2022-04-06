@@ -5,7 +5,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.core.text.toSpannable
-import com.jj.sensorcollector.playground1.domain.ui.DomainColor
+import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.domain.ui.text.TextComponent
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor

@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.framework.domain
+package com.jj.sensorcollector.playground1.framework.domain.managers
 
 import android.content.Context
 import android.hardware.Sensor
@@ -6,7 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.SensorData
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.managers.SmartSensorManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

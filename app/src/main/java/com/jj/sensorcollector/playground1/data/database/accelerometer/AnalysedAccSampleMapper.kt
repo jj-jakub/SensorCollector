@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.database.accelerometer
 
-import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
-import com.jj.sensorcollector.playground1.domain.samples.AnalysedValue
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedValue
 
 fun AnalysedAccelerometerSampleEntity.toAnalysedAccSample(): AnalysedSample.AnalysedAccSample = AnalysedSample.AnalysedAccSample(
     analysedX = AnalysedValue(analysedXValue, analysedXResult),

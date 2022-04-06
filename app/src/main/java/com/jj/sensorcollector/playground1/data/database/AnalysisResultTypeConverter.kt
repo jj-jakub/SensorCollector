@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.database
 
 import androidx.room.TypeConverter
-import com.jj.sensorcollector.playground1.domain.samples.AnalysisResult
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysisResult
 
 class AnalysisResultTypeConverter {
     @TypeConverter

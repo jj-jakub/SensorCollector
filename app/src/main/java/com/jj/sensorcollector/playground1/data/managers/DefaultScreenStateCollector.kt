@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.data.dummymanagers
+package com.jj.sensorcollector.playground1.data.managers
 
 import android.util.Log
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector

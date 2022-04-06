@@ -2,7 +2,7 @@ package com.jj.sensorcollector.playground1.data.database.accelerometer
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jj.sensorcollector.playground1.domain.samples.AnalysisResult
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysisResult
 
 @Entity
 data class AnalysedAccelerometerSampleEntity(

@@ -9,7 +9,7 @@ import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
-import com.jj.sensorcollector.playground1.domain.AnalyzerStarter
+import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect

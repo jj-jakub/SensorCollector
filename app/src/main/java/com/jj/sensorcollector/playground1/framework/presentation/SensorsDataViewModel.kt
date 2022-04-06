@@ -4,10 +4,10 @@ import android.text.Spannable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
-import com.jj.sensorcollector.playground1.domain.SensorData
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
-import com.jj.sensorcollector.playground1.domain.samples.AnalysedSample
-import com.jj.sensorcollector.playground1.domain.ui.DomainColor
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.domain.ui.text.TextComponent
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toDomainColor
@@ -19,9 +19,6 @@ class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
     private val textCreator: TextCreator<Spannable>
 ) : ViewModel() {
-
-//    private val _accelerometerSamples = BufferedMutableSharedFlow<UISample.AccelerometerUISample>()
-//    val accelerometerSamples = _accelerometerSamples.asSharedFlow()
 
     private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<Spannable>()
     val analysedAccelerometerSampleString = _analysedAccelerometerSampleString.asSharedFlow()
@@ -41,37 +38,21 @@ class SensorsDataViewModel(
     private fun observeAccelerometerSamples() {
         viewModelScope.launch {
             sensorsRepository.collectAnalysedAccelerometerSamples().collect {
-                if (it is AnalysedSample.AnalysedAccSample) {
-                    _analysedAccelerometerSampleString.tryEmit(
-                        textCreator.buildColoredString(
-                            TextComponent("X: ", DomainColor.Default),
-                            TextComponent(it.analysedX.value.toString(), it.analysedX.analysisResult.toDomainColor()),
-                            TextComponent(" Y: ", DomainColor.Default),
-                            TextComponent(it.analysedY.value.toString(), it.analysedY.analysisResult.toDomainColor()),
-                            TextComponent(" Z: ", DomainColor.Default),
-                            TextComponent(it.analysedZ.value.toString(), it.analysedZ.analysisResult.toDomainColor())
-                        )
-                    )
-                }
+                val coloredSpannable = createColoredSpannable(it)
+                _analysedAccelerometerSampleString.tryEmit(coloredSpannable)
             }
         }
     }
 
-//    private fun createAccUiSample(analysedSample: AnalysedSample.AnalysedAccSample) =
-//        UISample.AccelerometerUISample(
-//            x = textCreator.buildColoredString(
-//                TextComponent("X: ", DomainColor.Default),
-//                TextComponent(it.analysedX.toString(), it.analysedX.analysisResult.toDomainColor())
-//            ),
-//            y = textCreator.buildColoredString(
-//                TextComponent("Y: ", DomainColor.Default),
-//                TextComponent(it.analysedY.toString(), it.analysedY.analysisResult.toDomainColor())
-//            ),
-//            z = textCreator.buildColoredString(
-//                TextComponent("Z: ", DomainColor.Default),
-//                TextComponent(it.analysedZ.toString(), it.analysedZ.analysisResult.toDomainColor())
-//            )
-//        )
+    private fun createColoredSpannable(analysedSample: AnalysedSample.AnalysedAccSample): Spannable =
+        textCreator.buildColoredString(
+            TextComponent("X: ", DomainColor.Default),
+            TextComponent(analysedSample.analysedX.value.toString(), analysedSample.analysedX.analysisResult.toDomainColor()),
+            TextComponent(" Y: ", DomainColor.Default),
+            TextComponent(analysedSample.analysedY.value.toString(), analysedSample.analysedY.analysisResult.toDomainColor()),
+            TextComponent(" Z: ", DomainColor.Default),
+            TextComponent(analysedSample.analysedZ.value.toString(), analysedSample.analysedZ.analysisResult.toDomainColor())
+        )
 
     private fun observeGyroscopeSamples() {
         viewModelScope.launch {

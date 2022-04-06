@@ -1,7 +1,7 @@
-package com.jj.sensorcollector.playground1.framework.data
+package com.jj.sensorcollector.playground1.framework.data.managers
 
 import android.content.Context
-import com.jj.sensorcollector.playground1.domain.AnalyzerStarter
+import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.framework.service.SensorCollectorService
 
 class AndroidAnalyzerStarter(

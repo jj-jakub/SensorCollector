@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.domain.samples
+package com.jj.sensorcollector.playground1.domain.samples.analysis
 
 sealed class AnalysisResult {
     object Normal: AnalysisResult()
