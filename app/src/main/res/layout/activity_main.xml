@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.activities.MainActivity">
 
-    <com.github.mikephil.charting.charts.LineChart
+    <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseLinearChart
         android:id="@+id/accelerometerDataChart"
         android:layout_width="100dp"
         android:layout_height="65dp"
