@@ -4,12 +4,13 @@ import android.text.Spannable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.domain.ui.text.TextComponent
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
+import com.jj.sensorcollector.playground1.framework.ui.samples.AndroidAnalysedAccUIData
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toDomainColor
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
@@ -20,7 +21,7 @@ class SensorsDataViewModel(
     private val textCreator: TextCreator<Spannable>
 ) : ViewModel() {
 
-    private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<Spannable>()
+    private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<AndroidAnalysedAccUIData>()
     val analysedAccelerometerSampleString = _analysedAccelerometerSampleString.asSharedFlow()
 
     private val _gyroscopeSamples = BufferedMutableSharedFlow<SensorData>()
@@ -39,7 +40,8 @@ class SensorsDataViewModel(
         viewModelScope.launch {
             sensorsRepository.collectAnalysedAccelerometerSamples().collect {
                 val coloredSpannable = createColoredSpannable(it)
-                _analysedAccelerometerSampleString.tryEmit(coloredSpannable)
+                val uiData = AndroidAnalysedAccUIData(it, coloredSpannable)
+                _analysedAccelerometerSampleString.tryEmit(uiData)
             }
         }
     }

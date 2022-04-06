@@ -6,22 +6,26 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.databinding.ActivityMainBinding
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
+import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.java.KoinJavaComponent
 import kotlin.math.abs
 
-interface ColorStrBuilder<FrameworkColorStringType> {
-    fun buildStr(): FrameworkColorStringType
-}
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,17 +40,86 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         setMainLabelText()
+        setupChart()
 
         startAccelerometerCollectingJob()
         startGyroscopeCollectingJob()
         startMagneticFieldCollectingJob()
     }
 
+    private fun setupChart() {
+        with(activityMainBinding.accelerometerDataChart) {
+            lineDataSetX = getDataSetX()
+            lineDataSetY = getDataSetY()
+            lineDataSetZ = getDataSetZ()
+            data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
+            axisLeft.setDrawLabels(false)
+            axisRight.setDrawLabels(false)
+            xAxis.setDrawLabels(false)
+            animateXY(2000, 2000)
+            invalidate()
+        }
+    }
+
+    private lateinit var lineDataSetX: LineDataSet
+    private lateinit var lineDataSetY: LineDataSet
+    private lateinit var lineDataSetZ: LineDataSet
+
+    // TODO Extract me to something like BaseChart
+    private fun getDataSetX(): LineDataSet {
+        val valueSet1 = ArrayList<Entry>()
+        val v1e1 = Entry(0f, 0f)
+        valueSet1.add(v1e1)
+
+        val lineDataSet = LineDataSet(valueSet1, "X")
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.color = DomainColor.Red.toTextColor()
+        return lineDataSet
+    }
+    private fun getDataSetY(): LineDataSet {
+        val valueSet1 = ArrayList<Entry>()
+        val v1e1 = Entry(0f, 0f)
+        valueSet1.add(v1e1)
+
+        val lineDataSet = LineDataSet(valueSet1, "Y")
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.color = DomainColor.Green.toTextColor()
+        return lineDataSet
+    }
+    private fun getDataSetZ(): LineDataSet {
+        val valueSet1 = ArrayList<Entry>()
+        val v1e1 = Entry(0f, 0f)
+        valueSet1.add(v1e1)
+
+        val lineDataSet = LineDataSet(valueSet1, "Z")
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.color = DomainColor.Yellow.toTextColor()
+        return lineDataSet
+    }
+
     private fun startAccelerometerCollectingJob(): Job {
         return lifecycleScope.launch {
             viewModel.analysedAccelerometerSampleString.collect {
-                activityMainBinding.accSampleValue.text = it
+                activityMainBinding.accSampleValue.text = it.analysedSampleString
+                updateAccelerometerChart(it.analysedSample)
             }
+        }
+    }
+
+    private fun updateAccelerometerChart(analysedSample: AnalysedSample.AnalysedAccSample) {
+        analysedSample.analysedX.value?.let { value ->
+            lineDataSetX.addEntry(Entry(lineDataSetX.entryCount.toFloat(), value))
+        }
+        analysedSample.analysedY.value?.let { value ->
+            lineDataSetY.addEntry(Entry(lineDataSetY.entryCount.toFloat(), value))
+        }
+        analysedSample.analysedZ.value?.let { value ->
+            lineDataSetZ.addEntry(Entry(lineDataSetZ.entryCount.toFloat(), value))
+        }
+        with(activityMainBinding.accelerometerDataChart) {
+            data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
+            notifyDataSetChanged()
+            invalidate()
         }
     }
 
