@@ -23,8 +23,8 @@ class SensorsDataViewModel(
 //    private val _accelerometerSamples = BufferedMutableSharedFlow<UISample.AccelerometerUISample>()
 //    val accelerometerSamples = _accelerometerSamples.asSharedFlow()
 
-    private val _accelerometerSamples = BufferedMutableSharedFlow<Spannable>()
-    val accelerometerSamples = _accelerometerSamples.asSharedFlow()
+    private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<Spannable>()
+    val analysedAccelerometerSampleString = _analysedAccelerometerSampleString.asSharedFlow()
 
     private val _gyroscopeSamples = BufferedMutableSharedFlow<SensorData>()
     val gyroscopeSamples = _gyroscopeSamples.asSharedFlow()
@@ -42,7 +42,7 @@ class SensorsDataViewModel(
         viewModelScope.launch {
             sensorsRepository.collectAnalysedAccelerometerSamples().collect {
                 if (it is AnalysedSample.AnalysedAccSample) {
-                    _accelerometerSamples.tryEmit(
+                    _analysedAccelerometerSampleString.tryEmit(
                         textCreator.buildColoredString(
                             TextComponent("X: ", DomainColor.Default),
                             TextComponent(it.analysedX.value.toString(), it.analysedX.analysisResult.toDomainColor()),

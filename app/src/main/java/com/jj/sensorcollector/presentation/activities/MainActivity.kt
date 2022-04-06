@@ -6,16 +6,12 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.databinding.ActivityMainBinding
 import com.jj.sensorcollector.playground1.domain.SensorData
-import com.jj.sensorcollector.playground1.domain.ui.UISample
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -48,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startAccelerometerCollectingJob(): Job {
         return lifecycleScope.launch {
-            viewModel.accelerometerSamples.collect {
+            viewModel.analysedAccelerometerSampleString.collect {
                 activityMainBinding.accSampleValue.text = it
             }
         }
