@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         setMainLabelText()
-        activityMainBinding.accelerometerDataChart.setupChart()
-
         startAccelerometerCollectingJob()
         startGyroscopeCollectingJob()
         startMagneticFieldCollectingJob()
@@ -49,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.gyroscopeSamples.collect {
             if (it is SensorData.GyroscopeSample) {
                 activityMainBinding.gyrSampleValue.text = "X: ${it.x}, Y: ${it.y}, Z: ${it.z}"
+                activityMainBinding.gyroscopeDataChart.updateChart(it.x, it.y, it.z)
             }
         }
     }
@@ -57,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.magneticFieldSamples.collect {
             if (it is SensorData.MagneticFieldSample) {
                 activityMainBinding.mfieldSampleValue.text = "X: ${it.x}, Y: ${it.y}, Z: ${it.z}"
+                activityMainBinding.magneticFieldDataChart.updateChart(it.x, it.y, it.z)
             }
         }
     }
