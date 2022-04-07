@@ -1,6 +1,7 @@
 package com.jj.sensorcollector.playground1.framework.presentation.charts
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -41,8 +42,8 @@ class BaseLinearChart @JvmOverloads constructor(
                 dataSet.addEntry(Entry(dataSet.entryCount.toFloat(), value))
             }
         }
-        with(baseLinearChartBinding.chart1) {
-            setVisibleXRangeMaximum(10F)
+        with(baseLinearChartBinding.lineChart) {
+            setVisibleXRangeMaximum(10F) //TODO Constant
             lineDataSetX?.entryCount?.toFloat()?.let { xPos -> moveViewToX(xPos) }
             data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
             invalidate()
@@ -50,22 +51,37 @@ class BaseLinearChart @JvmOverloads constructor(
     }
 
     fun setupChart() {
-        with(baseLinearChartBinding.chart1) {
-            lineDataSetX = getDataSet("X", DomainColor.Red) //TODO Constant
-            lineDataSetY = getDataSet("Y", DomainColor.Green) //TODO Constant
-            lineDataSetZ = getDataSet("Z", DomainColor.Yellow) //TODO Constant
-
+        with(baseLinearChartBinding.lineChart) {
+            createDataSets()
             data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
-            axisLeft.isEnabled = false
-            axisRight.isEnabled = false
-            axisRight.setDrawLabels(false)
-            xAxis.setDrawLabels(false)
-            xAxis.setDrawGridLines(false)
-            legend.isEnabled = false
-            description.isEnabled = false
+
+            removeGridAndLabels(this)
+            removePadding(this)
+
+            setBackgroundColor(Color.GRAY) //TODO Style
             setVisibleXRangeMaximum(10F) //TODO Constant
             invalidate()
         }
+    }
+
+    private fun createDataSets() {
+        lineDataSetX = getDataSet("X", DomainColor.Red) //TODO Constant/Style
+        lineDataSetY = getDataSet("Y", DomainColor.Green) //TODO Constant/Style
+        lineDataSetZ = getDataSet("Z", DomainColor.Yellow) //TODO Constant/Style
+    }
+
+    private fun removeGridAndLabels(lineChart: LineChart) {
+        with(lineChart) {
+            xAxis.isEnabled = false
+            axisLeft.isEnabled = false
+            axisRight.isEnabled = false
+            legend.isEnabled = false
+            description.isEnabled = false
+        }
+    }
+
+    private fun removePadding(lineChart: LineChart) {
+        lineChart.setViewPortOffsets(0f, 0f, 0f, 0f);
     }
 
     private fun getDataSet(label: String, color: DomainColor): LineDataSet {
@@ -73,6 +89,7 @@ class BaseLinearChart @JvmOverloads constructor(
         valueSet1.add(Entry(0f, 0f)) //TODO Constant
 
         val lineDataSet = LineDataSet(valueSet1, label)
+        lineDataSet.lineWidth = 2f //TODO Constant
         lineDataSet.setDrawValues(false)
         lineDataSet.setDrawCircles(false)
         lineDataSet.color = color.toTextColor()
