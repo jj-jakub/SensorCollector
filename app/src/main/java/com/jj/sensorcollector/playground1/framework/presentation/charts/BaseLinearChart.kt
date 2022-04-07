@@ -3,6 +3,7 @@ package com.jj.sensorcollector.playground1.framework.presentation.charts
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -16,13 +17,13 @@ class BaseLinearChart @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LineChart(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     private var lineDataSetX: LineDataSet? = null
     private var lineDataSetY: LineDataSet? = null
     private var lineDataSetZ: LineDataSet? = null
 
-    private val baseLinearChartBinding: BaseLinearChartBinding = BaseLinearChartBinding.inflate(LayoutInflater.from(context), this)
+    private val baseLinearChartBinding: BaseLinearChartBinding = BaseLinearChartBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun updateAccelerometerChart(analysedSample: AnalysedSample.AnalysedAccSample) {
         analysedSample.analysedX.value?.let { value ->
