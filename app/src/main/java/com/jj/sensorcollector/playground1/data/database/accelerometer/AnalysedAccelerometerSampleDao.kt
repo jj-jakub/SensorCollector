@@ -15,7 +15,7 @@ interface AnalysedAccelerometerSampleDao {
     @Query("SELECT * FROM AnalysedAccelerometerSampleEntity")
     fun getAnalysedAccelerationSampleEntities(): Flow<List<AnalysedAccelerometerSampleEntity>>
 
-    @Query("SELECT * FROM AnalysedAccelerometerSampleEntity ORDER BY sampleTime DESC LIMIT 1")
+    @Query("SELECT * FROM AnalysedAccelerometerSampleEntity WHERE id=(SELECT max(id) FROM AnalysedAccelerometerSampleEntity)")
     fun getLatestAnalysedAccelerationSampleEntity(): Flow<AnalysedAccelerometerSampleEntity>
 
     @Query("DELETE FROM AnalysedAccelerometerSampleEntity")
