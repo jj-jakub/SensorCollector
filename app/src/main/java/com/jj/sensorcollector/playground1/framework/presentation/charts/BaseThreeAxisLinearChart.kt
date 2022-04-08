@@ -3,6 +3,7 @@ package com.jj.sensorcollector.playground1.framework.presentation.charts
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.github.mikephil.charting.charts.LineChart
@@ -12,6 +13,9 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.jj.sensorcollector.databinding.BaseLinearChartBinding
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Integer.max
 
 private const val MAX_VISIBLE_SAMPLES = 100
@@ -81,35 +85,41 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     }
 
     fun updateChart(xAxisValue: Float?, yAxisValue: Float?, zAxisValue: Float?) {
-        xAxisValue?.let { value ->
-            lineDataSetX.let { dataSet ->
-                cleanupDataset(dataSet)
-                dataSet.addEntry(Entry(xDataCounter++.toFloat(), value))
+        try {
+            xAxisValue?.let { value ->
+                lineDataSetX.let { dataSet ->
+                    cleanupDataset(dataSet)
+                    dataSet.addEntry(Entry(xDataCounter++.toFloat(), value))
+                }
             }
-        }
 
-        yAxisValue?.let { value ->
-            lineDataSetY.let { dataSet ->
-                cleanupDataset(dataSet)
-                dataSet.addEntry(Entry(yDataCounter++.toFloat(), value))
+            yAxisValue?.let { value ->
+                lineDataSetY.let { dataSet ->
+                    cleanupDataset(dataSet)
+                    dataSet.addEntry(Entry(yDataCounter++.toFloat(), value))
+                }
             }
-        }
 
-        zAxisValue?.let { value ->
-            lineDataSetZ.let { dataSet ->
-                cleanupDataset(dataSet)
-                dataSet.addEntry(Entry(zDataCounter++.toFloat(), value))
+            zAxisValue?.let { value ->
+                lineDataSetZ.let { dataSet ->
+                    cleanupDataset(dataSet)
+                    dataSet.addEntry(Entry(zDataCounter++.toFloat(), value))
+                }
             }
-        }
 
-        with(baseLinearChartBinding.lineChart) {
-            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
-            moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
-            data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
-            invalidate()
-        }
+            with(baseLinearChartBinding.lineChart) {
+                setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
+                moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
+//                CoroutineScope(Dispatchers.Main).launch {
+                    data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
+                invalidate()
+//                }
+            }
 
-        checkSamplesCounters()
+            checkSamplesCounters()
+        } catch (e: Exception) {
+            Log.e("ABAB", "e:", e)
+        }
     }
 
     private fun checkSamplesCounters() {
