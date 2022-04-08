@@ -22,14 +22,10 @@ class AndroidAccelerometerManager(context: Context) : AccelerometerManager, Andr
 
 
     override val sensorListener = object : SensorEventListener {
-        var counter = 0
         override fun onSensorChanged(p0: SensorEvent?) {
             val sensorData = convertSensorEvent(p0)
-            counter++
-            if (counter % 10 == 0) {
                 Log.d("ABAB", "emit")
                 sensorSamples.tryEmit(sensorData)
-            }
         }
 
         override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
