@@ -3,7 +3,6 @@ package com.jj.sensorcollector.playground1.framework.presentation.charts
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.github.mikephil.charting.charts.LineChart
@@ -82,39 +81,35 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     }
 
     fun updateChart(xAxisValue: Float?, yAxisValue: Float?, zAxisValue: Float?) {
-        try {
-            xAxisValue?.let { value ->
-                lineDataSetX.let { dataSet ->
-                    cleanupDataset(dataSet)
-                    dataSet.addEntry(Entry(xDataCounter++.toFloat(), value))
-                }
+        xAxisValue?.let { value ->
+            lineDataSetX.let { dataSet ->
+                cleanupDataset(dataSet)
+                dataSet.addEntry(Entry(xDataCounter++.toFloat(), value))
             }
-
-            yAxisValue?.let { value ->
-                lineDataSetY.let { dataSet ->
-                    cleanupDataset(dataSet)
-                    dataSet.addEntry(Entry(yDataCounter++.toFloat(), value))
-                }
-            }
-
-            zAxisValue?.let { value ->
-                lineDataSetZ.let { dataSet ->
-                    cleanupDataset(dataSet)
-                    dataSet.addEntry(Entry(zDataCounter++.toFloat(), value))
-                }
-            }
-
-            with(baseLinearChartBinding.lineChart) {
-                setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
-                moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
-                data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
-                invalidate()
-            }
-
-            checkSamplesCounters()
-        } catch (e: Exception) {
-            Log.e("ABAB", "e:", e)
         }
+
+        yAxisValue?.let { value ->
+            lineDataSetY.let { dataSet ->
+                cleanupDataset(dataSet)
+                dataSet.addEntry(Entry(yDataCounter++.toFloat(), value))
+            }
+        }
+
+        zAxisValue?.let { value ->
+            lineDataSetZ.let { dataSet ->
+                cleanupDataset(dataSet)
+                dataSet.addEntry(Entry(zDataCounter++.toFloat(), value))
+            }
+        }
+
+        with(baseLinearChartBinding.lineChart) {
+            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
+            moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
+            data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
+            invalidate()
+        }
+
+        checkSamplesCounters()
     }
 
     private fun checkSamplesCounters() {
