@@ -12,6 +12,10 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.jj.sensorcollector.databinding.BaseLinearChartBinding
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
+import java.lang.Integer.max
+
+private const val MAX_VISIBLE_SAMPLES = 100
+private const val MAX_CACHED_SAMPLES = 200
 
 open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     context: Context,
@@ -22,6 +26,10 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     private val lineDataSetX: LineDataSet
     private val lineDataSetY: LineDataSet
     private val lineDataSetZ: LineDataSet
+
+    private var xDataCounter = 0
+    private var yDataCounter = 0
+    private var zDataCounter = 0
 
     private val baseLinearChartBinding: BaseLinearChartBinding = BaseLinearChartBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -41,6 +49,7 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
         lineDataSet.setDrawValues(false)
         lineDataSet.setDrawCircles(false)
         lineDataSet.color = color.toTextColor()
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
         return lineDataSet
     }
 
@@ -52,7 +61,7 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
             removePadding(this)
 
             setBackgroundColor(Color.GRAY) //TODO Style
-            setVisibleXRangeMaximum(10F) //TODO Constant
+            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
             invalidate()
         }
     }
@@ -75,39 +84,57 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
         xAxisValue?.let { value ->
             lineDataSetX.let { dataSet ->
                 cleanupDataset(dataSet)
-                dataSet.addEntry(Entry(dataSet.entryCount.toFloat(), value))
+                dataSet.addEntry(Entry(xDataCounter++.toFloat(), value))
             }
         }
+
         yAxisValue?.let { value ->
             lineDataSetY.let { dataSet ->
                 cleanupDataset(dataSet)
-                dataSet.addEntry(Entry(dataSet.entryCount.toFloat(), value))
+                dataSet.addEntry(Entry(yDataCounter++.toFloat(), value))
             }
         }
+
         zAxisValue?.let { value ->
             lineDataSetZ.let { dataSet ->
                 cleanupDataset(dataSet)
-                dataSet.addEntry(Entry(dataSet.entryCount.toFloat(), value))
+                dataSet.addEntry(Entry(zDataCounter++.toFloat(), value))
             }
         }
+
         with(baseLinearChartBinding.lineChart) {
-            setVisibleXRangeMaximum(10F) //TODO Constant
-//            setVisibleYRangeMaximum(calculateYMax(), YAxis.AxisDependency.RIGHT)
-            lineDataSetX.entryCount.toFloat().let { xPos -> moveViewToX(xPos) }
+            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
+            moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
             data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
             invalidate()
+        }
+
+        checkSamplesCounters()
+    }
+
+    private fun checkSamplesCounters() {
+        if (xDataCounter == Int.MAX_VALUE || yDataCounter == Int.MAX_VALUE || zDataCounter == Int.MAX_VALUE) {
+            xDataCounter = 0
+            yDataCounter = 0
+            zDataCounter = 0
+
+            clearDataSet(lineDataSetX)
+            clearDataSet(lineDataSetY)
+            clearDataSet(lineDataSetZ)
         }
     }
 
     private fun cleanupDataset(dataSet: LineDataSet) {
-        // TODO
+        if (dataSet.entryCount == MAX_CACHED_SAMPLES) {
+            dataSet.removeFirst()
+        }
     }
 
-    private fun calculateYMax(): Float {
-        val xMax = lineDataSetX.values.toList().map { it.y }.maxOrNull() ?: 10f // TODO DEFAULT_RANGE or something
-        val yMax = lineDataSetY.values.toList().map { it.y }.maxOrNull() ?: 10f
-        val zMax = lineDataSetZ.values.toList().map { it.y }.maxOrNull() ?: 10f
-
-        return listOf(xMax, yMax, zMax).maxOrNull() ?: 10f
+    private fun clearDataSet(lineDataSet: LineDataSet) {
+        with(lineDataSet) {
+            clear()
+            addEntry(Entry(0f, 0f))
+            calcMinMaxY(0f, 1f)
+        }
     }
 }
