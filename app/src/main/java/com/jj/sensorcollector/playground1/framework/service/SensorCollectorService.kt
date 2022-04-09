@@ -20,11 +20,12 @@ class SensorCollectorService : LifecycleService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         when (intent?.action) {
             ServiceAction.START_COLLECTING_ACCELEROMETER.action -> onStartCollectingAccelerometer()
             ServiceAction.STOP_COLLECTING_ACCELEROMETER.action -> onStopCollectingAccelerometer()
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_STICKY
     }
 
     private fun onStartCollectingAccelerometer() {
@@ -50,7 +51,6 @@ class SensorCollectorService : LifecycleService() {
         fun stopCollectingAccelerometer(context: Context) {
             start(context, ServiceAction.STOP_COLLECTING_ACCELEROMETER)
         }
-
 
         private fun start(context: Context, serviceAction: ServiceAction) {
             val intent = Intent(context, SensorCollectorService::class.java).apply {
