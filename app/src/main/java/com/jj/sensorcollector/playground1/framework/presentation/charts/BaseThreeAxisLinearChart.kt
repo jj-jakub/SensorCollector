@@ -3,7 +3,6 @@ package com.jj.sensorcollector.playground1.framework.presentation.charts
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.github.mikephil.charting.charts.LineChart
@@ -13,12 +12,28 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.jj.sensorcollector.databinding.BaseLinearChartBinding
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.lang.Integer.max
 
-private const val MAX_VISIBLE_SAMPLES = 100
+/**
+ * MAX_VISIBLE_SAMPLES - really slows UI
+ * MAX_CACHED_SAMPLES - important for max/min calculations, i.e. when chart will recalibrate,
+ * but also seems to slow down UI (probably due to recalculations given more samples)
+ *
+ * Any UI updates on chart, i.e. data assignment, invalidation - must be run on Main thread, or
+ * exceptions will be thrown like NegativeIndexException or IndexOutOfBoundsException
+ *
+ * Mutex lock seems to not be necessary, as we update section on single Main thread, but it is there for
+ * better safety, as updating chart and cleaning up dataset is a critical section. Otherwise one thread
+ * will update chart given MAX_CACHED_SAMPLES, and second one can clear up dataset before UI update happens.
+ *
+ * updateChart method can be run on any thread. Dispatchers.Default seems to be faster than singleContextThreads,
+ * even though Dispatchers.Default seems to have 12 threads (and we have 36 charts).
+ */
+private const val MAX_VISIBLE_SAMPLES = 10
 private const val MAX_CACHED_SAMPLES = 200
 
 open class BaseThreeAxisLinearChart @JvmOverloads constructor(
@@ -26,6 +41,8 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
+
+    private val chartUpdateLock = Mutex()
 
     private val lineDataSetX: LineDataSet
     private val lineDataSetY: LineDataSet
@@ -65,7 +82,7 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
             removePadding(this)
 
             setBackgroundColor(Color.GRAY) //TODO Style
-            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
+            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat())
             invalidate()
         }
     }
@@ -84,41 +101,28 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
         lineChart.setViewPortOffsets(0f, 0f, 0f, 0f)
     }
 
-    fun updateChart(xAxisValue: Float?, yAxisValue: Float?, zAxisValue: Float?) {
-        try {
-            xAxisValue?.let { value ->
-                lineDataSetX.let { dataSet ->
-                    cleanupDataset(dataSet)
-                    dataSet.addEntry(Entry(xDataCounter++.toFloat(), value))
-                }
-            }
+    suspend fun updateChart(xAxisValue: Float?, yAxisValue: Float?, zAxisValue: Float?) {
 
-            yAxisValue?.let { value ->
-                lineDataSetY.let { dataSet ->
-                    cleanupDataset(dataSet)
-                    dataSet.addEntry(Entry(yDataCounter++.toFloat(), value))
-                }
-            }
+        xAxisValue?.let { value -> lineDataSetX.addEntry(Entry(xDataCounter++.toFloat(), value)) }
+        yAxisValue?.let { value -> lineDataSetY.addEntry(Entry(yDataCounter++.toFloat(), value)) }
+        zAxisValue?.let { value -> lineDataSetZ.addEntry(Entry(zDataCounter++.toFloat(), value)) }
 
-            zAxisValue?.let { value ->
-                lineDataSetZ.let { dataSet ->
-                    cleanupDataset(dataSet)
-                    dataSet.addEntry(Entry(zDataCounter++.toFloat(), value))
-                }
-            }
+        chartUpdateLock.withLock { invalidateChart() }
+    }
 
+    // Must be run on Main thread
+    private suspend fun invalidateChart() {
+        withContext(Dispatchers.Main) {
             with(baseLinearChartBinding.lineChart) {
-                setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat()) //TODO Constant
+                setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat())
+                data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
                 moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
-//                CoroutineScope(Dispatchers.Main).launch {
-                    data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
                 invalidate()
-//                }
+                cleanupDataset(lineDataSetX)
+                cleanupDataset(lineDataSetY)
+                cleanupDataset(lineDataSetZ)
+                checkSamplesCounters()
             }
-
-            checkSamplesCounters()
-        } catch (e: Exception) {
-            Log.e("ABAB", "e:", e)
         }
     }
 

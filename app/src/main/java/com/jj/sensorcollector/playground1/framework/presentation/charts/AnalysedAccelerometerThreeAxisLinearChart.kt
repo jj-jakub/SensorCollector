@@ -8,7 +8,7 @@ class AnalysedAccelerometerThreeAxisLinearChart @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : BaseThreeAxisLinearChart(context, attrs) {
 
-    fun updateAccelerometerChart(analysedSample: AnalysedSample.AnalysedAccSample) {
+    suspend fun updateAccelerometerChart(analysedSample: AnalysedSample.AnalysedAccSample) {
         updateChart(analysedSample.analysedX.value, analysedSample.analysedY.value, analysedSample.analysedZ.value)
     }
 }
