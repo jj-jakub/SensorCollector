@@ -358,4 +358,22 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/startChart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start chart"
+        app:layout_constraintBottom_toTopOf="@+id/accSampleLabel"
+        app:layout_constraintStart_toStartOf="@+id/accSampleLabel" />
+
+    <Button
+        android:id="@+id/stopChart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop chart"
+        app:layout_constraintBottom_toTopOf="@+id/accSampleValue"
+        app:layout_constraintEnd_toEndOf="@+id/accSampleValue"
+        app:layout_constraintStart_toStartOf="@+id/accSampleValue" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
