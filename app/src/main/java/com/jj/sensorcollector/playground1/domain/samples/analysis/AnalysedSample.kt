@@ -24,6 +24,12 @@ sealed class AnalysedSample(val time: Long) {
         val sampleTime: Long
     ) : AnalysedSample(sampleTime)
 
+    data class AnalysedGPSSample(
+        val latitude: Double,
+        val longitude: Double,
+        val sampleTime: Long
+    ) : AnalysedSample(sampleTime)
+
     data class Error(
         val sensorData: SensorData,
         val errorCause: String,

@@ -4,4 +4,6 @@ interface AnalyzerStarter {
 
     fun startPermanentAccelerometerAnalysis()
     fun stopPermanentAccelerometerAnalysis()
+
+    fun startPermanentGPSAnalysis()
 }

@@ -15,4 +15,8 @@ class AndroidAnalyzerStarter(
     override fun stopPermanentAccelerometerAnalysis() {
         SensorCollectorService.stopCollectingAccelerometer(context)
     }
+
+    override fun startPermanentGPSAnalysis() {
+        SensorCollectorService.startCollectingGPS(context)
+    }
 }

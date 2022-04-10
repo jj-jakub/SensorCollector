@@ -36,6 +36,7 @@ import com.jj.sensorcollector.playground1.data.repository.DefaultGPSRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultSensorsRepository
+import com.jj.sensorcollector.playground1.data.samples.gps.DefaultGPSSampleAnalyzer
 import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
@@ -47,6 +48,7 @@ import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.sensorcollector.playground1.domain.samples.gps.GPSSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidGyroscopeManager
@@ -117,9 +119,15 @@ val mainModule = module {
     single<GyroscopeRepository> { DefaultGyroscopeRepository(get()) }
     single<MagneticFieldRepository> { DefaultMagneticFieldRepository(get()) }
 
-    single<GPSRepository> { DefaultGPSRepository(get()) }
+    single<GPSRepository> {
+        DefaultGPSRepository(
+            gpsManager = get(),
+            analysedGPSSampleDao = get<AnalysedSamplesDatabase>().analysedGPSSampleDao
+        )
+    }
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
     single { SampleAnalyzer(get(), get(), get()) }
+    single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get()) }
     single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }

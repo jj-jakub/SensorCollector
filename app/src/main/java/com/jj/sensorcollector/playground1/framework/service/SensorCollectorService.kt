@@ -7,11 +7,13 @@ import androidx.lifecycle.LifecycleService
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.services.NOTIFICATION_SERVICE_ID
 import com.jj.sensorcollector.playground1.data.SampleAnalyzer
+import com.jj.sensorcollector.playground1.domain.samples.gps.GPSSampleAnalyzer
 import org.koin.android.ext.android.inject
 
 class SensorCollectorService : LifecycleService() {
 
     private val sampleAnalyzer: SampleAnalyzer by inject()
+    private val gpsSampleAnalyzer: GPSSampleAnalyzer by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
 
     override fun onCreate() {
@@ -24,6 +26,7 @@ class SensorCollectorService : LifecycleService() {
         when (intent?.action) {
             ServiceAction.START_COLLECTING_ACCELEROMETER.action -> onStartCollectingAccelerometer()
             ServiceAction.STOP_COLLECTING_ACCELEROMETER.action -> onStopCollectingAccelerometer()
+            ServiceAction.START_COLLECTING_GPS.action -> onStartCollectingGPS()
         }
         return START_STICKY
     }
@@ -36,12 +39,17 @@ class SensorCollectorService : LifecycleService() {
         sampleAnalyzer.stopAnalysis()
     }
 
+    private fun onStartCollectingGPS() {
+        gpsSampleAnalyzer.startAnalysis()
+    }
+
     companion object {
         private const val TAG = "SensorCollectorService"
 
         sealed class ServiceAction(val action: String) {
             object START_COLLECTING_ACCELEROMETER : ServiceAction("START_COLLECTING_ACCELEROMETER")
             object STOP_COLLECTING_ACCELEROMETER : ServiceAction("STOP_COLLECTING_ACCELEROMETER")
+            object START_COLLECTING_GPS : ServiceAction("START_COLLECTING_GPS")
         }
 
         fun startCollectingAccelerometer(context: Context) {
@@ -50,6 +58,10 @@ class SensorCollectorService : LifecycleService() {
 
         fun stopCollectingAccelerometer(context: Context) {
             start(context, ServiceAction.STOP_COLLECTING_ACCELEROMETER)
+        }
+
+        fun startCollectingGPS(context: Context) {
+            start(context, ServiceAction.START_COLLECTING_GPS)
         }
 
         private fun start(context: Context, serviceAction: ServiceAction) {

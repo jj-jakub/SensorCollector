@@ -33,6 +33,7 @@ class SensorCollectorApplication : Application() {
         koinLauncher.startKoin(this)
 //        globalSensorCollector.ping()
         analyzerStarter.startPermanentAccelerometerAnalysis()
+        analyzerStarter.startPermanentGPSAnalysis()
 //        sampleAnalyzer.startAnalysis()
 //        initializator
 //        CollectingDataService.startCollectingGPS(this)
