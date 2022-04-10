@@ -1,7 +1,6 @@
 package com.jj.sensorcollector.presentation.activities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jj.sensorcollector.data.text.VersionTextProvider
@@ -10,11 +9,8 @@ import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
@@ -33,51 +29,16 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        setClickListeners()
         setMainLabelText()
-//        startAccelerometerCollectingJob()
-//        startGyroscopeCollectingJob()
-//        startMagneticFieldCollectingJob()
+        startAccelerometerCollectingJob()
+        startGyroscopeCollectingJob()
+        startMagneticFieldCollectingJob()
         startGPSCollectingJob()
     }
 
-    private fun setClickListeners() {
-        with(activityMainBinding) {
-            startChart.setOnClickListener { lifecycleScope.launch { startNewChart() } }
-            stopChart.setOnClickListener { lifecycleScope.launch { stopLatestChart() } }
-        }
-    }
-
-    private val maxActiveAccelerometerCharts = 12
-    private val maxActiveGyroscopeCharts = 12
-    private val maxActiveMagneticFieldCharts = 12
-
-    private val activeChartsJobs = mutableListOf<Job>()
-    private val lock = Mutex()
-
-    private suspend fun startNewChart() {
-        lock.withLock {
-            if (activeChartsJobs.size < allChartLambdas.size - 1) {
-                val index = activeChartsJobs.size
-                activeChartsJobs.add(CoroutineScope(contextFactory()).launch {
-                    try {
-                        allChartLambdas[index].invoke()
-                    } catch (e: Exception) {
-                        Log.e("ABAB", "e: ", e)
-                    }
-                })
-            }
-        }
-    }
-
-    private suspend fun stopLatestChart() {
-        lock.withLock {
-            if (activeChartsJobs.isNotEmpty()) {
-                activeChartsJobs.last().cancel()
-                activeChartsJobs.removeLast()
-            }
-        }
-    }
+    private val activeAccelerometerCharts = 12
+    private val activeGyroscopeCharts = 12
+    private val activeMagneticFieldCharts = 12
 
     private fun startAccelerometerCollectingJob() {
         lifecycleScope.launch {
@@ -85,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 activityMainBinding.accSampleValue.text = it.analysedSampleString
             }
         }
-        accelerometerLambdas.subList(0, maxActiveAccelerometerCharts).forEach {
+        accelerometerLambdas.subList(0, activeAccelerometerCharts).forEach {
             CoroutineScope(contextFactory()).launch {
                 it.invoke()
             }
@@ -100,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        gyroscopeLambdas.subList(0, maxActiveGyroscopeCharts).forEach {
+        gyroscopeLambdas.subList(0, activeGyroscopeCharts).forEach {
             CoroutineScope(contextFactory()).launch {
                 it.invoke()
             }
@@ -115,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        magneticFieldLambdas.subList(0, maxActiveMagneticFieldCharts).forEach {
+        magneticFieldLambdas.subList(0, activeMagneticFieldCharts).forEach {
             CoroutineScope(contextFactory()).launch {
                 it.invoke()
             }
@@ -351,6 +312,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     )
-
-    private val allChartLambdas = accelerometerLambdas + gyroscopeLambdas + magneticFieldLambdas
 }
