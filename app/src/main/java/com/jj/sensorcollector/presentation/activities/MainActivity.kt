@@ -1,12 +1,6 @@
 package com.jj.sensorcollector.presentation.activities
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jj.sensorcollector.data.text.VersionTextProvider
@@ -15,10 +9,8 @@ import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
@@ -41,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         startAccelerometerCollectingJob()
         startGyroscopeCollectingJob()
         startMagneticFieldCollectingJob()
+        startGPSCollectingJob()
     }
 
     private val activeAccelerometerCharts = 12
@@ -86,6 +79,19 @@ class MainActivity : AppCompatActivity() {
         magneticFieldLambdas.subList(0, activeMagneticFieldCharts).forEach {
             CoroutineScope(contextFactory()).launch {
                 it.invoke()
+            }
+        }
+    }
+
+    private fun startGPSCollectingJob() {
+        lifecycleScope.launch {
+            viewModel.gpsSamples.collect {
+                if (it is SensorData.GPSSample) {
+                    activityMainBinding.gpsSampleValue.text = "Lat: ${it.latitude}, Lng: ${it.longitude}"
+                }
+                if (it is SensorData.Error) {
+                    activityMainBinding.gpsSampleValue.text = "${it.e?.localizedMessage}"
+                }
             }
         }
     }

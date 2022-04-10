@@ -4,6 +4,7 @@ import android.text.Spannable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
+import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
+    private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<Spannable>
 ) : ViewModel() {
 
@@ -30,10 +32,14 @@ class SensorsDataViewModel(
     private val _magneticFieldSamples = BufferedMutableSharedFlow<SensorData>()
     val magneticFieldSamples = _magneticFieldSamples.asSharedFlow()
 
+    private val _gpsSamples = BufferedMutableSharedFlow<SensorData>()
+    val gpsSamples = _gpsSamples.asSharedFlow()
+
     init {
         observeAccelerometerSamples()
         observeGyroscopeSamples()
         observeMagneticFieldSamples()
+        observeGPSSamples()
     }
 
     private fun observeAccelerometerSamples() {
@@ -68,6 +74,16 @@ class SensorsDataViewModel(
         viewModelScope.launch {
             sensorsRepository.collectMagneticFieldSamples().collect {
                 if (it is SensorData.MagneticFieldSample) _magneticFieldSamples.tryEmit(it)
+            }
+        }
+    }
+
+    private fun observeGPSSamples() {
+        viewModelScope.launch {
+            gpsRepository.collectGPSSamples().collect {
+                if (it is SensorData.GPSSample || it is SensorData.Error) {
+                    _gpsSamples.tryEmit(it)
+                }
             }
         }
     }

@@ -32,6 +32,7 @@ import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerAPI
 import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
 import com.jj.sensorcollector.playground1.data.managers.DefaultScreenStateCollector
 import com.jj.sensorcollector.playground1.data.managers.DefaultSoundManager
+import com.jj.sensorcollector.playground1.data.repository.DefaultGPSRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultSensorsRepository
@@ -41,6 +42,7 @@ import com.jj.sensorcollector.playground1.domain.repository.AccelerometerReposit
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
+import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
@@ -97,6 +99,12 @@ val mainModule = module {
         )
     }
 
+    single<com.jj.sensorcollector.playground1.domain.managers.GPSManager> {
+        com.jj.sensorcollector.playground1.framework.data.managers.AndroidGPSManager(
+            androidContext()
+        )
+    }
+
     single<TimeProvider> { DefaultTimeProvider() }
     single<AccThresholdAnalyzer> { AccelerometerThresholdAnalyzer(get()) }
     single<AccelerometerRepository> {
@@ -109,6 +117,7 @@ val mainModule = module {
     single<GyroscopeRepository> { DefaultGyroscopeRepository(get()) }
     single<MagneticFieldRepository> { DefaultMagneticFieldRepository(get()) }
 
+    single<GPSRepository> { DefaultGPSRepository(get()) }
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
     single { SampleAnalyzer(get(), get(), get()) }
     single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
@@ -119,5 +128,5 @@ val mainModule = module {
     single<AccelerometerAPI> { DefaultAccelerometerAPI() }
 
     single<TextCreator<Spannable>> { AndroidTextCreator() }
-    viewModel { SensorsDataViewModel(get(), get()) }
+    viewModel { SensorsDataViewModel(get(), get(), get()) }
 }
