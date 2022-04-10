@@ -8,7 +8,7 @@ import com.jj.sensorcollector.domain.csv.CSVFileCreator
 import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.playground1.data.Initializator
-import com.jj.sensorcollector.playground1.data.SampleAnalyzer
+import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ class SensorCollectorApplication : Application() {
     private val samplesRepository: SamplesRepository by inject()
     private val globalEventsRepository: GlobalEventsRepository by inject()
     private val csvFileCreator: CSVFileCreator by inject()
-    private val sampleAnalyzer: SampleAnalyzer by inject()
+    private val accelerometerSampleAnalyzer: AccelerometerSampleAnalyzer by inject()
     private val initializator: Initializator by inject()
     private val analyzerStarter: AnalyzerStarter by inject()
 

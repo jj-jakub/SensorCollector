@@ -26,7 +26,7 @@ import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidAnalyzerStarter
 import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRepository
 import com.jj.sensorcollector.playground1.data.Initializator
-import com.jj.sensorcollector.playground1.data.SampleAnalyzer
+import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.data.samples.accelerometer.AccelerometerThresholdAnalyzer
 import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerAPI
 import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
@@ -126,7 +126,7 @@ val mainModule = module {
         )
     }
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
-    single { SampleAnalyzer(get(), get(), get()) }
+    single { AccelerometerSampleAnalyzer(get(), get(), get()) }
     single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get()) }
     single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }

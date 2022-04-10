@@ -11,7 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SampleAnalyzer(
+class AccelerometerSampleAnalyzer(
     private val sensorsRepository: SensorsRepository,
     private val accThresholdAnalyzer: AccThresholdAnalyzer,
     private val timeProvider: TimeProvider
