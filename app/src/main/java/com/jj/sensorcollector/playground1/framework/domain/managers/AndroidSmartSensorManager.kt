@@ -15,7 +15,7 @@ abstract class AndroidSmartSensorManager(
     private val context: Context,
     private val sensorType: Int,
     scope: CoroutineScope
-) : SmartSensorManager(sensorType) {
+) : SmartSensorManager() {
 
     init {
         Log.d("ABABX", "${hashCode()} init, context: $context")
