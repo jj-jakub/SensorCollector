@@ -1,5 +1,6 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
+import com.jj.sensorcollector.framework.utils.shouldStartNewJob
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
@@ -19,11 +20,13 @@ class DefaultGPSSampleAnalyzer(
     private var collectorJob: Job? = null
 
     override fun startAnalysis() {
-        collectorJob = CoroutineScope(Dispatchers.IO).launch {
-            // Consider it to have independent collector that runs forever
-            gpsRepository.collectGPSSamples().collect {
-                if (it is SensorData.GPSSample) {
-                    onSampleAvailable(it)
+        if (collectorJob.shouldStartNewJob()) {
+            collectorJob = CoroutineScope(Dispatchers.IO).launch {
+                // Consider it to have independent collector that runs forever
+                gpsRepository.collectGPSSamples().collect {
+                    if (it is SensorData.GPSSample) {
+                        onSampleAvailable(it)
+                    }
                 }
             }
         }

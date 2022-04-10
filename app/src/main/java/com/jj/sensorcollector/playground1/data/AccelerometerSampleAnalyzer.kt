@@ -1,7 +1,8 @@
 package com.jj.sensorcollector.playground1.data
 
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensorcollector.framework.utils.shouldStartNewJob
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
@@ -20,10 +21,12 @@ class AccelerometerSampleAnalyzer(
     private var collectorJob: Job? = null
 
     fun startAnalysis() {
-        collectorJob = CoroutineScope(Dispatchers.IO).launch {
-            // Consider it to have independent collector that runs forever
-            sensorsRepository.collectRawAccelerometerSamples().collect {
-                onSampleAvailable(it)
+        if (collectorJob.shouldStartNewJob()) {
+            collectorJob = CoroutineScope(Dispatchers.IO).launch {
+                // Consider it to have independent collector that runs forever
+                sensorsRepository.collectRawAccelerometerSamples().collect {
+                    onSampleAvailable(it)
+                }
             }
         }
     }
