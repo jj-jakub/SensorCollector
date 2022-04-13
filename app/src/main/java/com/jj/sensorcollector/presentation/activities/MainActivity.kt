@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         setMainLabelText()
-        startAccelerometerCollectingJob()
-        startGyroscopeCollectingJob()
-        startMagneticFieldCollectingJob()
+//        startAccelerometerCollectingJob()
+//        startGyroscopeCollectingJob()
+//        startMagneticFieldCollectingJob()
         startGPSCollectingJob()
     }
 

@@ -37,6 +37,7 @@ import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeReposi
 import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultSensorsRepository
 import com.jj.sensorcollector.playground1.data.samples.gps.DefaultGPSSampleAnalyzer
+import com.jj.sensorcollector.playground1.data.server.DefaultRequestDispatcher
 import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
@@ -49,11 +50,18 @@ import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldReposit
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.sensorcollector.playground1.domain.samples.gps.GPSSampleAnalyzer
+import com.jj.sensorcollector.playground1.domain.server.IPProvider
+import com.jj.sensorcollector.playground1.domain.server.ServerStarter
+import com.jj.sensorcollector.playground1.domain.server.requests.RequestDispatcher
+import com.jj.sensorcollector.playground1.domain.server.requests.RequestReceiver
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidGyroscopeManager
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidMagneticFieldManager
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
+import com.jj.sensorcollector.playground1.framework.server.AndroidIPProvider
+import com.jj.sensorcollector.playground1.framework.server.KtorServerStarter
+import com.jj.sensorcollector.playground1.framework.server.requests.KtorRequestReceiver
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidTextCreator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -137,4 +145,9 @@ val mainModule = module {
 
     single<TextCreator<Spannable>> { AndroidTextCreator() }
     viewModel { SensorsDataViewModel(get(), get(), get()) }
+
+    single<IPProvider> { AndroidIPProvider(androidContext()) }
+    single<RequestDispatcher> { DefaultRequestDispatcher() }
+    single<RequestReceiver> { KtorRequestReceiver(get()) }
+    single<ServerStarter> { KtorServerStarter(get(), get()) }
 }
