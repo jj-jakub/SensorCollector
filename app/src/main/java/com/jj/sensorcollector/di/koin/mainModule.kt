@@ -44,6 +44,7 @@ import com.jj.sensorcollector.playground1.domain.repository.AccelerometerReposit
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
+import com.jj.sensorcollector.playground1.domain.managers.VibrationManager
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
@@ -58,6 +59,7 @@ import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidGyroscopeManager
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidMagneticFieldManager
+import com.jj.sensorcollector.playground1.framework.data.managers.AndroidVibrationManager
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import com.jj.sensorcollector.playground1.framework.server.AndroidIPProvider
 import com.jj.sensorcollector.playground1.framework.server.KtorServerStarter
@@ -147,7 +149,9 @@ val mainModule = module {
     viewModel { SensorsDataViewModel(get(), get(), get()) }
 
     single<IPProvider> { AndroidIPProvider(androidContext()) }
-    single<RequestDispatcher> { DefaultRequestDispatcher() }
+    single<RequestDispatcher> { DefaultRequestDispatcher(get()) }
     single<RequestReceiver> { KtorRequestReceiver(get()) }
     single<ServerStarter> { KtorServerStarter(get(), get()) }
+
+    single<VibrationManager> { AndroidVibrationManager(get()) }
 }
