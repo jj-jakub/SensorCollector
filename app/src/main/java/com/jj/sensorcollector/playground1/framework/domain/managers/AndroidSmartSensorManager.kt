@@ -29,14 +29,14 @@ abstract class AndroidSmartSensorManager(
 
     override fun onActive() {
         super.onActive()
-        if (sensorManager == null) initializeSensorManager()
+        if (sensorManager == null || sensor == null) initializeSensorManager()
         sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
         Log.d("ABABX", "listener for sensor $sensorType registered")
     }
 
     override fun onInactive() {
         super.onInactive()
-        if (sensorManager == null) initializeSensorManager()
+        if (sensorManager == null || sensor == null) initializeSensorManager()
         sensorManager?.unregisterListener(sensorListener, sensor)
         Log.d("ABABX", "listener for sensor $sensorType unregistered")
     }
