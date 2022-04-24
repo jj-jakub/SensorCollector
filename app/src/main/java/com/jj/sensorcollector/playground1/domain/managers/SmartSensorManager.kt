@@ -23,8 +23,10 @@ abstract class SmartSensorManager : ISensorManager {
     protected suspend fun start() {
         sensorSamples.subscriptionCount.actdisact2(
             onActive = {
-                onActive()
-                isActiveState.value = true
+                val registeredSuccessfully = onActive()
+                if (registeredSuccessfully) {
+                    isActiveState.value = true
+                }
             },
             onInActive = {
                 isActiveState.value = false
@@ -58,10 +60,10 @@ abstract class SmartSensorManager : ISensorManager {
             this@actdisact2
                 .onEach { count ->
                     val hasSubscribers = count > 0
-                    if (hasSubscribers && !isActiveState.value) {
-                        onActive()
-                    }
-                    else onInActive()
+//                    if (hasSubscribers) {
+//                        if (!isActiveState.value) onActive() // TODO Which one is correct?
+                    if (hasSubscribers && !isActiveState.value) onActive()
+                     else onInActive()
                 }.launchIn(this)
         }
     }

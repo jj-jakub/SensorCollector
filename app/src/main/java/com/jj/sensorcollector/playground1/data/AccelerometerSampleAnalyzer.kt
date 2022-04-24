@@ -10,6 +10,7 @@ import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -28,6 +29,19 @@ class AccelerometerSampleAnalyzer(
                 // Consider it to have independent collector that runs forever
                 sensorsRepository.collectRawAccelerometerSamples().collect {
                     onSampleAvailable(it)
+                }
+            }
+
+            CoroutineScope(Dispatchers.IO).launch {
+                while (true) {
+                    Log.d("ABABC", "restarting... onActive should be called soon")
+                    collectorJob = CoroutineScope(Dispatchers.IO).launch {
+                        // Consider it to have independent collector that runs forever
+                        sensorsRepository.collectRawAccelerometerSamples().collect {
+                            onSampleAvailable(it)
+                        }
+                    }
+                    delay(2000L)
                 }
             }
         }
@@ -60,7 +74,7 @@ class AccelerometerSampleAnalyzer(
         handleAnalysisError(analysisFailure)
 
         if (sensorData.errorType is SensorData.ErrorType.InitializationFailure) {
-            collectorJob?.cancel()
+//            collectorJob?.cancel()
         }
     }
 
