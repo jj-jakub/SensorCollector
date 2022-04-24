@@ -48,19 +48,21 @@ class AndroidGPSManager(
     }
 
     @SuppressLint("MissingPermission")
-    override fun onActive() {
+    override suspend fun onActive(): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        scope.launch {
-            withContext(Dispatchers.Main) {
-                try {
+        var registered: Boolean
+        withContext(Dispatchers.Main) {
+                registered = try {
                     locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
+                    true
                 } catch (e: Exception) {
                     val error = SensorData.Error(SensorData.ErrorType.InitializationFailure(
                         "Error occurred during GPS listener registration"), e)
                     sensorSamples.tryEmit(error)
+                    false
                 }
             }
-        }
+        return registered
     }
 
     override fun onInactive() {

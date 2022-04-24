@@ -70,6 +70,7 @@ class AccelerometerSampleAnalyzer(
     }
 
     private fun handleAnalysisError(analysisError: AnalysedSample.Error) {
+        Log.d("ABABC", "analysisError: ${analysisError.errorCause}")
         // TODO Save and Handle analysis errors!!!
     }
 }

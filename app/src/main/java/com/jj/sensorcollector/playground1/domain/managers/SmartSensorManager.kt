@@ -21,7 +21,7 @@ abstract class SmartSensorManager : ISensorManager {
     // Call from child class after it is initialized to avoid null values being passed from constructor to
     // onInactive and onActive methods
     protected suspend fun start() {
-        sensorSamples.subscriptionCount.actdisact(
+        sensorSamples.subscriptionCount.actdisact2(
             onActive = {
                 onActive()
                 isActiveState.value = true
@@ -36,10 +36,7 @@ abstract class SmartSensorManager : ISensorManager {
     override fun collectRawSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
     override fun collectIsActiveState(): Flow<Boolean> = isActiveState.asStateFlow()
 
-    protected open fun onActive() {
-        /* no-op */
-    }
-
+    protected abstract suspend fun onActive(): Boolean
 
     protected open fun onInactive() {
         /* no-op */
@@ -51,6 +48,19 @@ abstract class SmartSensorManager : ISensorManager {
                 .distinctUntilChanged()
                 .onEach { isActive ->
                     if (isActive) onActive()
+                    else onInActive()
+                }.launchIn(this)
+        }
+    }
+
+    private suspend fun StateFlow<Int>.actdisact2(onActive: suspend () -> Unit, onInActive: () -> Unit) {
+        coroutineScope {
+            this@actdisact2
+                .onEach { count ->
+                    val hasSubscribers = count > 0
+                    if (hasSubscribers && !isActiveState.value) {
+                        onActive()
+                    }
                     else onInActive()
                 }.launchIn(this)
         }

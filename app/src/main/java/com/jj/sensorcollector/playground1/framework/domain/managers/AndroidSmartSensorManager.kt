@@ -27,8 +27,8 @@ abstract class AndroidSmartSensorManager(
     private var sensorManager: SensorManager? = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
     private var sensor: Sensor? = sensorManager?.getDefaultSensor(sensorType)
 
-    // TODO Return registration status
-    override fun onActive() {
+    override suspend fun onActive(): Boolean {
+        Log.d("ABABC", "onActive, starting sensor listener, type $sensorType")
         if (sensorManager == null || sensor == null) initializeSensorManager()
         val registered = sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
         if (registered != true) {
@@ -36,10 +36,12 @@ abstract class AndroidSmartSensorManager(
         } else {
             Log.d("ABABX", "listener for sensor $sensorType registered")
         }
+        return registered == true
     }
 
     override fun onInactive() {
         super.onInactive()
+        Log.d("ABABC", "onInactive, stopping sensor listener, type $sensorType")
         if (sensorManager == null || sensor == null) initializeSensorManager()
         sensorManager?.unregisterListener(sensorListener, sensor)
         Log.d("ABABX", "listener for sensor $sensorType unregistered")
