@@ -4,6 +4,7 @@ import android.text.Spannable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
+import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
@@ -22,6 +23,7 @@ class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
     private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<Spannable>,
+    private val analyzerStarter: AnalyzerStarter,
     systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
 
@@ -44,6 +46,14 @@ class SensorsDataViewModel(
         observeGyroscopeSamples()
         observeMagneticFieldSamples()
         observeGPSSamples()
+    }
+
+    fun onStartAccelerometerClick() {
+        analyzerStarter.startPermanentAccelerometerAnalysis()
+    }
+
+    fun onStopAccelerometerClick() {
+        analyzerStarter.stopPermanentAccelerometerAnalysis()
     }
 
     private fun observeAccelerometerSamples() {

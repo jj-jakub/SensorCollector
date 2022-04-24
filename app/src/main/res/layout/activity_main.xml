@@ -379,4 +379,24 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/startAccButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Start acc"
+        app:layout_constraintEnd_toEndOf="@+id/accCollectionState"
+        app:layout_constraintStart_toStartOf="@+id/accCollectionState"
+        app:layout_constraintTop_toBottomOf="@+id/accCollectionState" />
+
+    <Button
+        android:id="@+id/stopAccButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Stop acc"
+        app:layout_constraintEnd_toEndOf="@+id/accCollectionValue"
+        app:layout_constraintStart_toStartOf="@+id/accCollectionValue"
+        app:layout_constraintTop_toBottomOf="@+id/accCollectionValue" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,11 +34,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         setMainLabelText()
-//        startAccelerometerCollectingJob()
+        startAccelerometerCollectingJob()
 //        startGyroscopeCollectingJob()
 //        startMagneticFieldCollectingJob()
         startAccelerometerCollectingStateJob()
         startGPSCollectingJob()
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
+        with(activityMainBinding) {
+            startAccButton.setOnClickListener {
+                viewModel.onStartAccelerometerClick()
+            }
+            stopAccButton.setOnClickListener {
+                viewModel.onStopAccelerometerClick()
+            }
+        }
     }
 
     private fun startAccelerometerCollectingStateJob() {
@@ -56,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val activeAccelerometerCharts = 12
+    private val activeAccelerometerCharts = 1//12
     private val activeGyroscopeCharts = 12
     private val activeMagneticFieldCharts = 12
 
