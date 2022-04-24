@@ -4,6 +4,7 @@ import android.text.Spannable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
+import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
     private val gpsRepository: GPSRepository,
-    private val textCreator: TextCreator<Spannable>
+    private val textCreator: TextCreator<Spannable>,
+    systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
 
     private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<AndroidAnalysedAccUIData>()
@@ -34,6 +36,8 @@ class SensorsDataViewModel(
 
     private val _gpsSamples = BufferedMutableSharedFlow<SensorData>()
     val gpsSamples = _gpsSamples.asSharedFlow()
+
+    val accelerometerCollectionState = systemStateMonitor.accelerometerCollectionState
 
     init {
         observeAccelerometerSamples()

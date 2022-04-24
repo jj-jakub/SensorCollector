@@ -1,12 +1,16 @@
 package com.jj.sensorcollector.presentation.activities
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.databinding.ActivityMainBinding
+import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
+import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -33,7 +37,23 @@ class MainActivity : AppCompatActivity() {
 //        startAccelerometerCollectingJob()
 //        startGyroscopeCollectingJob()
 //        startMagneticFieldCollectingJob()
+        startAccelerometerCollectingStateJob()
         startGPSCollectingJob()
+    }
+
+    private fun startAccelerometerCollectingStateJob() {
+        lifecycleScope.launch {
+            viewModel.accelerometerCollectionState.collect {
+                val labelTextAndColor = when(it) {
+                    SystemModuleState.Off -> "Off" to DomainColor.Red
+                    SystemModuleState.Starting -> "Starting" to DomainColor.Yellow
+                    SystemModuleState.Unknown -> "Unknown" to DomainColor.Yellow
+                    SystemModuleState.Working -> "Working" to DomainColor.Green
+                }
+                activityMainBinding.accCollectionValue.text = labelTextAndColor.first
+                activityMainBinding.accCollectionValue.setBackgroundColor(labelTextAndColor.second.toTextColor())
+            }
+        }
     }
 
     private val activeAccelerometerCharts = 12

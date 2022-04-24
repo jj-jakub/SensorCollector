@@ -10,6 +10,7 @@ import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
+import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.server.ServerStarter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ class SensorCollectorApplication : Application() {
     private val initializator: Initializator by inject()
     private val analyzerStarter: AnalyzerStarter by inject()
     private val serverStarter: ServerStarter by inject()
+    private val systemStateMonitor: SystemStateMonitor by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -37,6 +39,7 @@ class SensorCollectorApplication : Application() {
         analyzerStarter.startPermanentAccelerometerAnalysis()
         analyzerStarter.startPermanentGPSAnalysis()
         serverStarter.startServer(8080)
+        systemStateMonitor.startMonitoring()
 //        sampleAnalyzer.startAnalysis()
 //        initializator
 //        CollectingDataService.startCollectingGPS(this)

@@ -179,6 +179,27 @@
         app:layout_constraintTop_toBottomOf="@id/gyroscopeDataChart8" />
 
     <TextView
+        android:id="@+id/accCollectionState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="Accelerometer state:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mainLabel" />
+
+    <TextView
+        android:id="@+id/accCollectionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="Acc state val:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/accCollectionState"
+        app:layout_constraintTop_toTopOf="@+id/accCollectionState" />
+
+    <TextView
         android:id="@+id/mainLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

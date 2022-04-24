@@ -32,6 +32,8 @@ import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerAPI
 import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
 import com.jj.sensorcollector.playground1.data.managers.DefaultScreenStateCollector
 import com.jj.sensorcollector.playground1.data.managers.DefaultSoundManager
+import com.jj.sensorcollector.playground1.data.monitors.DefaultAccelerometerStateMonitor
+import com.jj.sensorcollector.playground1.data.monitors.DefaultSystemStateMonitor
 import com.jj.sensorcollector.playground1.data.repository.DefaultGPSRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultMagneticFieldRepository
@@ -45,6 +47,8 @@ import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
 import com.jj.sensorcollector.playground1.domain.managers.VibrationManager
+import com.jj.sensorcollector.playground1.domain.monitors.AccelerometerStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
@@ -146,7 +150,7 @@ val mainModule = module {
     single<AccelerometerAPI> { DefaultAccelerometerAPI() }
 
     single<TextCreator<Spannable>> { AndroidTextCreator() }
-    viewModel { SensorsDataViewModel(get(), get(), get()) }
+    viewModel { SensorsDataViewModel(get(), get(), get(), get()) }
 
     single<IPProvider> { AndroidIPProvider(androidContext()) }
     single<RequestDispatcher> { DefaultRequestDispatcher(get()) }
@@ -154,4 +158,7 @@ val mainModule = module {
     single<ServerStarter> { KtorServerStarter(get(), get()) }
 
     single<VibrationManager> { AndroidVibrationManager(get()) }
+
+    single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get()) }
+    single<SystemStateMonitor> { DefaultSystemStateMonitor(get()) }
 }
