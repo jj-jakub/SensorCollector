@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface ISensorManager {
 
     fun collectRawSensorSamples(): Flow<SensorData>
+    fun collectIsActiveState(): Flow<Boolean>
 }

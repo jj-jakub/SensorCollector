@@ -159,6 +159,6 @@ val mainModule = module {
 
     single<VibrationManager> { AndroidVibrationManager(get()) }
 
-    single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get()) }
+    single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get(), get()) }
     single<SystemStateMonitor> { DefaultSystemStateMonitor(get()) }
 }

@@ -4,8 +4,10 @@ import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -14,19 +16,25 @@ import kotlinx.coroutines.flow.onEach
 abstract class SmartSensorManager : ISensorManager {
 
     protected val sensorSamples = BufferedMutableSharedFlow<SensorData>()
+    private val isActiveState = MutableStateFlow(false)
 
     // Call from child class after it is initialized to avoid null values being passed from constructor to
     // onInactive and onActive methods
     protected suspend fun start() {
-            sensorSamples.subscriptionCount.actdisact(
-                onActive = { onActive() },
-                onInActive = {
-                    onInactive()
-                }
-            )
+        sensorSamples.subscriptionCount.actdisact(
+            onActive = {
+                onActive()
+                isActiveState.value = true
+            },
+            onInActive = {
+                isActiveState.value = false
+                onInactive()
+            }
+        )
     }
 
     override fun collectRawSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
+    override fun collectIsActiveState(): Flow<Boolean> = isActiveState.asStateFlow()
 
     protected open fun onActive() {
         /* no-op */
