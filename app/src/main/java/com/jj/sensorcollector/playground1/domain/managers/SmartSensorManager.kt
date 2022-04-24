@@ -40,6 +40,7 @@ abstract class SmartSensorManager : ISensorManager {
         /* no-op */
     }
 
+
     protected open fun onInactive() {
         /* no-op */
     }

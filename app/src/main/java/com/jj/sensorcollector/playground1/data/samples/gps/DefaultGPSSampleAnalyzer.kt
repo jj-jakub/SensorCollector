@@ -40,7 +40,7 @@ class DefaultGPSSampleAnalyzer(
     private suspend fun onSampleAvailable(sensorData: SensorData) {
         val analysedSample = when (sensorData) {
             is SensorData.GPSSample -> analyze(sensorData)
-            is SensorData.Error -> AnalysedSample.Error(sensorData, sensorData.msg, timeProvider.getNowMillis())
+            is SensorData.Error -> AnalysedSample.Error(sensorData, sensorData.errorType.errorCause, timeProvider.getNowMillis())
             else -> AnalysedSample.Error(sensorData, "WrongSample", timeProvider.getNowMillis())
         }
 

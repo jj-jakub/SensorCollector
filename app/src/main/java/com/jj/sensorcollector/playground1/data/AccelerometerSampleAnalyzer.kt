@@ -1,5 +1,6 @@
 package com.jj.sensorcollector.playground1.data
 
+import android.util.Log
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
@@ -22,6 +23,7 @@ class AccelerometerSampleAnalyzer(
 
     fun startAnalysis() {
         if (collectorJob.shouldStartNewJob()) {
+            Log.d("ABABC", "Starting new collector job")
             collectorJob = CoroutineScope(Dispatchers.IO).launch {
                 // Consider it to have independent collector that runs forever
                 sensorsRepository.collectRawAccelerometerSamples().collect {
@@ -37,16 +39,37 @@ class AccelerometerSampleAnalyzer(
     }
 
     private suspend fun onSampleAvailable(sensorData: SensorData) {
-        val analysedSample = when (sensorData) {
-            is SensorData.AccSample -> accThresholdAnalyzer.analyze(sensorData)
-            is SensorData.Error -> AnalysedSample.Error(sensorData, sensorData.msg, timeProvider.getNowMillis())
-            else -> AnalysedSample.Error(sensorData, "WrongSample", timeProvider.getNowMillis())
+        when (sensorData) {
+            is SensorData.AccSample -> analyseSample(sensorData)
+            is SensorData.Error -> handleSensorError(sensorData)
+            else -> handleWrongSample(sensorData)
         }
+    }
 
-        if (analysedSample is AnalysedSample.AnalysedAccSample)
-            sensorsRepository.insertAnalysedAccelerometerSample(analysedSample)
-        else {
-            // TODO Handle analysis errors!!!
+    private suspend fun analyseSample(sensorData: SensorData.AccSample) {
+        val analysedSample = accThresholdAnalyzer.analyze(sensorData)
+        sensorsRepository.insertAnalysedAccelerometerSample(analysedSample)
+    }
+
+    private fun handleSensorError(sensorData: SensorData.Error) {
+        val analysisFailure = AnalysedSample.Error(
+            sensorData,
+            sensorData.errorType.errorCause,
+            timeProvider.getNowMillis()
+        )
+        handleAnalysisError(analysisFailure)
+
+        if (sensorData.errorType is SensorData.ErrorType.InitializationFailure) {
+            collectorJob?.cancel()
         }
+    }
+
+    private fun handleWrongSample(sensorData: SensorData) {
+        val analysisError = AnalysedSample.Error(sensorData, "WrongSample", timeProvider.getNowMillis())
+        handleAnalysisError(analysisError)
+    }
+
+    private fun handleAnalysisError(analysisError: AnalysedSample.Error) {
+        // TODO Save and Handle analysis errors!!!
     }
 }

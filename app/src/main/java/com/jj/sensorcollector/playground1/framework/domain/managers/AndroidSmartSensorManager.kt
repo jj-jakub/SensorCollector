@@ -27,11 +27,15 @@ abstract class AndroidSmartSensorManager(
     private var sensorManager: SensorManager? = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
     private var sensor: Sensor? = sensorManager?.getDefaultSensor(sensorType)
 
+    // TODO Return registration status
     override fun onActive() {
-        super.onActive()
         if (sensorManager == null || sensor == null) initializeSensorManager()
-        sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
-        Log.d("ABABX", "listener for sensor $sensorType registered")
+        val registered = sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
+        if (registered != true) {
+            onError("Failed to register listener")
+        } else {
+            Log.d("ABABX", "listener for sensor $sensorType registered")
+        }
     }
 
     override fun onInactive() {
@@ -46,9 +50,13 @@ abstract class AndroidSmartSensorManager(
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
         sensor = sensorManager?.getDefaultSensor(sensorType)
         if (sensorManager == null || sensor == null) {
-            val sensorData = SensorData.Error("Failed to initialize sensorManager", null)
-            sensorSamples.tryEmit(sensorData)
+            onError("Failed to initialize sensorManager")
         }
+    }
+
+    private fun onError(errorMessage: String) {
+        val sensorData = SensorData.Error(SensorData.ErrorType.InitializationFailure(errorMessage), null)
+        sensorSamples.tryEmit(sensorData)
     }
 
     protected abstract fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData

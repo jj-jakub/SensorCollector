@@ -55,7 +55,9 @@ class AndroidGPSManager(
                 try {
                     locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
                 } catch (e: Exception) {
-                    sensorSamples.tryEmit(SensorData.Error("Error occurred during GPS listener registration", e))
+                    val error = SensorData.Error(SensorData.ErrorType.InitializationFailure(
+                        "Error occurred during GPS listener registration"), e)
+                    sensorSamples.tryEmit(error)
                 }
             }
         }
