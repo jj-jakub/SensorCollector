@@ -9,6 +9,7 @@ import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class DefaultAccelerometerRepository(
@@ -20,7 +21,7 @@ class DefaultAccelerometerRepository(
     override fun collectRawAccelerometerSamples(): Flow<SensorData> = accelerometerManager.collectRawSensorSamples()
 
     override fun collectAnalysedAccelerometerSamples(): Flow<AnalysedSample.AnalysedAccSample> =
-        analysedAccelerometerSampleDao.getLatestAnalysedAccelerationSampleEntity()
+        analysedAccelerometerSampleDao.getLatestAnalysedAccelerationSampleEntity().filterNotNull()
             .map { entity -> entity.toAnalysedAccSample() }
 
 
