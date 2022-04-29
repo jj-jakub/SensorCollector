@@ -60,10 +60,10 @@ abstract class SmartSensorManager : ISensorManager {
             this@actdisact2
                 .onEach { count ->
                     val hasSubscribers = count > 0
-//                    if (hasSubscribers) {
-//                        if (!isActiveState.value) onActive() // TODO Which one is correct?
-                    if (hasSubscribers && !isActiveState.value) onActive()
-                     else onInActive()
+                    if (hasSubscribers) {
+                        if (!isActiveState.value) onActive()
+                    }
+                    else onInActive()
                 }.launchIn(this)
         }
     }
