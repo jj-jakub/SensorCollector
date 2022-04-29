@@ -31,19 +31,6 @@ class AccelerometerSampleAnalyzer(
                     onSampleAvailable(it)
                 }
             }
-
-            CoroutineScope(Dispatchers.IO).launch {
-                while (true) {
-                    Log.d("ABABC", "restarting... onActive should be called soon")
-                    collectorJob = CoroutineScope(Dispatchers.IO).launch {
-                        // Consider it to have independent collector that runs forever
-                        sensorsRepository.collectRawAccelerometerSamples().collect {
-                            onSampleAvailable(it)
-                        }
-                    }
-                    delay(2000L)
-                }
-            }
         }
     }
 

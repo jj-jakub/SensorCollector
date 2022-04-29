@@ -24,8 +24,8 @@ abstract class AndroidSmartSensorManager(
         }
     }
 
-    private var sensorManager: SensorManager? = null//context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
-    private var sensor: Sensor? = null//sensorManager?.getDefaultSensor(sensorType)
+    private var sensorManager: SensorManager? = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
+    private var sensor: Sensor? = sensorManager?.getDefaultSensor(sensorType)
 
     override suspend fun onActive(): Boolean {
         Log.d("ABABC", "onActive, starting sensor listener, type $sensorType")
@@ -49,7 +49,7 @@ abstract class AndroidSmartSensorManager(
 
     private fun initializeSensorManager() {
         Log.d("ABABX", "${hashCode()} SType: $sensorType, ctx: $context")
-        sensorManager = null//context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
+        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
         sensor = sensorManager?.getDefaultSensor(sensorType)
         if (sensorManager == null || sensor == null) {
             onError("Failed to initialize sensorManager")
