@@ -15,6 +15,7 @@ import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import java.lang.Exception
 
 
 class KtorServerStarter(
@@ -23,14 +24,19 @@ class KtorServerStarter(
 ) : ServerStarter {
 
     override fun startServer(port: Int) {
-        embeddedServer(Netty, port) {
-            install(ContentNegotiation) {
-                gson {}
-            }
-            registerRoutes()
-        }.start(wait = false)
+        try {
+            embeddedServer(Netty, port) {
+                install(ContentNegotiation) {
+                    gson {}
+                }
+                registerRoutes()
+            }.start(wait = false)
 
-        Log.d("ABABS", "My IP is: ${ipProvider.getIPAddress()}")
+            Log.d("ABABS", "My IP is: ${ipProvider.getIPAddress()}")
+        } catch (e: Exception) {
+            Log.e("ABAB", "Failed to start server")
+            // TODO Return status
+        }
     }
 
     private fun Application.registerRoutes() {
