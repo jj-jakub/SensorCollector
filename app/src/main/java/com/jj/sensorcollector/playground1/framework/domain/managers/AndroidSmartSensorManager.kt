@@ -24,46 +24,48 @@ abstract class AndroidSmartSensorManager(
         }
     }
 
-    private var sensorManager: SensorManager? = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
+    private var sensorManager: SensorManager? = getSensorManager()
     private var sensor: Sensor? = sensorManager?.getDefaultSensor(sensorType)
 
     override suspend fun onActive(): Boolean {
         Log.d("ABABC", "onActive, starting sensor listener, type $sensorType")
-        if (sensorManager == null || sensor == null) initializeSensorManager()
-        val registered = sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
-        if (registered != true) {
-            onError("Failed to register listener")
+        if (!sensorInitialized()) initializeSensorManager()
+        val registered = sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME) == true
+        if (!registered) {
+            onInitializationError("Failed to register listener")
         } else {
             Log.d("ABABX", "listener for sensor $sensorType registered")
         }
-        return registered == true
+        return registered
     }
 
     override fun onInactive() {
         super.onInactive()
         Log.d("ABABC", "onInactive, stopping sensor listener, type $sensorType")
-        if (sensorManager == null || sensor == null) initializeSensorManager()
+        if (!sensorInitialized()) initializeSensorManager()
         sensorManager?.unregisterListener(sensorListener, sensor)
         Log.d("ABABX", "listener for sensor $sensorType unregistered")
     }
 
     private fun initializeSensorManager() {
         Log.d("ABABX", "${hashCode()} SType: $sensorType, ctx: $context")
-        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
+        sensorManager = getSensorManager()
         sensor = sensorManager?.getDefaultSensor(sensorType)
-        if (sensorManager == null || sensor == null) {
-            onError("Failed to initialize sensorManager")
+        if (!sensorInitialized()) {
+            onInitializationError("Failed to initialize sensorManager")
         }
     }
 
-    private fun onError(errorMessage: String) {
+    private fun onInitializationError(errorMessage: String) {
         val sensorData = SensorData.Error(SensorData.ErrorType.InitializationFailure(errorMessage), null)
         sensorSamples.tryEmit(sensorData)
     }
 
-    protected abstract fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData
+    private fun getSensorManager() = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
 
-    open val sensorListener = object : SensorEventListener {
+    private fun sensorInitialized() = sensorManager != null && sensor != null
+
+    protected open val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(p0: SensorEvent?) {
             val sensorData = convertSensorEvent(p0)
             sensorSamples.tryEmit(sensorData)
@@ -73,4 +75,6 @@ abstract class AndroidSmartSensorManager(
             /* no-op */
         }
     }
+
+    protected abstract fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData
 }
