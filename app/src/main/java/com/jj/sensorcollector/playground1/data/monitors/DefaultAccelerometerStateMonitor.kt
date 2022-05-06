@@ -55,10 +55,10 @@ class DefaultAccelerometerStateMonitor(
                 monitoringJob
                 accelerometerManager.collectIsActiveState().collect { isActive ->
                     if (isActive) {
-                        _accelerometerCollectionState.emit(SystemModuleState.Working)
+                        changeCollectionState(SystemModuleState.Working)
                     } else {
                         timeSinceTurnedOff = timeProvider.getNowMillis()
-                        _accelerometerCollectionState.emit(SystemModuleState.Off)
+                        changeCollectionState(SystemModuleState.Off)
                     }
                 }
             }
@@ -71,17 +71,22 @@ class DefaultAccelerometerStateMonitor(
                 while (true) {
                     val currentTime = timeProvider.getNowMillis()
                     if (currentTime - timeSinceLastSample > MAX_INTERVAL_BETWEEN_SAMPLES) {
-                        _accelerometerCollectionState.emit(SystemModuleState.Off)
+                        changeCollectionState(SystemModuleState.Off)
                     } else {
                         // When collector is stopped manually, then Working state flickers because analyser
                         // Saves sample some time after collector had been stopped
                         if (timeProvider.getNowMillis() - timeSinceTurnedOff > MAX_INTERVAL_BETWEEN_SAMPLES) {
-                            _accelerometerCollectionState.emit(SystemModuleState.Working)
+                            changeCollectionState(SystemModuleState.Working)
                         }
                     }
                     delay(MAX_INTERVAL_BETWEEN_SAMPLES)
                 }
             }
         }
+    }
+
+    private suspend fun changeCollectionState(state: SystemModuleState) {
+        _accelerometerCollectionState.emit(state)
+        // Other logic
     }
 }
