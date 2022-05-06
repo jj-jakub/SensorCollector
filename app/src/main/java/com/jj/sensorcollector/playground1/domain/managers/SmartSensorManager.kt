@@ -36,7 +36,7 @@ abstract class SmartSensorManager : ISensorManager {
     }
 
     override fun collectRawSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
-    override fun collectIsActiveState(): Flow<Boolean> = isActiveState.asStateFlow()
+    override fun collectIsActiveState(): StateFlow<Boolean> = isActiveState.asStateFlow()
 
     protected abstract suspend fun onActive(): Boolean
 
