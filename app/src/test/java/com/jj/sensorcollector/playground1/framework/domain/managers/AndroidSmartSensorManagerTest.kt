@@ -82,9 +82,9 @@ class AndroidSmartSensorManagerTest {
         testCoroutineScope.runBlockingTest {
             setupContextMock(sensorManagerReturn = null)
             setupAndroidSmartSensorManager()
+            collectSamples()
 
             androidSmartSensorManager.collectRawSensorSamples().test {
-                collectSamples()
 
                 val sensorError = awaitItem()
                 assertTrue(sensorError is SensorData.Error)
@@ -104,23 +104,6 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 2) { context.getSystemService(Context.SENSOR_SERVICE) }
         assertEquals(1, activeCalls)
     }
-
-    @Test
-    fun `when initial sensor is null, then after collecting and reinitialization failure should emit error`() =
-        testCoroutineScope.runBlockingTest {
-            setupGetDefaultSensorAnswer(null)
-            setupAndroidSmartSensorManager()
-
-            androidSmartSensorManager.collectRawSensorSamples().test {
-                collectSamples()
-
-                val sensorError = awaitItem()
-                assertTrue(sensorError is SensorData.Error)
-                val errorType = (sensorError as SensorData.Error).errorType
-                assertTrue(errorType is SensorData.ErrorType.InitializationFailure)
-                cancelAndConsumeRemainingEvents()
-            }
-        }
 
     @Test
     fun `when initial sensorManager is null and reinitialization failed then isActiveState should remain false`() {
@@ -325,6 +308,24 @@ class AndroidSmartSensorManagerTest {
         assertTrue(androidSmartSensorManager.collectIsActiveState().value)
 
         verify(exactly = 0) { sensorManager.unregisterListener(any(), any<Sensor>()) }
+    }
+
+    @Test
+    fun `should not replay initialization failure event to second observer`() = runBlockingTest {
+        setupContextMock(sensorManagerReturn = null)
+        setupAndroidSmartSensorManager()
+
+        androidSmartSensorManager.collectRawSensorSamples().test {
+            val item = awaitItem()
+            assertTrue(item is SensorData.Error)
+            assertTrue((item as SensorData.Error).errorType is SensorData.ErrorType.InitializationFailure)
+        }
+
+        setupContextMock(sensorManagerReturn = sensorManager)
+
+        androidSmartSensorManager.collectRawSensorSamples().test {
+            expectNoEvents()
+        }
     }
 
     private fun collectSamples() =

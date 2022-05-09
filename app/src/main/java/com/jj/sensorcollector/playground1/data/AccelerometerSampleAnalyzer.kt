@@ -61,6 +61,7 @@ class AccelerometerSampleAnalyzer(
         handleAnalysisError(analysisFailure)
 
         if (sensorData.errorType is SensorData.ErrorType.InitializationFailure) {
+            Log.d("ABABC", "Init error")
             collectorJob?.cancel()
         }
     }
