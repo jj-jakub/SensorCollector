@@ -53,8 +53,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
 
     private fun startMonitoringJob() {
         if (monitoringJob.shouldStartNewJob()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                monitoringJob
+            monitoringJob = CoroutineScope(Dispatchers.IO).launch {
                 sensorManager.collectIsActiveState().collect { isActive ->
                     if (isActive) {
                         changeCollectionState(SystemModuleState.Working)
