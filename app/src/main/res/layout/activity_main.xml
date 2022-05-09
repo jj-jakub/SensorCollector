@@ -247,6 +247,24 @@
         tools:text="Gyr value" />
 
     <TextView
+        android:id="@+id/gyrCollectionState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Gyroscope state:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gyrSampleLabel" />
+
+    <TextView
+        android:id="@+id/gyrCollectionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gyr state val:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gyrCollectionState"
+        app:layout_constraintTop_toTopOf="@+id/gyrCollectionState" />
+
+    <TextView
         android:id="@+id/mfieldSampleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -255,6 +273,24 @@
         android:text="Magnetic field:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gyrSampleLabel" />
+
+    <TextView
+        android:id="@+id/mfieldCollectionState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="MField state:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mfieldSampleLabel" />
+
+    <TextView
+        android:id="@+id/mfieldCollectionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mfield state val:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mfieldCollectionState"
+        app:layout_constraintTop_toTopOf="@+id/mfieldCollectionState" />
 
     <TextView
         android:id="@+id/mfieldSampleValue"
@@ -284,6 +320,24 @@
         app:layout_constraintTop_toTopOf="@+id/gpsSampleLabel"
         tools:text="GPS value" />
 
+    <TextView
+        android:id="@+id/gpsCollectionState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="GPS state:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gpsSampleLabel" />
+
+    <TextView
+        android:id="@+id/gpsCollectionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS state val:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gpsCollectionState"
+        app:layout_constraintTop_toTopOf="@+id/gpsCollectionState" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -301,18 +355,18 @@
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
                 android:id="@+id/accelerometerDataChart9"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/gyroscopeDataChart9"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/magneticFieldDataChart9"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -322,18 +376,18 @@
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
                 android:id="@+id/accelerometerDataChart10"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/gyroscopeDataChart10"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/magneticFieldDataChart10"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -343,18 +397,18 @@
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
                 android:id="@+id/accelerometerDataChart11"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/gyroscopeDataChart11"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/magneticFieldDataChart11"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -364,18 +418,18 @@
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
                 android:id="@+id/accelerometerDataChart12"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/gyroscopeDataChart12"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
 
             <com.jj.sensorcollector.playground1.framework.presentation.charts.BaseThreeAxisLinearChart
                 android:id="@+id/magneticFieldDataChart12"
-                android:layout_width="100dp"
-                android:layout_height="45dp" />
+                android:layout_width="10dp"
+                android:layout_height="5dp" />
         </LinearLayout>
 
     </LinearLayout>

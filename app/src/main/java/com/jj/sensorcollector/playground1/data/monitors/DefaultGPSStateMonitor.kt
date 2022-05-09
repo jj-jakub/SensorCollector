@@ -21,6 +21,8 @@ class DefaultGPSStateMonitor(
     sensorManager = gpsManager, timeProvider = timeProvider
 ), GPSStateMonitor {
 
+    override val maxIntervalBetweenSamplesMillis: Long = 10 * 1000L
+
     override val sampleCollectionState: StateFlow<SystemModuleState>
         get() = super.sampleCollectionState
 

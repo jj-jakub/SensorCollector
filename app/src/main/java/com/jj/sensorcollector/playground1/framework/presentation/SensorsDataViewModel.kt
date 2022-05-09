@@ -15,6 +15,7 @@ import com.jj.sensorcollector.playground1.domain.ui.text.TextComponent
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
 import com.jj.sensorcollector.playground1.framework.domain.ui.samples.AndroidAnalysedAccUIData
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toDomainColor
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -40,6 +41,9 @@ class SensorsDataViewModel(
     val gpsSamples = _gpsSamples.asSharedFlow()
 
     val accelerometerCollectionState = systemStateMonitor.accelerometerCollectionState
+    val gyroscopeCollectionState = systemStateMonitor.gyroscopeCollectionState
+    val magneticFieldCollectionState = systemStateMonitor.magneticFieldCollectionState
+    val gpsCollectionState = systemStateMonitor.gpsCollectionState
 
     init {
         observeAccelerometerSamples()
@@ -78,6 +82,7 @@ class SensorsDataViewModel(
 
     private fun observeGyroscopeSamples() {
         viewModelScope.launch {
+            delay(5000L) // Debug
             sensorsRepository.collectGyroscopeSamples().collect {
                 if (it is SensorData.GyroscopeSample) _gyroscopeSamples.tryEmit(it)
             }
@@ -86,6 +91,7 @@ class SensorsDataViewModel(
 
     private fun observeMagneticFieldSamples() {
         viewModelScope.launch {
+            delay(10000L) // Debug
             sensorsRepository.collectMagneticFieldSamples().collect {
                 if (it is SensorData.MagneticFieldSample) _magneticFieldSamples.tryEmit(it)
             }

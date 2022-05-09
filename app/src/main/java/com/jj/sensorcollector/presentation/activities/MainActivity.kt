@@ -1,6 +1,5 @@
 package com.jj.sensorcollector.presentation.activities
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +12,7 @@ import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataView
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,12 +34,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         setMainLabelText()
-        startAccelerometerCollectingJob()
-//        startGyroscopeCollectingJob()
-//        startMagneticFieldCollectingJob()
-        startAccelerometerCollectingStateJob()
-        startGPSCollectingJob()
+        startJobs()
         setupClickListeners()
+    }
+
+    // TODO It should be in VM and passed as state (state values)
+    private fun startJobs() {
+        startAccelerometerCollectingJob()
+        startGyroscopeCollectingJob()
+        startMagneticFieldCollectingJob()
+        startGPSCollectingJob()
+
+        startAccelerometerCollectingStateJob()
+        startGyroscopeCollectingStateJob()
+        startMagneticFieldCollectingStateJob()
+        startGPSCollectingStateJob()
     }
 
     private fun setupClickListeners() {
@@ -56,21 +65,55 @@ class MainActivity : AppCompatActivity() {
     private fun startAccelerometerCollectingStateJob() {
         lifecycleScope.launch {
             viewModel.accelerometerCollectionState.collect {
-                val labelTextAndColor = when(it) {
-                    SystemModuleState.Off -> "Off" to DomainColor.Red
-                    SystemModuleState.Starting -> "Starting" to DomainColor.Yellow
-                    SystemModuleState.Unknown -> "Unknown" to DomainColor.Yellow
-                    SystemModuleState.Working -> "Working" to DomainColor.Green
-                }
+                val labelTextAndColor = getTextForSystemModuleState(it)
                 activityMainBinding.accCollectionValue.text = labelTextAndColor.first
                 activityMainBinding.accCollectionValue.setBackgroundColor(labelTextAndColor.second.toTextColor())
             }
         }
     }
 
+    private fun startGyroscopeCollectingStateJob() {
+        lifecycleScope.launch {
+            viewModel.gyroscopeCollectionState.collect {
+                val labelTextAndColor = getTextForSystemModuleState(it)
+                activityMainBinding.gyrCollectionValue.text = labelTextAndColor.first
+                activityMainBinding.gyrCollectionValue.setBackgroundColor(labelTextAndColor.second.toTextColor())
+            }
+        }
+    }
+
+    private fun startMagneticFieldCollectingStateJob() {
+        lifecycleScope.launch {
+            viewModel.magneticFieldCollectionState.collect {
+                val labelTextAndColor = getTextForSystemModuleState(it)
+                activityMainBinding.mfieldCollectionValue.text = labelTextAndColor.first
+                activityMainBinding.mfieldCollectionValue.setBackgroundColor(labelTextAndColor.second.toTextColor())
+            }
+        }
+    }
+
+    private fun startGPSCollectingStateJob() {
+        lifecycleScope.launch {
+            viewModel.gpsCollectionState.collect {
+                val labelTextAndColor = getTextForSystemModuleState(it)
+                activityMainBinding.gpsCollectionValue.text = labelTextAndColor.first
+                activityMainBinding.gpsCollectionValue.setBackgroundColor(labelTextAndColor.second.toTextColor())
+            }
+        }
+    }
+
+    private fun getTextForSystemModuleState(systemModuleState: SystemModuleState): Pair<String, DomainColor> {
+        return when (systemModuleState) {
+            SystemModuleState.Off -> "Off" to DomainColor.Red
+            SystemModuleState.Starting -> "Starting" to DomainColor.Yellow
+            SystemModuleState.Unknown -> "Unknown" to DomainColor.Yellow
+            SystemModuleState.Working -> "Working" to DomainColor.Green
+        }
+    }
+
     private val activeAccelerometerCharts = 1//12
-    private val activeGyroscopeCharts = 12
-    private val activeMagneticFieldCharts = 12
+    private val activeGyroscopeCharts = 1//12
+    private val activeMagneticFieldCharts = 1//12
 
     private fun startAccelerometerCollectingJob() {
         lifecycleScope.launch {
