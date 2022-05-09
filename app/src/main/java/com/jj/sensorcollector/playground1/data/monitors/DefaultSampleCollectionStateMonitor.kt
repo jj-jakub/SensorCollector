@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 abstract class DefaultSampleCollectionStateMonitor<SampleType>(
+    private val observeSamples: Boolean,
     private val sensorManager: ISensorManager,
     private val timeProvider: TimeProvider
 ) : SampleCollectionStateMonitor {
@@ -36,9 +37,11 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     protected abstract fun analysedSamplesFlow(): Flow<SampleType>
 
     override fun startMonitoring() {
-        startCollectorJob()
         startMonitoringJob()
-        startFallbackMonitoringJob()
+        if (observeSamples) {
+            startCollectorJob()
+            startFallbackMonitoringJob()
+        }
     }
 
     private fun startCollectorJob() {

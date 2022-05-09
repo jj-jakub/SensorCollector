@@ -15,6 +15,7 @@ class DefaultMagneticFieldStateMonitor(
     magneticFieldManager: MagneticFieldManager,
     timeProvider: TimeProvider
 ) : DefaultSampleCollectionStateMonitor<SensorData>(
+    observeSamples = false,
     sensorManager = magneticFieldManager, timeProvider = timeProvider
 ), MagneticFieldStateMonitor {
 

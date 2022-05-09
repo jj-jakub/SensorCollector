@@ -13,6 +13,7 @@ class DefaultAccelerometerStateMonitor(
     accelerometerManager: AccelerometerManager,
     timeProvider: TimeProvider
 ) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedAccSample>(
+    observeSamples = true,
     sensorManager = accelerometerManager, timeProvider = timeProvider
 ), AccelerometerStateMonitor {
 

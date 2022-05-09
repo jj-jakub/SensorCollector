@@ -14,6 +14,7 @@ class DefaultGyroscopeStateMonitor(
     gyroscopeManager: GyroscopeManager,
     timeProvider: TimeProvider
 ) : DefaultSampleCollectionStateMonitor<SensorData>(
+    observeSamples = false,
     sensorManager = gyroscopeManager, timeProvider = timeProvider
 ), GyroscopeStateMonitor {
 

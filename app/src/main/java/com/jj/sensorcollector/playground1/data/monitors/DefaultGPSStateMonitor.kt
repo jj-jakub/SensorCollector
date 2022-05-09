@@ -18,6 +18,7 @@ class DefaultGPSStateMonitor(
     gpsManager: GPSManager,
     timeProvider: TimeProvider
 ) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedGPSSample>(
+    observeSamples = true,
     sensorManager = gpsManager, timeProvider = timeProvider
 ), GPSStateMonitor {
 
