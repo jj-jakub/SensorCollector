@@ -1,27 +1,33 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
-import com.jj.sensorcollector.playground1.domain.monitors.AccelerometerStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.AccelerometerStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.GPSStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.GyroscopeStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.MagneticFieldStateMonitor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class DefaultSystemStateMonitor(
-    private val accelerometerStateMonitor: AccelerometerStateMonitor
+    private val accelerometerStateMonitor: AccelerometerStateMonitor,
+    private val gyroscopeStateMonitor: GyroscopeStateMonitor,
+    private val magneticFieldStateMonitor: MagneticFieldStateMonitor,
+    private val gpsStateMonitor: GPSStateMonitor,
 ) : SystemStateMonitor {
 
-    override val accelerometerCollectionState = accelerometerStateMonitor.accelerometerCollectionState
+    override val accelerometerCollectionState = accelerometerStateMonitor.sampleCollectionState
 
-    private val _gyroscopeCollectionState = MutableStateFlow(SystemModuleState.Unknown)
-    val gyroscopeCollectionState = _gyroscopeCollectionState.asStateFlow()
+    override val gyroscopeCollectionState = gyroscopeStateMonitor.sampleCollectionState
 
-    private val _magneticFieldCollectionState = MutableStateFlow(SystemModuleState.Unknown)
-    val magneticFieldCollectionState = _magneticFieldCollectionState.asStateFlow()
+    override val magneticFieldCollectionState = magneticFieldStateMonitor.sampleCollectionState
 
-    private val _gpsCollectionState = MutableStateFlow(SystemModuleState.Unknown)
-    val gpsCollectionState = _gpsCollectionState.asStateFlow()
+    override val gpsCollectionState = gpsStateMonitor.sampleCollectionState
 
     override fun startMonitoring() {
         accelerometerStateMonitor.startMonitoring()
+        gyroscopeStateMonitor.startMonitoring()
+        magneticFieldStateMonitor.startMonitoring()
+        gpsStateMonitor.startMonitoring()
     }
 }

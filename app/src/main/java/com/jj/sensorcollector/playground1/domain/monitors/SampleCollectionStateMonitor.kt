@@ -2,9 +2,9 @@ package com.jj.sensorcollector.playground1.domain.monitors
 
 import kotlinx.coroutines.flow.StateFlow
 
-interface AccelerometerStateMonitor {
+interface SampleCollectionStateMonitor {
 
-    val accelerometerCollectionState: StateFlow<SystemModuleState>
+    val sampleCollectionState: StateFlow<SystemModuleState>
 
     fun startMonitoring()
 }

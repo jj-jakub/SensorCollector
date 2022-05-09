@@ -13,5 +13,4 @@ interface SensorsRepository {
 
     fun collectGyroscopeSamples(): Flow<SensorData>
     fun collectMagneticFieldSamples(): Flow<SensorData>
-
 }

@@ -33,6 +33,9 @@ import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
 import com.jj.sensorcollector.playground1.data.managers.DefaultScreenStateCollector
 import com.jj.sensorcollector.playground1.data.managers.DefaultSoundManager
 import com.jj.sensorcollector.playground1.data.monitors.DefaultAccelerometerStateMonitor
+import com.jj.sensorcollector.playground1.data.monitors.DefaultGPSStateMonitor
+import com.jj.sensorcollector.playground1.data.monitors.DefaultGyroscopeStateMonitor
+import com.jj.sensorcollector.playground1.data.monitors.DefaultMagneticFieldStateMonitor
 import com.jj.sensorcollector.playground1.data.monitors.DefaultSystemStateMonitor
 import com.jj.sensorcollector.playground1.data.repository.DefaultGPSRepository
 import com.jj.sensorcollector.playground1.data.repository.DefaultGyroscopeRepository
@@ -47,8 +50,12 @@ import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
 import com.jj.sensorcollector.playground1.domain.managers.VibrationManager
-import com.jj.sensorcollector.playground1.domain.monitors.AccelerometerStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.SampleCollectionStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.AccelerometerStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.GPSStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.GyroscopeStateMonitor
+import com.jj.sensorcollector.playground1.domain.monitors.markers.MagneticFieldStateMonitor
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
@@ -160,5 +167,8 @@ val mainModule = module {
     single<VibrationManager> { AndroidVibrationManager(get()) }
 
     single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get(), get()) }
-    single<SystemStateMonitor> { DefaultSystemStateMonitor(get()) }
+    single<GyroscopeStateMonitor> { DefaultGyroscopeStateMonitor(get(), get(), get()) }
+    single<MagneticFieldStateMonitor> { DefaultMagneticFieldStateMonitor(get(), get(), get()) }
+    single<GPSStateMonitor> { DefaultGPSStateMonitor(get(), get(), get()) }
+    single<SystemStateMonitor> { DefaultSystemStateMonitor(get(), get(), get(), get()) }
 }
