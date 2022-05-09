@@ -13,6 +13,7 @@ object AndroidColorMapper : ColorMapper<Int> {
             DomainColor.Green -> Color.GREEN
             DomainColor.Red -> Color.RED
             DomainColor.Yellow -> Color.YELLOW
+            DomainColor.Orange -> Color.rgb(255, 165, 0)
             DomainColor.Default -> Color.BLACK // TODO Find default color here?x
         }
 

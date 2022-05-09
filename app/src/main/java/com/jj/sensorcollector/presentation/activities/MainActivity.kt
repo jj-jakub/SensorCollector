@@ -104,7 +104,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTextForSystemModuleState(systemModuleState: SystemModuleState): Pair<String, DomainColor> {
         return when (systemModuleState) {
-            SystemModuleState.Off -> "Off" to DomainColor.Red
+            is SystemModuleState.Off -> {
+                if(systemModuleState == SystemModuleState.Off.OnButTimeExceeded) {
+                    "TimeExceeded" to DomainColor.Orange
+                } else {
+                    "Off" to DomainColor.Red
+                }
+            }
             SystemModuleState.Starting -> "Starting" to DomainColor.Yellow
             SystemModuleState.Unknown -> "Unknown" to DomainColor.Yellow
             SystemModuleState.Working -> "Working" to DomainColor.Green

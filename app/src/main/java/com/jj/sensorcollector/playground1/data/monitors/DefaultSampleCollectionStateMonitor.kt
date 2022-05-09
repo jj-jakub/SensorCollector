@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+private const val FALLBACK_CHECK_INTERVAL = 500L
+
 abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     private val observeSamples: Boolean,
     private val sensorManager: ISensorManager,
@@ -62,7 +64,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
                         changeCollectionState(SystemModuleState.Working)
                     } else {
                         timeSinceTurnedOff = timeProvider.getNowMillis()
-                        changeCollectionState(SystemModuleState.Off)
+                        changeCollectionState(SystemModuleState.Off())
                     }
                 }
             }
@@ -75,7 +77,11 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
                 while (true) {
                     val currentTime = timeProvider.getNowMillis()
                     if (currentTime - timeSinceLastSample > maxIntervalBetweenSamplesMillis) {
-                        changeCollectionState(SystemModuleState.Off)
+                        if (sensorManager.collectIsActiveState().value) {
+                            changeCollectionState(SystemModuleState.Off.OnButTimeExceeded)
+                        } else {
+                            changeCollectionState(SystemModuleState.Off())
+                        }
                     } else {
                         // When collector is stopped manually, then Working state flickers because analyser
                         // Saves sample some time after collector had been stopped
@@ -83,7 +89,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
                             changeCollectionState(SystemModuleState.Working)
                         }
                     }
-                    delay(maxIntervalBetweenSamplesMillis)
+                    delay(FALLBACK_CHECK_INTERVAL)
                 }
             }
         }
