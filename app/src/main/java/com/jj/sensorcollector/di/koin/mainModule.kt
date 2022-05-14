@@ -25,11 +25,11 @@ import com.jj.sensorcollector.framework.sensors.AndroidAccelerometerManager
 import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
 import com.jj.sensorcollector.playground1.framework.data.managers.AndroidAnalyzerStarter
 import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRepository
-import com.jj.sensorcollector.playground1.data.Initializator
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.data.samples.accelerometer.AccelerometerThresholdAnalyzer
 import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerAPI
 import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
+import com.jj.sensorcollector.playground1.data.initializers.DefaultAppInitializer
 import com.jj.sensorcollector.playground1.data.managers.DefaultScreenStateCollector
 import com.jj.sensorcollector.playground1.data.managers.DefaultSoundManager
 import com.jj.sensorcollector.playground1.data.monitors.DefaultAccelerometerStateMonitor
@@ -47,6 +47,7 @@ import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
+import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
 import com.jj.sensorcollector.playground1.domain.managers.VibrationManager
@@ -82,6 +83,18 @@ import org.koin.dsl.module
 
 val mainModule = module {
 
+    single<AppInitializer> {
+        DefaultAppInitializer(
+            globalSensorCollector = get(),
+            samplesRepository = get(),
+            globalEventsRepository = get(),
+            csvFileCreator = get(),
+            accelerometerSampleAnalyzer = get(),
+            analyzerStarter = get(),
+            serverStarter = get(),
+            systemStateMonitor = get(),
+        )
+    }
     single { Room.databaseBuilder(androidContext(), SamplesDatabase::class.java, "samples_database.db").build() }
     single { Room.databaseBuilder(androidContext(), AnalysedSamplesDatabase::class.java, "analysed_samples_database.db").build() }
 
@@ -152,7 +165,6 @@ val mainModule = module {
     single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }
-    single { Initializator(get(), get(), get()) }
 
     single<AccelerometerAPI> { DefaultAccelerometerAPI() }
 
