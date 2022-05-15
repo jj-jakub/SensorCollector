@@ -8,6 +8,7 @@ import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class DefaultGPSRepository(
@@ -18,7 +19,7 @@ class DefaultGPSRepository(
     override fun collectGPSSamples(): Flow<SensorData> = gpsManager.collectRawSensorSamples()
 
     override fun collectAnalysedGPSSamples(): Flow<AnalysedSample.AnalysedGPSSample> =
-        analysedGPSSampleDao.getLatestAnalysedGPSSampleEntity()
+        analysedGPSSampleDao.getLatestAnalysedGPSSampleEntity().filterNotNull()
             .map { entity -> entity.toAnalysedGPSSample() }
 
 
