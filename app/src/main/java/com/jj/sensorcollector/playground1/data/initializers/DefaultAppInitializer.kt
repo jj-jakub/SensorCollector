@@ -8,6 +8,7 @@ import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
+import com.jj.sensorcollector.playground1.domain.samples.gps.GPSPathAnalyser
 import com.jj.sensorcollector.playground1.domain.server.ServerStarter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ class DefaultAppInitializer(
     private val analyzerStarter: AnalyzerStarter,
     private val serverStarter: ServerStarter,
     private val systemStateMonitor: SystemStateMonitor,
+    private val gpsPathAnalyser: GPSPathAnalyser
 ) : AppInitializer {
 
     override fun initialize() {

@@ -53,4 +53,12 @@ class DefaultGPSPathAnalyserTest {
     private fun setupDefaultGPSPathAnalyser() {
         defaultGPSPathAnalyser = DefaultGPSPathAnalyser(gpsRepository, pathRepository)
     }
+
+    private fun setupRandomResponsesFlow() {
+        val gpsSamplesFlow = flow {
+            repeat(10) {
+                emit(AnalysedSample.AnalysedGPSSample(1.0 + it/10, 1.0 + it/10, 1L + it))
+            }
+        }
+    }
 }
