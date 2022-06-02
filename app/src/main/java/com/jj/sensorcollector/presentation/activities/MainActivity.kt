@@ -2,7 +2,9 @@ package com.jj.sensorcollector.presentation.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.lifecycleScope
+import com.jj.design.YoScreen
 import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.databinding.ActivityMainBinding
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
@@ -12,8 +14,6 @@ import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataView
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
@@ -36,6 +36,14 @@ class MainActivity : AppCompatActivity() {
         setMainLabelText()
         startJobs()
         setupClickListeners()
+        setComposeLayout()
+    }
+
+    private fun setComposeLayout() {
+        activityMainBinding.composeView.setContent {
+            val state = viewModel.analysedAccelerometerSampleString.collectAsState(null)
+            YoScreen(state.value?.analysedSampleString.toString())
+        }
     }
 
     // TODO It should be in VM and passed as state (state values)
@@ -105,7 +113,7 @@ class MainActivity : AppCompatActivity() {
     private fun getTextForSystemModuleState(systemModuleState: SystemModuleState): Pair<String, DomainColor> {
         return when (systemModuleState) {
             is SystemModuleState.Off -> {
-                if(systemModuleState == SystemModuleState.Off.OnButTimeExceeded) {
+                if (systemModuleState == SystemModuleState.Off.OnButTimeExceeded) {
                     "TimeExceeded" to DomainColor.Orange
                 } else {
                     "Off" to DomainColor.Red

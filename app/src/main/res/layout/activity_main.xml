@@ -185,8 +185,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
         android:text="Accelerometer state:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mainLabel" />
+        app:layout_constraintBottom_toTopOf="@+id/mainLabel"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/accCollectionValue"
@@ -252,8 +252,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="Gyroscope state:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/gyrSampleLabel" />
+        app:layout_constraintBottom_toTopOf="@+id/gyrSampleLabel"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/gyrCollectionValue"
@@ -280,8 +280,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="MField state:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mfieldSampleLabel" />
+        app:layout_constraintBottom_toTopOf="@+id/mfieldSampleLabel"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/mfieldCollectionValue"
@@ -326,8 +326,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="GPS state:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/gpsSampleLabel" />
+        app:layout_constraintBottom_toTopOf="@+id/gpsSampleLabel"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/gpsCollectionValue"
@@ -337,6 +337,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/gpsCollectionState"
         app:layout_constraintTop_toTopOf="@+id/gpsCollectionState" />
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/composeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gpsSampleValue" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -453,4 +461,5 @@
         app:layout_constraintEnd_toEndOf="@+id/accCollectionValue"
         app:layout_constraintStart_toStartOf="@+id/accCollectionValue"
         app:layout_constraintTop_toBottomOf="@+id/accCollectionValue" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
