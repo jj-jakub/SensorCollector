@@ -182,7 +182,7 @@ val mainModule = module {
 
 //    single<TextCreator<Spannable>> { AndroidTextCreator() }
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
-    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get()) }
+    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get()) }
 
     single<IPProvider> { AndroidIPProvider(androidContext()) }
     single<RequestDispatcher> { DefaultRequestDispatcher(get()) }

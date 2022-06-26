@@ -3,6 +3,7 @@ package com.jj.sensorcollector.playground1.framework.presentation
 import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
@@ -24,6 +25,7 @@ class SensorsDataViewModel(
     private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<AnnotatedString>,
     private val analyzerStarter: AnalyzerStarter,
+    versionTextProvider: VersionTextProvider,
     systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
 
@@ -38,6 +40,8 @@ class SensorsDataViewModel(
 
     private val _gpsSamples = BufferedMutableSharedFlow<SensorData>()
     val gpsSamples = _gpsSamples.asSharedFlow()
+
+    val versionInfoText = versionTextProvider.getAboutVersionText()
 
     val accelerometerCollectionState = systemStateMonitor.accelerometerCollectionState
     val gyroscopeCollectionState = systemStateMonitor.gyroscopeCollectionState

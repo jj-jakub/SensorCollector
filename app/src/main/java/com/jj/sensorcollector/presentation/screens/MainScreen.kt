@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -47,6 +49,9 @@ fun MainScreen(
     val gpsSample by sensorsDataViewModel.gpsSamples.collectAsState(initial = null)
 
     MainScreenContent(
+        sensorsDataViewModel::onStartAccelerometerClick,
+        sensorsDataViewModel::onStopAccelerometerClick,
+        sensorsDataViewModel.versionInfoText,
         accelerometerState = accelerometerState,
         accelerometerSample = accelerometerSample,
         gyroscopeState = gyroscopeState,
@@ -60,6 +65,9 @@ fun MainScreen(
 
 @Composable
 private fun MainScreenContent(
+    onStartAccelerometerClick: () -> Unit,
+    onStopAccelerometerClick: () -> Unit,
+    versionInfoText: String,
     accelerometerState: SystemModuleState,
     accelerometerSample: AndroidAnalysedAccUIData?,
     gyroscopeState: SystemModuleState,
@@ -70,24 +78,56 @@ private fun MainScreenContent(
     gpsSample: SensorData?
 ) {
     Column {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            AccelerometerChartsRow(accelerometerSample = accelerometerSample)
 
-        AccelerometerChartsRow(accelerometerSample)
+            Divider(thickness = 10.dp)
 
-        Divider(thickness = 10.dp)
+            AccelerometerChartsRow(accelerometerSample = accelerometerSample)
 
-        AccelerometerChartsRow(accelerometerSample)
+            AccelerometerStateView(state = accelerometerState)
+            AccelerometerValueView(androidAnalysedAccUIData = accelerometerSample)
+            AccelerometerControlButtons(
+                onStartAccelerometerClick = onStartAccelerometerClick,
+                onStopAccelerometerClick = onStopAccelerometerClick
+            )
 
-        AccelerometerStateView(accelerometerState)
-        AccelerometerValueView(accelerometerSample)
+            GyroscopeStateView(state = gyroscopeState)
+            GyroscopeValueView(sensorData = gyroscopeSample)
 
-        GyroscopeStateView(gyroscopeState)
-        GyroscopeValueView(gyroscopeSample)
+            MagneticFieldStateView(state = magneticFieldState)
+            MagneticFieldValueView(sensorData = magneticFieldSample)
 
-        MagneticFieldStateView(magneticFieldState)
-        MagneticFieldValueView(magneticFieldSample)
+            GPSStateView(state = gpsState)
+            GPSValueView(sensorData = gpsSample)
+        }
 
-        GPSStateView(gpsState)
-        GPSValueView(gpsSample)
+        Column {
+            VersionInfoText(versionInfoText = versionInfoText)
+        }
+    }
+}
+
+@Composable
+private fun AccelerometerControlButtons(
+    onStartAccelerometerClick: () -> Unit,
+    onStopAccelerometerClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Button(onClick = onStartAccelerometerClick) {
+            Text(text = "Start acc")
+        }
+
+        Button(onClick = onStopAccelerometerClick) {
+            Text(text = "Stop acc")
+        }
     }
 }
 
@@ -223,10 +263,24 @@ private fun AccelerometerChart(sample: AnalysedSample.AnalysedAccSample?) {
     )
 }
 
+@Composable
+private fun VersionInfoText(versionInfoText: String) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        textAlign = TextAlign.Center,
+        text = versionInfoText
+    )
+}
+
 @Preview
 @Composable
 fun PreviewMainScreen() {
     MainScreenContent(
+        onStartAccelerometerClick = {},
+        onStopAccelerometerClick = {},
+        versionInfoText = "Version: 1.0, commit: ABCD, data: 1234",
         accelerometerState = SystemModuleState.Unknown,
         gyroscopeState = SystemModuleState.Unknown,
         magneticFieldState = SystemModuleState.Unknown,
