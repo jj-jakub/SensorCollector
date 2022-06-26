@@ -107,21 +107,6 @@ class MainActivity : AppCompatActivity() {
 //        }
 //    }
 
-    private fun getTextForSystemModuleState(systemModuleState: SystemModuleState): Pair<String, DomainColor> {
-        return when (systemModuleState) {
-            is SystemModuleState.Off -> {
-                if (systemModuleState == SystemModuleState.Off.OnButTimeExceeded) {
-                    "TimeExceeded" to DomainColor.Orange
-                } else {
-                    "Off" to DomainColor.Red
-                }
-            }
-            SystemModuleState.Starting -> "Starting" to DomainColor.Yellow
-            SystemModuleState.Unknown -> "Unknown" to DomainColor.Yellow
-            SystemModuleState.Working -> "Working" to DomainColor.Green
-        }
-    }
-
     private val activeAccelerometerCharts = 1//12
     private val activeGyroscopeCharts = 1//12
     private val activeMagneticFieldCharts = 1//12
