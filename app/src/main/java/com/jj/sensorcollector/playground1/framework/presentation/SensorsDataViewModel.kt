@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.framework.presentation
 
-import android.text.Spannable
+import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
@@ -17,13 +17,12 @@ import com.jj.sensorcollector.playground1.framework.domain.ui.samples.AndroidAna
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toDomainColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
     private val gpsRepository: GPSRepository,
-    private val textCreator: TextCreator<Spannable>,
+    private val textCreator: TextCreator<AnnotatedString>,
     private val analyzerStarter: AnalyzerStarter,
     systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
@@ -70,7 +69,7 @@ class SensorsDataViewModel(
         }
     }
 
-    private fun createColoredSpannable(analysedSample: AnalysedSample.AnalysedAccSample): Spannable =
+    private fun createColoredSpannable(analysedSample: AnalysedSample.AnalysedAccSample): AnnotatedString =
         textCreator.buildColoredString(
             TextComponent("X: ", DomainColor.Default),
             TextComponent(analysedSample.analysedX.value.toString(), analysedSample.analysedX.analysisResult.toDomainColor()),

@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.framework.domain.ui.samples
 
-import android.text.Spannable
+import androidx.compose.ui.text.AnnotatedString
 import com.jj.sensorcollector.playground1.domain.ui.samples.AnalysedSampleUIData
 
-interface AndroidAnalysedSampleUIData : AnalysedSampleUIData<Spannable>
+interface AndroidAnalysedSampleUIData : AnalysedSampleUIData<AnnotatedString>

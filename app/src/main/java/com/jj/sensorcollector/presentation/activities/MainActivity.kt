@@ -3,28 +3,16 @@ package com.jj.sensorcollector.presentation.activities
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.lifecycleScope
-import com.jj.design.YoScreen
 import com.jj.sensorcollector.data.text.VersionTextProvider
 import com.jj.sensorcollector.databinding.ActivityMainBinding
-import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
-import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
-import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
-import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
-import kotlinx.coroutines.CoroutineScope
+import com.jj.sensorcollector.presentation.screens.MainScreen
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var activityMainBinding: ActivityMainBinding
     private val versionTextProvider: VersionTextProvider by KoinJavaComponent.inject(VersionTextProvider::class.java)
-
-    private val sensorsDataViewModel: SensorsDataViewModel by viewModel()
 
     private var threadCounter = 0
     private fun contextFactory() = Dispatchers.Default//newSingleThreadContext("MyOwnThread_${threadCounter++}")
@@ -33,8 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContent {
-            val state = sensorsDataViewModel.analysedAccelerometerSampleString.collectAsState(null)
-            YoScreen(state.value?.analysedSampleString.toString())
+            MainScreen()
         }
 //        setContentView(activityMainBinding.root)
 //
@@ -56,16 +43,16 @@ class MainActivity : AppCompatActivity() {
 //        startGPSCollectingStateJob()
 //    }
 
-    private fun setupClickListeners() {
-        with(activityMainBinding) {
-            startAccButton.setOnClickListener {
-                sensorsDataViewModel.onStartAccelerometerClick()
-            }
-            stopAccButton.setOnClickListener {
-                sensorsDataViewModel.onStopAccelerometerClick()
-            }
-        }
-    }
+//    private fun setupClickListeners() {
+//        with(activityMainBinding) {
+//            startAccButton.setOnClickListener {
+//                sensorsDataViewModel.onStartAccelerometerClick()
+//            }
+//            stopAccButton.setOnClickListener {
+//                sensorsDataViewModel.onStopAccelerometerClick()
+//            }
+//        }
+//    }
 
 //    private fun startAccelerometerCollectingStateJob() {
 //        lifecycleScope.launch {
@@ -128,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 //        lifecycleScope.launch {
 //            sensorsDataViewModel.gyroscopeSamples.collect {
 //                if (it is SensorData.GyroscopeSample) {
-//                    activityMainBinding.gyrSampleValue.text = "X: ${it.x}, Y: ${it.y}, Z: ${it.z}"
+//                    activityMainBinding.gyrSampleValue.text = "X: ${it.x}, Yd: ${it.y}, Z: ${it.z}"
 //                }
 //            }
 //        }

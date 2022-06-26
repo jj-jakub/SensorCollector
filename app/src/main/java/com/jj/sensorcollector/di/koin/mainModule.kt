@@ -1,6 +1,7 @@
 package com.jj.sensorcollector.di.koin
 
 import android.text.Spannable
+import androidx.compose.ui.text.AnnotatedString
 import androidx.room.Room
 import com.jj.sensorcollector.data.GlobalEventsCollector
 import com.jj.sensorcollector.data.csv.DefaultCSVFileCreator
@@ -83,6 +84,7 @@ import com.jj.sensorcollector.playground1.framework.server.AndroidIPProvider
 import com.jj.sensorcollector.playground1.framework.server.KtorServerStarter
 import com.jj.sensorcollector.playground1.framework.server.requests.KtorRequestReceiver
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidTextCreator
+import com.jj.sensorcollector.playground1.framework.ui.text.ComposeTextCreator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -178,7 +180,8 @@ val mainModule = module {
 
     single<AccelerometerAPI> { DefaultAccelerometerAPI() }
 
-    single<TextCreator<Spannable>> { AndroidTextCreator() }
+//    single<TextCreator<Spannable>> { AndroidTextCreator() }
+    single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get()) }
 
     single<IPProvider> { AndroidIPProvider(androidContext()) }
