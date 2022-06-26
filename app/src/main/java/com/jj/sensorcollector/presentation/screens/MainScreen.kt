@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -29,6 +30,7 @@ import com.jj.sensorcollector.playground1.framework.domain.ui.samples.AndroidAna
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import com.jj.sensorcollector.playground1.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -68,15 +70,12 @@ private fun MainScreenContent(
     gpsSample: SensorData?
 ) {
     Column {
-        AccelerometerChart()
-        AccelerometerChart()
-        AccelerometerChart()
+
+        AccelerometerChartsRow(accelerometerSample)
 
         Divider(thickness = 10.dp)
 
-        AccelerometerChart()
-        AccelerometerChart()
-        AccelerometerChart()
+        AccelerometerChartsRow(accelerometerSample)
 
         AccelerometerStateView(accelerometerState)
         AccelerometerValueView(accelerometerSample)
@@ -89,6 +88,19 @@ private fun MainScreenContent(
 
         GPSStateView(gpsState)
         GPSValueView(gpsSample)
+    }
+}
+
+@Composable
+private fun AccelerometerChartsRow(accelerometerSample: AndroidAnalysedAccUIData?) {
+    Row {
+        repeat(times = 4) {
+            Column {
+                repeat(times = 3) {
+                    AccelerometerChart(sample = accelerometerSample?.analysedSample)
+                }
+            }
+        }
     }
 }
 
@@ -192,13 +204,21 @@ private fun ValueInfoRow(firstLabel: String, value: AnnotatedString) {
 }
 
 @Composable
-private fun AccelerometerChart() {
+private fun AccelerometerChart(sample: AnalysedSample.AnalysedAccSample?) {
+    val scope = rememberCoroutineScope()
+
     AndroidView(
         modifier = Modifier
             .height(45.dp)
             .width(100.dp),
         factory = { context ->
             AnalysedAccelerometerThreeAxisLinearChart(context = context)
+        }, update = { chart ->
+            sample?.let {
+                scope.launch {
+                    chart.updateAccelerometerChart(analysedSample = it)
+                }
+            }
         }
     )
 }
