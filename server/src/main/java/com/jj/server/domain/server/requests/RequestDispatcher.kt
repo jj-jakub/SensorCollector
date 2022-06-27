@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.domain.server.requests
+package com.jj.server.domain.server.requests
 
 interface RequestDispatcher {
 

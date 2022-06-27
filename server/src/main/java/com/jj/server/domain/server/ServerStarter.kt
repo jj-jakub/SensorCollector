@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.domain.server
+package com.jj.server.domain.server
 
 interface ServerStarter {
 

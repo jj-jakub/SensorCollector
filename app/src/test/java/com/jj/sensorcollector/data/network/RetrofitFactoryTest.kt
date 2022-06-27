@@ -1,5 +1,6 @@
 package com.jj.sensorcollector.data.network
 
+import com.jj.server.data.server.network.RetrofitFactory
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -10,7 +10,7 @@ import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.core.domain.managers.AnalyzerStarter
 import com.jj.core.domain.monitors.SystemStateMonitor
 import com.jj.core.domain.samples.samples.gps.GPSPathAnalyser
-import com.jj.sensorcollector.playground1.domain.server.ServerStarter
+import com.jj.server.domain.server.ServerStarter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -21,7 +21,7 @@ class DefaultAppInitializer(
     private val csvFileCreator: CSVFileCreator,
     private val accelerometerSampleAnalyzer: AccelerometerSampleAnalyzer,
     private val analyzerStarter: AnalyzerStarter,
-    private val serverStarter: ServerStarter,
+    private val serverStarter: com.jj.server.domain.server.ServerStarter,
     private val systemStateMonitor: SystemStateMonitor,
     private val gpsPathAnalyser: GPSPathAnalyser,
     private val coroutineScopeProvider: CoroutineScopeProvider

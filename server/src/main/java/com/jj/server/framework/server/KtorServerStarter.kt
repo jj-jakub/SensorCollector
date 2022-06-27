@@ -1,10 +1,10 @@
-package com.jj.sensorcollector.playground1.framework.server
+package com.jj.server.framework.server
 
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.server.Endpoint
-import com.jj.sensorcollector.playground1.domain.server.IPProvider
-import com.jj.sensorcollector.playground1.domain.server.ServerStarter
-import com.jj.sensorcollector.playground1.domain.server.requests.RequestReceiver
+import com.jj.server.domain.server.Endpoint
+import com.jj.server.domain.server.IPProvider
+import com.jj.server.domain.server.ServerStarter
+import com.jj.server.domain.server.requests.RequestReceiver
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -16,7 +16,6 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import java.lang.Exception
-
 
 class KtorServerStarter(
     private val ipProvider: IPProvider,
@@ -41,16 +40,16 @@ class KtorServerStarter(
 
     private fun Application.registerRoutes() {
         routing {
-            get(Endpoint.Home.url) {
-                requestReceiver.receive(Endpoint.Home)
+            get(com.jj.server.domain.server.Endpoint.Home.url) {
+                requestReceiver.receive(com.jj.server.domain.server.Endpoint.Home)
                 call.respond(mapOf("message" to "Hello home"))
             }
-            get(Endpoint.TakePhoto.url) {
-                requestReceiver.receive(Endpoint.TakePhoto)
+            get(com.jj.server.domain.server.Endpoint.TakePhoto.url) {
+                requestReceiver.receive(com.jj.server.domain.server.Endpoint.TakePhoto)
                 call.respond(mapOf("message" to "Take photo"))
             }
-            get(Endpoint.Vibrate.url) {
-                requestReceiver.receive(Endpoint.Vibrate)
+            get(com.jj.server.domain.server.Endpoint.Vibrate.url) {
+                requestReceiver.receive(com.jj.server.domain.server.Endpoint.Vibrate)
                 call.respond(mapOf("message" to "Vibrate"))
             }
         }
