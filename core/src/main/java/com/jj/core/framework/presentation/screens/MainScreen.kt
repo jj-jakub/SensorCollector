@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.presentation.screens
+package com.jj.core.framework.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,13 +22,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.jj.sensors.domain.monitors.SystemModuleState
-import com.jj.sensors.domain.monitors.toTextAndColor
+import com.jj.core.domain.monitors.SystemModuleState
+import com.jj.core.domain.monitors.toTextAndColor
 import com.jj.core.domain.samples.SensorData
 import com.jj.core.domain.samples.analysis.AnalysedSample
 import com.jj.core.domain.samples.analysis.AnalysedValue
 import com.jj.core.domain.samples.analysis.AnalysisResult
-import com.jj.sensors.framework.domain.ui.samples.AndroidAnalysedAccUIData
+import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.presentation.SensorsDataViewModel
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor

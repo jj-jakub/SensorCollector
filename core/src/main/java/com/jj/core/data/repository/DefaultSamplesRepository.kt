@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.repository
+package com.jj.core.data.repository
 
 import com.jj.core.data.database.samples.accelerometer.AccelerationDataDao
 import com.jj.core.data.database.samples.accelerometer.toAccelerationDataEntity

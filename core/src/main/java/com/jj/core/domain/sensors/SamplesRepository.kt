@@ -4,6 +4,7 @@ import com.jj.core.domain.sensors.SensorData.AccelerometerData
 import com.jj.core.domain.sensors.SensorData.GPSData
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Old code")
 interface SamplesRepository {
 
     suspend fun insert(accelerationSample: AccelerometerData)

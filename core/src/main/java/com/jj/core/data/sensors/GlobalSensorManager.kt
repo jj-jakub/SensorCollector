@@ -16,6 +16,7 @@ sealed class SensorControlEvent(val type: String, val time: Long) : GlobalEvent(
     data class LaunchingFailed(val t: Long, val exception: Exception) : SensorControlEvent(type = "LaunchingFailed", time = t)
 }
 
+@Deprecated("Old code")
 class GlobalSensorManager(
     private val accelerometerManager: AccelerometerManager,
     private val gpsManager: GPSManager,
@@ -23,19 +24,19 @@ class GlobalSensorManager(
 ) : IGlobalSensorManager {
 
     override suspend fun startAccelerometer(): DataResult<SensorControlEvent> = invokeAndSaveEvent {
-        accelerometerManager.start()
+//        accelerometerManager.start()
     }
 
     override suspend fun startGPS(): DataResult<SensorControlEvent> = invokeAndSaveEvent {
-        gpsManager.start()
+//        gpsManager.start()
     }
 
     override suspend fun stopAccelerometer(): DataResult<SensorControlEvent> = invokeAndSaveEvent {
-        accelerometerManager.stop()
+//        accelerometerManager.stop()
     }
 
     override suspend fun stopGPS(): DataResult<SensorControlEvent> = invokeAndSaveEvent {
-        gpsManager.stop()
+//        gpsManager.stop()
     }
 
     private suspend fun invokeAndSaveEvent(block: suspend () -> Unit): DataResult<SensorControlEvent> {

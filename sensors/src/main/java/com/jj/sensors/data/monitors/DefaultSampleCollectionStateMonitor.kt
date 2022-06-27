@@ -19,7 +19,7 @@ private const val FALLBACK_CHECK_INTERVAL = 500L
 
 abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     private val observeSamples: Boolean,
-    private val sensorManager: ISensorManager<SampleType>,
+    private val sensorManager: ISensorManager,
     private val timeProvider: TimeProvider,
     private val coroutineScopeProvider: CoroutineScopeProvider
 ) : SampleCollectionStateMonitor {

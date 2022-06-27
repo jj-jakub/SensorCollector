@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.repository
+package com.jj.core.data.repository
 
 import com.jj.core.data.database.events.GlobalEventDataDao
 import com.jj.core.data.database.events.toGlobalEvent
@@ -8,6 +8,7 @@ import com.jj.core.domain.events.GlobalEventsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+@Deprecated("Old code")
 class DefaultGlobalEventRepository(
         private val globalEventDataDao: GlobalEventDataDao
 ) : GlobalEventsRepository {

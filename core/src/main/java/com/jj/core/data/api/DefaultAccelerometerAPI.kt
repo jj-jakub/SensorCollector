@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.playground1.data.api
+package com.jj.core.data.api
 
 import android.util.Log
 import com.jj.core.domain.api.AccelerometerAPI

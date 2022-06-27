@@ -1,6 +1,7 @@
 package com.jj.sensorcollector.di.koin
 
 import android.content.Context
+import com.jj.core.di.coreModule
 import com.jj.sensors.di.sensorsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -13,7 +14,7 @@ class KoinLauncher {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(applicationContext)
-            modules(mainModule, useCaseModule, sensorsModule)
+            modules(mainModule, useCaseModule, sensorsModule, coreModule)
         }
     }
 }

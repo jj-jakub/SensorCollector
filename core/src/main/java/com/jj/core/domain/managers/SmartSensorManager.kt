@@ -14,14 +14,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
-abstract class SmartSensorManager<T> : ISensorManager<T> {
+abstract class SmartSensorManager<T> : ISensorManager {
 
     protected val sensorSamples = BufferedMutableSharedFlow<SensorData>()
     private val isActiveState = MutableStateFlow(false)
 
     // Call from child class after it is initialized to avoid null values being passed from constructor to
     // onInactive and onActive methods
-    override suspend fun start() {
+    protected suspend fun start() {
         sensorSamples.subscriptionCount.actdisact2(
             onActive = {
                 val registeredSuccessfully = onActive()
@@ -34,10 +34,6 @@ abstract class SmartSensorManager<T> : ISensorManager<T> {
                 onInactive()
             }
         )
-    }
-
-    override fun stop() {
-//        TODO("Not yet implemented")
     }
 
     override fun collectRawSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()

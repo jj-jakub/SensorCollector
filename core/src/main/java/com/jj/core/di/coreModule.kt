@@ -1,9 +1,71 @@
 package com.jj.core.di
 
-import com.jj.core.domain.sensors.interfaces.AccelerometerManager
-import com.jj.core.domain.sensors.interfaces.GPSManager
+import androidx.room.Room
+import com.jj.core.data.AccelerometerSampleAnalyzer
+import com.jj.core.data.api.DefaultAccelerometerAPI
+import com.jj.core.data.database.AnalysedSamplesDatabase
+import com.jj.core.data.database.SamplesDatabase
+import com.jj.core.data.repository.DefaultAccelerometerRepository
+import com.jj.core.data.repository.DefaultGPSRepository
+import com.jj.core.data.repository.DefaultGlobalEventRepository
+import com.jj.core.data.repository.DefaultGyroscopeRepository
+import com.jj.core.data.repository.DefaultMagneticFieldRepository
+import com.jj.core.data.repository.DefaultPathRepository
+import com.jj.core.data.repository.DefaultSamplesRepository
+import com.jj.core.data.repository.DefaultSensorsRepository
+import com.jj.core.data.samples.accelerometer.AccelerometerThresholdAnalyzer
+import com.jj.core.data.samples.gps.DefaultGPSSampleAnalyzer
+import com.jj.core.data.time.DefaultTimeProvider
+import com.jj.core.domain.api.AccelerometerAPI
+import com.jj.core.domain.events.GlobalEventsRepository
+import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.core.domain.repository.AccelerometerRepository
+import com.jj.core.domain.repository.GPSRepository
+import com.jj.core.domain.repository.GyroscopeRepository
+import com.jj.core.domain.repository.MagneticFieldRepository
+import com.jj.core.domain.repository.PathRepository
+import com.jj.core.domain.repository.SensorsRepository
+import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
+import com.jj.core.domain.sensors.SamplesRepository
+import com.jj.core.domain.time.TimeProvider
+import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val coreModule = module {
+
+    single { Room.databaseBuilder(androidContext(), SamplesDatabase::class.java, "samples_database.db").build() }
+    single { Room.databaseBuilder(androidContext(), AnalysedSamplesDatabase::class.java, "analysed_samples_database.db").build() }
+
+    single<SamplesRepository> { DefaultSamplesRepository(get<SamplesDatabase>().gpsDataDao, get<SamplesDatabase>().accelerationDataDao) }
+    single<GlobalEventsRepository> { DefaultGlobalEventRepository(get<SamplesDatabase>().globalEventDataDao) }
+
+    single<TimeProvider> { DefaultTimeProvider() }
+    single<AccThresholdAnalyzer> { AccelerometerThresholdAnalyzer(get()) }
+    single<AccelerometerRepository> {
+        DefaultAccelerometerRepository(
+            accelerometerManager = get(),
+            accelerometerAPI = get(),
+            analysedAccelerometerSampleDao = get<AnalysedSamplesDatabase>().analysedAccelerometerSampleDao
+        )
+    }
+    single<GyroscopeRepository> { DefaultGyroscopeRepository(get()) }
+    single<MagneticFieldRepository> { DefaultMagneticFieldRepository(get()) }
+
+    single<GPSRepository> {
+        DefaultGPSRepository(
+            gpsManager = get(),
+            analysedGPSSampleDao = get<AnalysedSamplesDatabase>().analysedGPSSampleDao
+        )
+    }
+
+    single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
+    single<PathRepository> { DefaultPathRepository() }
+
+    single { AccelerometerSampleAnalyzer(get(), get(), get(), get()) }
+    single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
+    single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
+
+    single<AccelerometerAPI> { DefaultAccelerometerAPI() }
 }
