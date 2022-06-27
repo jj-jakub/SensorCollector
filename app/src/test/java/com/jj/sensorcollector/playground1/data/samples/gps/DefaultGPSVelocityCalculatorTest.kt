@@ -1,7 +1,6 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
-import android.location.Location
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

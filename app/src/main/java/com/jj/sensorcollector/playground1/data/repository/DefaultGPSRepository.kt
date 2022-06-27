@@ -3,10 +3,10 @@ package com.jj.sensorcollector.playground1.data.repository
 import com.jj.sensorcollector.playground1.data.database.gps.AnalysedGPSSampleDao
 import com.jj.sensorcollector.playground1.data.database.gps.toAnalysedGPSSample
 import com.jj.sensorcollector.playground1.data.database.gps.toAnalysedGPSSampleEntity
-import com.jj.sensorcollector.playground1.domain.managers.GPSManager
+import com.jj.sensors.domain.managers.GPSManager
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.SensorData
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map

@@ -1,12 +1,12 @@
 package com.jj.sensorcollector.playground1.data.samples.accelerometer
 
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
-import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedValue
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysisResult
-import com.jj.sensorcollector.playground1.domain.samples.analysis.ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL
-import com.jj.sensorcollector.playground1.domain.samples.analysis.ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL
+import com.jj.sensors.domain.samples.SensorData
+import com.jj.sensors.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.analysis.AnalysedValue
+import com.jj.sensors.domain.samples.analysis.AnalysisResult
+import com.jj.sensors.domain.samples.analysis.ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL
+import com.jj.sensors.domain.samples.analysis.ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import kotlin.math.abs
 

@@ -1,5 +1,7 @@
 package com.jj.sensorcollector.playground1.domain.samples
 
+import com.jj.sensors.domain.samples.SensorData
+
 sealed class SensorData {
     data class AccSample(val x: Float?, val y: Float?, val z: Float?): SensorData()
     data class GyroscopeSample(val x: Float?, val y: Float?, val z: Float?): SensorData()

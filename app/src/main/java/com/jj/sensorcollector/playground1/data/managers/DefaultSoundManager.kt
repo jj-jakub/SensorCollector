@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.managers
 
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.managers.SoundManager
+import com.jj.sensors.domain.managers.SoundManager
 
 class DefaultSoundManager: SoundManager {
 

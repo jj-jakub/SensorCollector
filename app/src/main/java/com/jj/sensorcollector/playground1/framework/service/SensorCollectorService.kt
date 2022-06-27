@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleService
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.services.NOTIFICATION_SERVICE_ID
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
-import com.jj.sensorcollector.playground1.domain.samples.gps.GPSSampleAnalyzer
+import com.jj.sensors.domain.samples.gps.GPSSampleAnalyzer
 import org.koin.android.ext.android.inject
 
 class SensorCollectorService : LifecycleService() {

@@ -1,6 +1,8 @@
 package com.jj.sensorcollector.playground1.domain.samples.analysis
 
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensors.domain.samples.SensorData
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.analysis.AnalysedValue
 
 sealed class AnalysedSample(val time: Long) {
     data class AnalysedAccSample(

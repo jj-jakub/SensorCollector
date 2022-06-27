@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.domain.samples.gps
 
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
 import java.util.Date
 
 data class PathData(

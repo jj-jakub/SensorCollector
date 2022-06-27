@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.framework.ui.text
 
 import android.graphics.Color
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysisResult
+import com.jj.sensors.domain.samples.analysis.AnalysisResult
 import com.jj.sensorcollector.playground1.domain.ui.colors.ColorMapper
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 

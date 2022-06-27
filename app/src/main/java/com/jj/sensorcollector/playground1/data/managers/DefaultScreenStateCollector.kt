@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.managers
 
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
+import com.jj.sensors.domain.managers.ScreenStateCollector
 
 class DefaultScreenStateCollector : ScreenStateCollector {
 

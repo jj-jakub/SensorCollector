@@ -1,8 +1,8 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
 import android.util.Log
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
-import com.jj.sensorcollector.playground1.domain.samples.gps.GPSVelocityCalculator
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.gps.GPSVelocityCalculator
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sin

@@ -10,7 +10,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.jj.sensorcollector.databinding.BaseLinearChartBinding
-import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
+import com.jj.core.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +54,7 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     private var yDataCounter = 0
     private var zDataCounter = 0
 
-    private val coroutineScopeProvider: CoroutineScopeProvider by inject(CoroutineScopeProvider::class.java)
+    private val coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider by inject(com.jj.core.coroutines.CoroutineScopeProvider::class.java)
 
     private val baseLinearChartBinding: BaseLinearChartBinding = BaseLinearChartBinding.inflate(LayoutInflater.from(context), this, true)
 

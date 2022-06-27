@@ -1,11 +1,11 @@
 package com.jj.sensorcollector.playground1.data.repository
 
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensors.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
 
 class DefaultSensorsRepository(

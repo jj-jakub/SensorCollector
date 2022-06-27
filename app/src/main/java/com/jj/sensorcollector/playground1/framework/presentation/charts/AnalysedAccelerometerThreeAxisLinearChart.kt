@@ -2,7 +2,7 @@ package com.jj.sensorcollector.playground1.framework.presentation.charts
 
 import android.content.Context
 import android.util.AttributeSet
-import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
+import com.jj.sensors.domain.samples.analysis.AnalysedSample
 
 class AnalysedAccelerometerThreeAxisLinearChart @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

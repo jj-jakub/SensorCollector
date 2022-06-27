@@ -5,8 +5,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
-import com.jj.sensorcollector.playground1.domain.managers.SmartSensorManager
+import com.jj.sensors.domain.samples.SensorData
+import com.jj.sensors.domain.managers.SmartSensorManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

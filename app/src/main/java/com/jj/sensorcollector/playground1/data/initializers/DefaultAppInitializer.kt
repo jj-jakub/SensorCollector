@@ -5,11 +5,11 @@ import com.jj.sensorcollector.domain.csv.CSVFileCreator
 import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
-import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
+import com.jj.core.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
-import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
+import com.jj.sensors.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
-import com.jj.sensorcollector.playground1.domain.samples.gps.GPSPathAnalyser
+import com.jj.sensors.domain.samples.gps.GPSPathAnalyser
 import com.jj.sensorcollector.playground1.domain.server.ServerStarter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class DefaultAppInitializer(
     private val serverStarter: ServerStarter,
     private val systemStateMonitor: SystemStateMonitor,
     private val gpsPathAnalyser: GPSPathAnalyser,
-    private val coroutineScopeProvider: CoroutineScopeProvider
+    private val coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
 ) : AppInitializer {
 
     override fun initialize() {

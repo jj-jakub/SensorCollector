@@ -1,8 +1,8 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
-import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
-import com.jj.sensorcollector.playground1.domain.managers.ISensorManager
+import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.sensors.domain.managers.ISensorManager
 import com.jj.sensorcollector.playground1.domain.monitors.SampleCollectionStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
@@ -23,7 +23,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     private val observeSamples: Boolean,
     private val sensorManager: ISensorManager,
     private val timeProvider: TimeProvider,
-    private val coroutineScopeProvider: CoroutineScopeProvider
+    private val coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
 ) : SampleCollectionStateMonitor {
 
     protected open val maxIntervalBetweenSamplesMillis = 500L

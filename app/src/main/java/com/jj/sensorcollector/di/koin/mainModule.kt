@@ -23,12 +23,10 @@ import com.jj.sensorcollector.domain.sensors.interfaces.GPSManager
 import com.jj.sensorcollector.framework.notification.NotificationManagerBuilder
 import com.jj.sensorcollector.framework.sensors.AndroidAccelerometerManager
 import com.jj.sensorcollector.framework.sensors.AndroidGPSManager
-import com.jj.sensorcollector.playground1.framework.data.managers.AndroidAnalyzerStarter
 import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRepository
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.data.samples.accelerometer.AccelerometerThresholdAnalyzer
 import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerAPI
-import com.jj.sensorcollector.playground1.data.coroutines.DefaultCoroutineScopeProvider
 import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
 import com.jj.sensorcollector.playground1.data.initializers.DefaultAppInitializer
 import com.jj.sensorcollector.playground1.data.managers.DefaultScreenStateCollector
@@ -48,14 +46,14 @@ import com.jj.sensorcollector.playground1.data.samples.gps.DefaultGPSSampleAnaly
 import com.jj.sensorcollector.playground1.data.samples.gps.DefaultGPSVelocityCalculator
 import com.jj.sensorcollector.playground1.data.server.DefaultRequestDispatcher
 import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
-import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
+import com.jj.sensors.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
-import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
+import com.jj.core.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
-import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
-import com.jj.sensorcollector.playground1.domain.managers.SoundManager
-import com.jj.sensorcollector.playground1.domain.managers.VibrationManager
+import com.jj.sensors.domain.managers.ScreenStateCollector
+import com.jj.sensors.domain.managers.SoundManager
+import com.jj.sensors.domain.managers.VibrationManager
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.markers.AccelerometerStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.markers.GPSStateMonitor
@@ -66,24 +64,23 @@ import com.jj.sensorcollector.playground1.domain.repository.GyroscopeRepository
 import com.jj.sensorcollector.playground1.domain.repository.MagneticFieldRepository
 import com.jj.sensorcollector.playground1.domain.repository.PathRepository
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
-import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
-import com.jj.sensorcollector.playground1.domain.samples.gps.GPSPathAnalyser
-import com.jj.sensorcollector.playground1.domain.samples.gps.GPSSampleAnalyzer
-import com.jj.sensorcollector.playground1.domain.samples.gps.GPSVelocityCalculator
+import com.jj.sensors.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.sensors.domain.samples.gps.GPSPathAnalyser
+import com.jj.sensors.domain.samples.gps.GPSSampleAnalyzer
+import com.jj.sensors.domain.samples.gps.GPSVelocityCalculator
 import com.jj.sensorcollector.playground1.domain.server.IPProvider
 import com.jj.sensorcollector.playground1.domain.server.ServerStarter
 import com.jj.sensorcollector.playground1.domain.server.requests.RequestDispatcher
 import com.jj.sensorcollector.playground1.domain.server.requests.RequestReceiver
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
-import com.jj.sensorcollector.playground1.framework.data.managers.AndroidGyroscopeManager
-import com.jj.sensorcollector.playground1.framework.data.managers.AndroidMagneticFieldManager
-import com.jj.sensorcollector.playground1.framework.data.managers.AndroidVibrationManager
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import com.jj.sensorcollector.playground1.framework.server.AndroidIPProvider
 import com.jj.sensorcollector.playground1.framework.server.KtorServerStarter
 import com.jj.sensorcollector.playground1.framework.server.requests.KtorRequestReceiver
 import com.jj.sensorcollector.playground1.framework.ui.text.ComposeTextCreator
+import com.jj.sensors.domain.managers.GyroscopeManager
+import com.jj.sensors.domain.managers.MagneticFieldManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -117,7 +114,7 @@ val mainModule = module {
     single { GlobalSensorCollector(get(), get(), get(), get()) }
     single { NotificationManagerBuilder() }
 
-    single<CoroutineScopeProvider> { DefaultCoroutineScopeProvider() }
+    single<com.jj.core.coroutines.CoroutineScopeProvider> { com.jj.core.data.coroutines.DefaultCoroutineScopeProvider() }
 
     single<EventsCollector> { GlobalEventsCollector(get(), get()) }
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
@@ -129,29 +126,29 @@ val mainModule = module {
     single<AccelerometerManager> { AndroidAccelerometerManager(androidContext(), get()) }
     single<GPSManager> { AndroidGPSManager(androidContext(), get()) }
 
-    single<com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager> {
-        com.jj.sensorcollector.playground1.framework.data.managers.AndroidAccelerometerManager(
+    single<com.jj.sensors.domain.managers.AccelerometerManager> {
+        com.jj.sensors.framework.managers.AndroidAccelerometerManager(
             androidContext(),
             get()
         )
     }
 
-    single<com.jj.sensorcollector.playground1.domain.managers.GyroscopeManager> {
-        AndroidGyroscopeManager(
+    single<GyroscopeManager> {
+        com.jj.sensors.framework.managers.AndroidGyroscopeManager(
             androidContext(),
             get()
         )
     }
 
-    single<com.jj.sensorcollector.playground1.domain.managers.MagneticFieldManager> {
-        AndroidMagneticFieldManager(
+    single<MagneticFieldManager> {
+        com.jj.sensors.framework.managers.AndroidMagneticFieldManager(
             androidContext(),
             get()
         )
     }
 
-    single<com.jj.sensorcollector.playground1.domain.managers.GPSManager> {
-        com.jj.sensorcollector.playground1.framework.data.managers.AndroidGPSManager(
+    single<com.jj.sensors.domain.managers.GPSManager> {
+        com.jj.sensors.framework.managers.AndroidGPSManager(
             androidContext(),
             get()
         )
@@ -180,7 +177,7 @@ val mainModule = module {
 
     single { AccelerometerSampleAnalyzer(get(), get(), get(), get()) }
     single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
-    single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
+    single<AnalyzerStarter> { com.jj.sensors.framework.managers.AndroidAnalyzerStarter(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }
 
@@ -195,7 +192,7 @@ val mainModule = module {
     single<RequestReceiver> { KtorRequestReceiver(get()) }
     single<ServerStarter> { KtorServerStarter(get(), get()) }
 
-    single<VibrationManager> { AndroidVibrationManager(get()) }
+    single<VibrationManager> { com.jj.sensors.framework.managers.AndroidVibrationManager(get()) }
 
     single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get(), get(), get()) }
     single<GyroscopeStateMonitor> { DefaultGyroscopeStateMonitor(get(), get(), get(), get()) }
