@@ -1,10 +1,10 @@
 package com.jj.sensorcollector.di.koin
 
-import com.jj.sensorcollector.domain.usecases.sensors.SensorUseCases
-import com.jj.sensorcollector.domain.usecases.sensors.StartAccelerometerUseCase
-import com.jj.sensorcollector.domain.usecases.sensors.StartGPSUseCase
-import com.jj.sensorcollector.domain.usecases.sensors.StopAccelerometerUseCase
-import com.jj.sensorcollector.domain.usecases.sensors.StopGPSUseCase
+import com.jj.core.domain.sensors.SensorUseCases
+import com.jj.core.domain.sensors.StartAccelerometerUseCase
+import com.jj.core.domain.sensors.StartGPSUseCase
+import com.jj.core.domain.sensors.StopAccelerometerUseCase
+import com.jj.core.domain.sensors.StopGPSUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {

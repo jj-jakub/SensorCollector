@@ -22,16 +22,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
-import com.jj.sensorcollector.playground1.domain.monitors.toTextAndColor
-import com.jj.sensors.domain.samples.SensorData
-import com.jj.sensors.domain.samples.analysis.AnalysedSample
-import com.jj.sensors.domain.samples.analysis.AnalysedValue
-import com.jj.sensors.domain.samples.analysis.AnalysisResult
+import com.jj.sensors.domain.monitors.SystemModuleState
+import com.jj.sensors.domain.monitors.toTextAndColor
+import com.jj.core.domain.samples.SensorData
+import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.core.domain.samples.analysis.AnalysedValue
+import com.jj.core.domain.samples.analysis.AnalysisResult
 import com.jj.sensors.framework.domain.ui.samples.AndroidAnalysedAccUIData
-import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
-import com.jj.sensorcollector.playground1.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
-import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
+import com.jj.core.framework.presentation.SensorsDataViewModel
+import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
+import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 

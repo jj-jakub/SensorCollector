@@ -30,8 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".framework.services.CollectingDataService" />
-        <service android:name=".playground1.framework.service.SensorCollectorService" />
+        <service android:name="com.jj.core.framework.service.CollectingDataService" />
+        <service android:name="com.jj.core.framework.service.SensorCollectorService" />
     </application>
 
 </manifest>

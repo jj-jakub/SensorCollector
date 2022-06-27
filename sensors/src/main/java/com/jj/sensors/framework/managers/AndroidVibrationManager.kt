@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
-import com.jj.sensors.domain.managers.VibrationManager
+import com.jj.core.domain.managers.VibrationManager
 
 class AndroidVibrationManager(
     private val context: Context

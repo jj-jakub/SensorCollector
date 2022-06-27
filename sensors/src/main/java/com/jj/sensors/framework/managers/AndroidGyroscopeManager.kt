@@ -4,14 +4,14 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.sensors.domain.managers.GyroscopeManager
-import com.jj.sensors.domain.samples.SensorData
+import com.jj.core.domain.managers.GyroscopeManager
+import com.jj.core.domain.samples.SensorData
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 
 class AndroidGyroscopeManager(
     context: Context,
     coroutineScopeProvider: CoroutineScopeProvider
-) : GyroscopeManager, AndroidSmartSensorManager(
+) : GyroscopeManager, AndroidSmartSensorManager<SensorData.GyroscopeSample>(
     context = context,
     sensorType = Sensor.TYPE_GYROSCOPE,
     scope = coroutineScopeProvider.getIOScope()

@@ -4,14 +4,14 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.sensors.domain.samples.SensorData
+import com.jj.core.domain.samples.SensorData
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
-import com.jj.sensors.domain.managers.MagneticFieldManager
+import com.jj.core.domain.managers.MagneticFieldManager
 
 class AndroidMagneticFieldManager(
     context: Context,
     coroutineScopeProvider: CoroutineScopeProvider
-) : MagneticFieldManager, AndroidSmartSensorManager(
+) : MagneticFieldManager, AndroidSmartSensorManager<SensorData.MagneticFieldSample>(
     context = context,
     sensorType = Sensor.TYPE_MAGNETIC_FIELD,
     scope = coroutineScopeProvider.getIOScope()

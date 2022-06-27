@@ -5,8 +5,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import com.jj.sensors.domain.samples.SensorData
-import com.jj.sensors.domain.managers.SmartSensorManager
+import com.jj.core.domain.samples.SensorData
+import com.jj.core.domain.managers.SmartSensorManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -17,11 +17,11 @@ import kotlinx.coroutines.launch
  * Input -> collectIsActiveState
  *      Output -> Boolean state
  */
-abstract class AndroidSmartSensorManager(
+abstract class AndroidSmartSensorManager<T>(
     private val context: Context,
     private val sensorType: Int,
     scope: CoroutineScope
-) : SmartSensorManager() {
+) : SmartSensorManager<T>() {
 
     init {
         scope.launch {

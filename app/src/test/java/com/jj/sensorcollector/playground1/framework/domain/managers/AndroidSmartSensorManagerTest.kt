@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import app.cash.turbine.test
-import com.jj.sensors.domain.samples.SensorData
+import com.jj.core.domain.samples.SensorData
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -17,7 +17,6 @@ import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest

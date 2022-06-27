@@ -6,14 +6,14 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.sensors.domain.managers.AccelerometerManager
-import com.jj.sensors.domain.samples.SensorData
+import com.jj.core.domain.samples.SensorData
+import com.jj.core.domain.sensors.interfaces.AccelerometerManager
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 
 class AndroidAccelerometerManager(
     context: Context,
     coroutineScopeProvider: CoroutineScopeProvider
-) : AccelerometerManager, AndroidSmartSensorManager(
+) : AccelerometerManager, AndroidSmartSensorManager<com.jj.core.domain.sensors.SensorData.AccelerometerData>(
     context = context,
     sensorType = Sensor.TYPE_ACCELEROMETER,
     scope = coroutineScopeProvider.getIOScope() // TODO Inject

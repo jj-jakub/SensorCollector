@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.server
 
 import android.util.Log
-import com.jj.sensors.domain.managers.VibrationManager
+import com.jj.core.domain.managers.VibrationManager
 import com.jj.sensorcollector.playground1.domain.server.requests.RequestDispatcher
 import com.jj.sensorcollector.playground1.domain.server.requests.RequestType
 

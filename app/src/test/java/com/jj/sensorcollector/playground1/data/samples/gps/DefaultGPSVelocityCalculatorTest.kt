@@ -1,6 +1,7 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
-import com.jj.sensors.domain.samples.analysis.AnalysedSample
+import com.jj.core.data.samples.gps.DefaultGPSVelocityCalculator
+import com.jj.core.domain.samples.analysis.AnalysedSample
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
