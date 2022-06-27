@@ -1,4 +1,5 @@
-package com.jj.sensorcollector.playground1.data.initializers
+package com.jj.sensorcollector.data.initializers
+
 import android.util.Log
 import com.jj.core.data.sensors.GlobalSensorCollector
 import com.jj.core.domain.csv.CSVFileCreator
@@ -6,7 +7,7 @@ import com.jj.core.domain.events.GlobalEventsRepository
 import com.jj.core.domain.sensors.SamplesRepository
 import com.jj.core.data.AccelerometerSampleAnalyzer
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
+import com.jj.sensorcollector.domain.initializers.AppInitializer
 import com.jj.core.domain.managers.AnalyzerStarter
 import com.jj.core.domain.monitors.SystemStateMonitor
 import com.jj.core.domain.gps.GPSPathAnalyser
@@ -27,12 +28,13 @@ class DefaultAppInitializer(
 ) : AppInitializer {
 
     override fun initialize() {
-//        globalSensorCollector.ping()
+        globalSensorCollector.start()
         analyzerStarter.startPermanentAccelerometerAnalysis()
         analyzerStarter.startPermanentGPSAnalysis()
         serverStarter.startServer(8080)
         systemStateMonitor.startMonitoring()
-//        sampleAnalyzer.startAnalysis()
+        gpsPathAnalyser.start()
+        accelerometerSampleAnalyzer.startAnalysis()
 //        CollectingDataService.startCollectingGPS(this)
 //        CollectingDataService.startCollectingAccelerometer(this)
 

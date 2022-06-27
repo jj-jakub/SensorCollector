@@ -29,7 +29,7 @@ class GlobalSensorCollector(
         }
     }
 
-    fun ping() {
+    fun start() {
         /* no-op */
     }
 }

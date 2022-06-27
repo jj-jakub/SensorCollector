@@ -1,10 +1,7 @@
-package com.jj.sensorcollector.di.koin
+package com.jj.sensorcollector.di
 
-import com.jj.core.data.csv.DefaultCSVFileCreator
-import com.jj.core.domain.csv.CSVFileCreator
-import com.jj.sensorcollector.playground1.data.initializers.DefaultAppInitializer
-import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
-import org.koin.android.ext.koin.androidContext
+import com.jj.sensorcollector.data.initializers.DefaultAppInitializer
+import com.jj.sensorcollector.domain.initializers.AppInitializer
 import org.koin.dsl.module
 
 val mainModule = module {

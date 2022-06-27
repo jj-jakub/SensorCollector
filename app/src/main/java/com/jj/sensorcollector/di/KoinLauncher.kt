@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.di.koin
+package com.jj.sensorcollector.di
 
 import android.content.Context
 import com.jj.core.di.coreModule

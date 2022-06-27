@@ -27,6 +27,10 @@ class DefaultGPSPathAnalyser(
         }
     }
 
+    override fun start() {
+        /* no-op */
+    }
+
     private fun onAnalysedSampleAvailable(analysedGPSSample: AnalysedSample.AnalysedGPSSample) {
         previousSample?.let { prevSample ->
             val velocity = gpsVelocityCalculator.calculateAverageVelocity(prevSample, analysedGPSSample)
