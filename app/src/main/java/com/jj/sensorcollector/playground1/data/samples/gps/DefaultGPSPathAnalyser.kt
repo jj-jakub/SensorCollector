@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
 import android.util.Log
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.repository.PathRepository
 import com.jj.sensors.domain.samples.analysis.AnalysedSample
@@ -14,7 +14,7 @@ class DefaultGPSPathAnalyser(
     private val gpsRepository: GPSRepository,
     private val pathRepository: PathRepository,
     private val gpsVelocityCalculator: GPSVelocityCalculator,
-    coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : GPSPathAnalyser {
 
     private var previousSample: AnalysedSample.AnalysedGPSSample? = null

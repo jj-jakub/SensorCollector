@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensors.domain.managers.GPSManager
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
 import com.jj.sensorcollector.playground1.domain.monitors.markers.GPSStateMonitor
@@ -13,7 +13,7 @@ class DefaultGPSStateMonitor(
     private val gpsRepository: GPSRepository,
     gpsManager: GPSManager,
     timeProvider: TimeProvider,
-    coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedGPSSample>(
     observeSamples = true,
     sensorManager = gpsManager,

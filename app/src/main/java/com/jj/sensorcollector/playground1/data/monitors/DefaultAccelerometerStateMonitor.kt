@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensors.domain.managers.AccelerometerManager
 import com.jj.sensorcollector.playground1.domain.monitors.markers.AccelerometerStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
@@ -13,7 +13,7 @@ class DefaultAccelerometerStateMonitor(
     private val sensorsRepository: SensorsRepository,
     accelerometerManager: AccelerometerManager,
     timeProvider: TimeProvider,
-    coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedAccSample>(
     observeSamples = true,
     sensorManager = accelerometerManager,

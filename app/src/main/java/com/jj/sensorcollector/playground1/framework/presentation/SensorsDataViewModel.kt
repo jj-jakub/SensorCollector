@@ -67,7 +67,7 @@ class SensorsDataViewModel(
         viewModelScope.launch {
             sensorsRepository.collectAnalysedAccelerometerSamples().collect {
                 val coloredSpannable = createColoredSpannable(it)
-                val uiData = AndroidAnalysedAccUIData(it, coloredSpannable)
+                val uiData = AndroidAnalysedAccUIData(it, coloredSpannable.toString())
                 _analysedAccelerometerSampleString.tryEmit(uiData)
             }
         }

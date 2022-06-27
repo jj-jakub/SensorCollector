@@ -1,10 +1,10 @@
 package com.jj.core.data.coroutines
 
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
-class DefaultCoroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider {
+class DefaultCoroutineScopeProvider: CoroutineScopeProvider {
     override val io = Dispatchers.IO
     override val main = Dispatchers.Main
     override val default = Dispatchers.Default

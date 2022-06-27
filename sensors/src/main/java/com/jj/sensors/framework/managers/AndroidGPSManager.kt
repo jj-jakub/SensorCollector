@@ -6,9 +6,9 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
-import com.jj.sensorcollector.playground1.domain.managers.GPSManager
-import com.jj.sensorcollector.playground1.domain.managers.SmartSensorManager
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
+import com.jj.sensors.domain.managers.GPSManager
+import com.jj.sensors.domain.managers.SmartSensorManager
 import com.jj.sensors.domain.samples.SensorData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

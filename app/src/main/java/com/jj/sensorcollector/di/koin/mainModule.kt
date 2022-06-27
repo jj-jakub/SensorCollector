@@ -49,7 +49,7 @@ import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
 import com.jj.sensors.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.sensors.domain.managers.ScreenStateCollector
 import com.jj.sensors.domain.managers.SoundManager
@@ -74,6 +74,7 @@ import com.jj.sensorcollector.playground1.domain.server.requests.RequestDispatch
 import com.jj.sensorcollector.playground1.domain.server.requests.RequestReceiver
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
 import com.jj.sensorcollector.playground1.domain.ui.text.TextCreator
+import com.jj.sensorcollector.playground1.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataViewModel
 import com.jj.sensorcollector.playground1.framework.server.AndroidIPProvider
 import com.jj.sensorcollector.playground1.framework.server.KtorServerStarter
@@ -114,7 +115,7 @@ val mainModule = module {
     single { GlobalSensorCollector(get(), get(), get(), get()) }
     single { NotificationManagerBuilder() }
 
-    single<com.jj.core.coroutines.CoroutineScopeProvider> { com.jj.core.data.coroutines.DefaultCoroutineScopeProvider() }
+    single<CoroutineScopeProvider> { com.jj.core.data.coroutines.DefaultCoroutineScopeProvider() }
 
     single<EventsCollector> { GlobalEventsCollector(get(), get()) }
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
@@ -177,7 +178,7 @@ val mainModule = module {
 
     single { AccelerometerSampleAnalyzer(get(), get(), get(), get()) }
     single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
-    single<AnalyzerStarter> { com.jj.sensors.framework.managers.AndroidAnalyzerStarter(get()) }
+    single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }
 

@@ -186,7 +186,7 @@ private fun StateInfoRow(firstLabel: String, state: SystemModuleState) {
 @Composable
 private fun AccelerometerValueView(androidAnalysedAccUIData: AndroidAnalysedAccUIData?) {
     androidAnalysedAccUIData?.let { data ->
-        ValueInfoRow(firstLabel = "Accelerometer: ", value = data.analysedSampleString)
+        ValueInfoRow(firstLabel = "Accelerometer: ", value = AnnotatedString(data.analysedSampleString))
     }
 }
 
@@ -295,7 +295,7 @@ fun PreviewMainScreen() {
             analysedSampleString = AnnotatedString(
                 text = "X: 1.20, Y: 1.25, Z: 1.30",
                 spanStyle = SpanStyle(Color.Green)
-            )
+            ).toString()
         ),
         gyroscopeSample = SensorData.GyroscopeSample(1.20f, 1.30f, 1.40f),
         magneticFieldSample = SensorData.MagneticFieldSample(1.50f, 1.60f, 1.70f),

@@ -2,7 +2,7 @@ package com.jj.sensorcollector.playground1.data
 
 import android.util.Log
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensors.domain.samples.SensorData
 import com.jj.sensors.domain.samples.accelerometer.AccThresholdAnalyzer
@@ -15,7 +15,7 @@ class AccelerometerSampleAnalyzer(
     private val sensorsRepository: SensorsRepository,
     private val accThresholdAnalyzer: AccThresholdAnalyzer,
     private val timeProvider: TimeProvider,
-    private val coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) {
 
     private var collectorJob: Job? = null

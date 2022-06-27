@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensors.domain.samples.SensorData
 import com.jj.sensors.domain.samples.analysis.AnalysedSample
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class DefaultGPSSampleAnalyzer(
     private val timeProvider: TimeProvider,
     private val gpsRepository: GPSRepository,
-    private val coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) : GPSSampleAnalyzer {
 
     private var collectorJob: Job? = null

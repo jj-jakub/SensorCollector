@@ -2,14 +2,14 @@ package com.jj.sensorcollector.data.sensors
 
 import android.util.Log
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import kotlinx.coroutines.launch
 
 class GlobalSensorCollector(
     private val accelerometerDataCollector: AccelerometerDataCollector,
     private val gpsDataCollector: GPSDataCollector,
     private val repository: SamplesRepository,
-    coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    coroutineScopeProvider: CoroutineScopeProvider
 ) {
 
     init {

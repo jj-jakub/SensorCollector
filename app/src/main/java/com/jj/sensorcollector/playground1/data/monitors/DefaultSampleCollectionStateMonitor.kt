@@ -1,20 +1,17 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
-import com.jj.core.coroutines.CoroutineScopeProvider
-import com.jj.sensors.domain.managers.ISensorManager
 import com.jj.sensorcollector.playground1.domain.monitors.SampleCollectionStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.jj.sensors.domain.managers.ISensorManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 private const val FALLBACK_CHECK_INTERVAL = 500L
@@ -23,7 +20,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     private val observeSamples: Boolean,
     private val sensorManager: ISensorManager,
     private val timeProvider: TimeProvider,
-    private val coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) : SampleCollectionStateMonitor {
 
     protected open val maxIntervalBetweenSamplesMillis = 500L

@@ -1,6 +1,6 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
-import com.jj.core.coroutines.CoroutineScopeProvider
+import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensors.domain.managers.GyroscopeManager
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
 import com.jj.sensorcollector.playground1.domain.monitors.markers.GyroscopeStateMonitor
@@ -13,7 +13,7 @@ class DefaultGyroscopeStateMonitor(
     private val sensorsRepository: SensorsRepository,
     gyroscopeManager: GyroscopeManager,
     timeProvider: TimeProvider,
-    coroutineScopeProvider: com.jj.core.coroutines.CoroutineScopeProvider
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : DefaultSampleCollectionStateMonitor<SensorData>(
     observeSamples = false,
     sensorManager = gyroscopeManager,

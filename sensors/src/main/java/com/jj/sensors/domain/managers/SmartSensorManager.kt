@@ -1,6 +1,6 @@
 package com.jj.sensors.domain.managers
 
-import com.jj.sensorcollector.framework.utils.BufferedMutableSharedFlow
+import com.jj.core.data.utils.BufferedMutableSharedFlow
 import com.jj.sensors.domain.samples.SensorData
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
