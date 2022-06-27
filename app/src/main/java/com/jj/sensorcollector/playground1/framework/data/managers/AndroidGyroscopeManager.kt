@@ -3,16 +3,20 @@ package com.jj.sensorcollector.playground1.framework.data.managers
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.managers.GyroscopeManager
 import com.jj.sensorcollector.playground1.framework.domain.managers.AndroidSmartSensorManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
-class AndroidGyroscopeManager(context: Context) : GyroscopeManager, AndroidSmartSensorManager(
+class AndroidGyroscopeManager(
+    context: Context,
+    coroutineScopeProvider: CoroutineScopeProvider
+) : GyroscopeManager, AndroidSmartSensorManager(
     context = context,
     sensorType = Sensor.TYPE_GYROSCOPE,
-    scope = CoroutineScope(Dispatchers.IO) // TODO Inject
+    scope = coroutineScopeProvider.getIOScope()
 ) {
 
     override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData =

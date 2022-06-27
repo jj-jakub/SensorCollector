@@ -1,6 +1,7 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.managers.ISensorManager
 import com.jj.sensorcollector.playground1.domain.monitors.SampleCollectionStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
@@ -21,7 +22,8 @@ private const val FALLBACK_CHECK_INTERVAL = 500L
 abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     private val observeSamples: Boolean,
     private val sensorManager: ISensorManager,
-    private val timeProvider: TimeProvider
+    private val timeProvider: TimeProvider,
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) : SampleCollectionStateMonitor {
 
     protected open val maxIntervalBetweenSamplesMillis = 500L
@@ -48,7 +50,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
 
     private fun startCollectorJob() {
         if (collectorJob.shouldStartNewJob()) {
-            collectorJob = CoroutineScope(Dispatchers.IO).launch {
+            collectorJob = coroutineScopeProvider.getIOScope().launch {
                 analysedSamplesFlow().collect {
                     timeSinceLastSample = timeProvider.getNowMillis()
                 }
@@ -58,7 +60,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
 
     private fun startMonitoringJob() {
         if (monitoringJob.shouldStartNewJob()) {
-            monitoringJob = CoroutineScope(Dispatchers.IO).launch {
+            monitoringJob = coroutineScopeProvider.getIOScope().launch {
                 sensorManager.collectIsActiveState().collect { isActive ->
                     if (isActive) {
                         changeCollectionState(SystemModuleState.Working)
@@ -73,7 +75,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
 
     private fun startFallbackMonitoringJob() {
         if (fallbackMonitoringJob.shouldStartNewJob()) {
-            fallbackMonitoringJob = CoroutineScope(Dispatchers.IO).launch {
+            fallbackMonitoringJob = coroutineScopeProvider.getIOScope().launch {
                 while (true) {
                     val currentTime = timeProvider.getNowMillis()
                     if (currentTime - timeSinceLastSample > maxIntervalBetweenSamplesMillis) {

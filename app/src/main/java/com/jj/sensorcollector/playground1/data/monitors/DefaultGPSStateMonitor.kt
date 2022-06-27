@@ -1,5 +1,6 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.managers.GPSManager
 import com.jj.sensorcollector.playground1.domain.managers.GyroscopeManager
 import com.jj.sensorcollector.playground1.domain.managers.MagneticFieldManager
@@ -16,10 +17,13 @@ import kotlinx.coroutines.flow.StateFlow
 class DefaultGPSStateMonitor(
     private val gpsRepository: GPSRepository,
     gpsManager: GPSManager,
-    timeProvider: TimeProvider
+    timeProvider: TimeProvider,
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedGPSSample>(
     observeSamples = true,
-    sensorManager = gpsManager, timeProvider = timeProvider
+    sensorManager = gpsManager,
+    timeProvider = timeProvider,
+    coroutineScopeProvider = coroutineScopeProvider
 ), GPSStateMonitor {
 
     override val maxIntervalBetweenSamplesMillis: Long = 10 * 1000L

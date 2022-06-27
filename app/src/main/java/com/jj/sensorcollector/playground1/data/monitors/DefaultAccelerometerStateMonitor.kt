@@ -1,5 +1,6 @@
 package com.jj.sensorcollector.playground1.data.monitors
 
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager
 import com.jj.sensorcollector.playground1.domain.monitors.markers.AccelerometerStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemModuleState
@@ -11,10 +12,13 @@ import kotlinx.coroutines.flow.StateFlow
 class DefaultAccelerometerStateMonitor(
     private val sensorsRepository: SensorsRepository,
     accelerometerManager: AccelerometerManager,
-    timeProvider: TimeProvider
+    timeProvider: TimeProvider,
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedAccSample>(
     observeSamples = true,
-    sensorManager = accelerometerManager, timeProvider = timeProvider
+    sensorManager = accelerometerManager,
+    timeProvider = timeProvider,
+    coroutineScopeProvider = coroutineScopeProvider
 ), AccelerometerStateMonitor {
 
     override val sampleCollectionState: StateFlow<SystemModuleState>

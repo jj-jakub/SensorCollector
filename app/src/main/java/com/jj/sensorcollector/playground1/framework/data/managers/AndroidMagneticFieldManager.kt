@@ -3,16 +3,18 @@ package com.jj.sensorcollector.playground1.framework.data.managers
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
-import com.jj.sensorcollector.playground1.domain.samples.SensorData
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.managers.MagneticFieldManager
+import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.framework.domain.managers.AndroidSmartSensorManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
-class AndroidMagneticFieldManager(context: Context) : MagneticFieldManager, AndroidSmartSensorManager(
+class AndroidMagneticFieldManager(
+    context: Context,
+    coroutineScopeProvider: CoroutineScopeProvider
+) : MagneticFieldManager, AndroidSmartSensorManager(
     context = context,
     sensorType = Sensor.TYPE_MAGNETIC_FIELD,
-    scope = CoroutineScope(Dispatchers.IO) // TODO Inject
+    scope = coroutineScopeProvider.getIOScope() // TODO Inject
 ) {
 
     override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData =

@@ -2,26 +2,25 @@ package com.jj.sensorcollector.data.sensors
 
 import android.util.Log
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import kotlinx.coroutines.launch
 
 class GlobalSensorCollector(
-        private val accelerometerDataCollector: AccelerometerDataCollector,
-        private val gpsDataCollector: GPSDataCollector,
-        private val repository: SamplesRepository
+    private val accelerometerDataCollector: AccelerometerDataCollector,
+    private val gpsDataCollector: GPSDataCollector,
+    private val repository: SamplesRepository,
+    coroutineScopeProvider: CoroutineScopeProvider
 ) {
 
     init {
-        CoroutineScope(Dispatchers.Default).launch {
+        coroutineScopeProvider.getDefaultScope().launch {
             accelerometerDataCollector.dataFlow.collect {
                 Log.d("ABAB", "GlobalSensorCollector, collect acc: $it")
                 repository.insert(it)
             }
         }
 
-        CoroutineScope(Dispatchers.Default).launch {
+        coroutineScopeProvider.getDefaultScope().launch {
             gpsDataCollector.dataFlow.collect {
                 Log.d("ABAB", "GlobalSensorCollector, collect gps: $it")
                 repository.insert(it)

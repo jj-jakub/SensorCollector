@@ -6,20 +6,17 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.managers.GPSManager
 import com.jj.sensorcollector.playground1.domain.managers.SmartSensorManager
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AndroidGPSManager(
     private val context: Context,
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO) // TODO Inject
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) : GPSManager, SmartSensorManager() {
-
 
     private val listener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
@@ -42,7 +39,7 @@ class AndroidGPSManager(
     }
 
     init {
-        scope.launch {
+        coroutineScopeProvider.getIOScope().launch {
             start()
         }
     }
@@ -51,17 +48,20 @@ class AndroidGPSManager(
     override suspend fun onActive(): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
         var registered: Boolean
-        withContext(Dispatchers.Main) {
-                registered = try {
-                    locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
-                    true
-                } catch (e: Exception) {
-                    val error = SensorData.Error(SensorData.ErrorType.InitializationFailure(
-                        "Error occurred during GPS listener registration"), e)
-                    sensorSamples.tryEmit(error)
-                    false
-                }
+        withContext(coroutineScopeProvider.main) {
+            registered = try {
+                locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
+                true
+            } catch (e: Exception) {
+                val error = SensorData.Error(
+                    SensorData.ErrorType.InitializationFailure(
+                        "Error occurred during GPS listener registration"
+                    ), e
+                )
+                sensorSamples.tryEmit(error)
+                false
             }
+        }
         return registered
     }
 

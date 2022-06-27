@@ -5,14 +5,12 @@ import com.jj.sensorcollector.domain.csv.CSVFileCreator
 import com.jj.sensorcollector.domain.events.GlobalEventsRepository
 import com.jj.sensorcollector.domain.sensors.SamplesRepository
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.samples.gps.GPSPathAnalyser
 import com.jj.sensorcollector.playground1.domain.server.ServerStarter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -25,7 +23,8 @@ class DefaultAppInitializer(
     private val analyzerStarter: AnalyzerStarter,
     private val serverStarter: ServerStarter,
     private val systemStateMonitor: SystemStateMonitor,
-    private val gpsPathAnalyser: GPSPathAnalyser
+    private val gpsPathAnalyser: GPSPathAnalyser,
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) : AppInitializer {
 
     override fun initialize() {
@@ -38,25 +37,25 @@ class DefaultAppInitializer(
 //        CollectingDataService.startCollectingGPS(this)
 //        CollectingDataService.startCollectingAccelerometer(this)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScopeProvider.getIOScope().launch {
             samplesRepository.getAccelerationSamples().collect {
                 Log.d("ABAB", "Acceleration samples size: ${it.size}")
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScopeProvider.getIOScope().launch {
             samplesRepository.getGPSSamples().collect {
                 Log.d("ABAB", "GPS samples size: ${it.size}, $it")
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScopeProvider.getIOScope().launch {
             globalEventsRepository.getGlobalEvents().collect {
                 Log.d("ABABX", "Events size: ${it.size}, $it")
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScopeProvider.getIOScope().launch {
             csvFileCreator.createCSVFile(samplesRepository.getAccelerationSamples().first().map {
                 listOf(
                     it.x.toString().replace(".", ","),
@@ -67,7 +66,7 @@ class DefaultAppInitializer(
             }, fileName = "/AccelerationSamples.csv")
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScopeProvider.getIOScope().launch {
             csvFileCreator.createCSVFile(samplesRepository.getGPSSamples().first().map {
                 listOf(
                     it.lat.toString().replace(".", ","),
@@ -77,7 +76,7 @@ class DefaultAppInitializer(
             }, fileName = "/GPSSamples.csv")
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScopeProvider.getIOScope().launch {
             csvFileCreator.createCSVFile(globalEventsRepository.getGlobalEvents().first().map {
                 listOf(
                     it.eventType,

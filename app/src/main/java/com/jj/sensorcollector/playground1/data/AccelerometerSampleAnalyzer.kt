@@ -2,22 +2,20 @@ package com.jj.sensorcollector.playground1.data
 
 import android.util.Log
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.repository.SensorsRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AccelerometerSampleAnalyzer(
     private val sensorsRepository: SensorsRepository,
     private val accThresholdAnalyzer: AccThresholdAnalyzer,
-    private val timeProvider: TimeProvider
+    private val timeProvider: TimeProvider,
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) {
 
     private var collectorJob: Job? = null
@@ -25,7 +23,7 @@ class AccelerometerSampleAnalyzer(
     fun startAnalysis() {
         if (collectorJob.shouldStartNewJob()) {
             Log.d("ABABC", "Starting new collector job")
-            collectorJob = CoroutineScope(Dispatchers.IO).launch {
+            collectorJob = coroutineScopeProvider.getIOScope().launch {
                 // Consider it to have independent collector that runs forever
                 sensorsRepository.collectRawAccelerometerSamples().collect {
                     onSampleAvailable(it)

@@ -10,12 +10,14 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.jj.sensorcollector.databinding.BaseLinearChartBinding
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.ui.colors.DomainColor
 import com.jj.sensorcollector.playground1.framework.ui.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import org.koin.java.KoinJavaComponent.inject
 import java.lang.Integer.max
 
 /**
@@ -51,6 +53,8 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     private var xDataCounter = 0
     private var yDataCounter = 0
     private var zDataCounter = 0
+
+    private val coroutineScopeProvider: CoroutineScopeProvider by inject(CoroutineScopeProvider::class.java)
 
     private val baseLinearChartBinding: BaseLinearChartBinding = BaseLinearChartBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -112,7 +116,7 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
 
     // Must be run on Main thread
     private suspend fun invalidateChart() {
-        withContext(Dispatchers.Main) {
+        withContext(coroutineScopeProvider.main) {
             with(baseLinearChartBinding.lineChart) {
                 setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat())
                 data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)

@@ -1,6 +1,5 @@
 package com.jj.sensorcollector.di.koin
 
-import android.text.Spannable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.room.Room
 import com.jj.sensorcollector.data.GlobalEventsCollector
@@ -29,6 +28,7 @@ import com.jj.sensorcollector.playground1.data.repository.DefaultAccelerometerRe
 import com.jj.sensorcollector.playground1.data.AccelerometerSampleAnalyzer
 import com.jj.sensorcollector.playground1.data.samples.accelerometer.AccelerometerThresholdAnalyzer
 import com.jj.sensorcollector.playground1.data.api.DefaultAccelerometerAPI
+import com.jj.sensorcollector.playground1.data.coroutines.DefaultCoroutineScopeProvider
 import com.jj.sensorcollector.playground1.data.database.AnalysedSamplesDatabase
 import com.jj.sensorcollector.playground1.data.initializers.DefaultAppInitializer
 import com.jj.sensorcollector.playground1.data.managers.DefaultScreenStateCollector
@@ -51,11 +51,11 @@ import com.jj.sensorcollector.playground1.data.time.DefaultTimeProvider
 import com.jj.sensorcollector.playground1.domain.managers.AnalyzerStarter
 import com.jj.sensorcollector.playground1.domain.repository.AccelerometerRepository
 import com.jj.sensorcollector.playground1.domain.api.AccelerometerAPI
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.sensorcollector.playground1.domain.managers.ScreenStateCollector
 import com.jj.sensorcollector.playground1.domain.managers.SoundManager
 import com.jj.sensorcollector.playground1.domain.managers.VibrationManager
-import com.jj.sensorcollector.playground1.domain.monitors.SampleCollectionStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.SystemStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.markers.AccelerometerStateMonitor
 import com.jj.sensorcollector.playground1.domain.monitors.markers.GPSStateMonitor
@@ -83,7 +83,6 @@ import com.jj.sensorcollector.playground1.framework.presentation.SensorsDataView
 import com.jj.sensorcollector.playground1.framework.server.AndroidIPProvider
 import com.jj.sensorcollector.playground1.framework.server.KtorServerStarter
 import com.jj.sensorcollector.playground1.framework.server.requests.KtorRequestReceiver
-import com.jj.sensorcollector.playground1.framework.ui.text.AndroidTextCreator
 import com.jj.sensorcollector.playground1.framework.ui.text.ComposeTextCreator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -101,7 +100,8 @@ val mainModule = module {
             analyzerStarter = get(),
             serverStarter = get(),
             systemStateMonitor = get(),
-            gpsPathAnalyser = get()
+            gpsPathAnalyser = get(),
+            coroutineScopeProvider = get()
         )
     }
 
@@ -114,10 +114,12 @@ val mainModule = module {
     single { AccelerometerDataCollector() }
     single { GPSDataCollector() }
 
-    single { GlobalSensorCollector(get(), get(), get()) }
+    single { GlobalSensorCollector(get(), get(), get(), get()) }
     single { NotificationManagerBuilder() }
 
-    single<EventsCollector> { GlobalEventsCollector(get()) }
+    single<CoroutineScopeProvider> { DefaultCoroutineScopeProvider() }
+
+    single<EventsCollector> { GlobalEventsCollector(get(), get()) }
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
 
     single<SamplesRepository> { DefaultSamplesRepository(get<SamplesDatabase>().gpsDataDao, get<SamplesDatabase>().accelerationDataDao) }
@@ -129,25 +131,29 @@ val mainModule = module {
 
     single<com.jj.sensorcollector.playground1.domain.managers.AccelerometerManager> {
         com.jj.sensorcollector.playground1.framework.data.managers.AndroidAccelerometerManager(
-            androidContext()
+            androidContext(),
+            get()
         )
     }
 
     single<com.jj.sensorcollector.playground1.domain.managers.GyroscopeManager> {
         AndroidGyroscopeManager(
-            androidContext()
+            androidContext(),
+            get()
         )
     }
 
     single<com.jj.sensorcollector.playground1.domain.managers.MagneticFieldManager> {
         AndroidMagneticFieldManager(
-            androidContext()
+            androidContext(),
+            get()
         )
     }
 
     single<com.jj.sensorcollector.playground1.domain.managers.GPSManager> {
         com.jj.sensorcollector.playground1.framework.data.managers.AndroidGPSManager(
-            androidContext()
+            androidContext(),
+            get()
         )
     }
 
@@ -172,8 +178,8 @@ val mainModule = module {
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
     single<PathRepository> { DefaultPathRepository() }
 
-    single { AccelerometerSampleAnalyzer(get(), get(), get()) }
-    single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get()) }
+    single { AccelerometerSampleAnalyzer(get(), get(), get(), get()) }
+    single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
     single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
     single<ScreenStateCollector> { DefaultScreenStateCollector() }
     single<SoundManager> { DefaultSoundManager() }
@@ -191,17 +197,18 @@ val mainModule = module {
 
     single<VibrationManager> { AndroidVibrationManager(get()) }
 
-    single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get(), get()) }
-    single<GyroscopeStateMonitor> { DefaultGyroscopeStateMonitor(get(), get(), get()) }
-    single<MagneticFieldStateMonitor> { DefaultMagneticFieldStateMonitor(get(), get(), get()) }
-    single<GPSStateMonitor> { DefaultGPSStateMonitor(get(), get(), get()) }
+    single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get(), get(), get()) }
+    single<GyroscopeStateMonitor> { DefaultGyroscopeStateMonitor(get(), get(), get(), get()) }
+    single<MagneticFieldStateMonitor> { DefaultMagneticFieldStateMonitor(get(), get(), get(), get()) }
+    single<GPSStateMonitor> { DefaultGPSStateMonitor(get(), get(), get(), get()) }
     single<SystemStateMonitor> { DefaultSystemStateMonitor(get(), get(), get(), get()) }
 
     single<GPSPathAnalyser> {
         DefaultGPSPathAnalyser(
             gpsRepository = get(),
             pathRepository = get(),
-            gpsVelocityCalculator = get()
+            gpsVelocityCalculator = get(),
+            coroutineScopeProvider = get()
         )
     }
 

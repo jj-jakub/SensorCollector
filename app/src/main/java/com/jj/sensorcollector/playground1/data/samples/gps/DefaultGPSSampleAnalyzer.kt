@@ -1,27 +1,26 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
 import com.jj.sensorcollector.framework.utils.shouldStartNewJob
+import com.jj.sensorcollector.playground1.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.repository.GPSRepository
 import com.jj.sensorcollector.playground1.domain.samples.SensorData
 import com.jj.sensorcollector.playground1.domain.samples.analysis.AnalysedSample
 import com.jj.sensorcollector.playground1.domain.samples.gps.GPSSampleAnalyzer
 import com.jj.sensorcollector.playground1.domain.time.TimeProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DefaultGPSSampleAnalyzer(
     private val timeProvider: TimeProvider,
-    private val gpsRepository: GPSRepository
+    private val gpsRepository: GPSRepository,
+    private val coroutineScopeProvider: CoroutineScopeProvider
 ) : GPSSampleAnalyzer {
 
     private var collectorJob: Job? = null
 
     override fun startAnalysis() {
         if (collectorJob.shouldStartNewJob()) {
-            collectorJob = CoroutineScope(Dispatchers.IO).launch {
+            collectorJob = coroutineScopeProvider.getIOScope().launch {
                 // Consider it to have independent collector that runs forever
                 gpsRepository.collectGPSSamples().collect {
                     if (it is SensorData.GPSSample) {
