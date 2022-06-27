@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data
+package com.jj.core.data.repository
 
 import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider

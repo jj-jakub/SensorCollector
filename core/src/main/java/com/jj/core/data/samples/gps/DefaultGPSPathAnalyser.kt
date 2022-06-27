@@ -5,9 +5,8 @@ import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.repository.GPSRepository
 import com.jj.core.domain.repository.PathRepository
 import com.jj.core.domain.samples.analysis.AnalysedSample
-import com.jj.core.domain.samples.samples.gps.GPSPathAnalyser
-import com.jj.core.domain.samples.samples.gps.GPSVelocityCalculator
-import kotlinx.coroutines.flow.collect
+import com.jj.core.domain.gps.GPSPathAnalyser
+import com.jj.core.domain.gps.GPSVelocityCalculator
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 

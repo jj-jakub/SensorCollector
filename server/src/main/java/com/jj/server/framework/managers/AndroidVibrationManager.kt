@@ -1,11 +1,11 @@
-package com.jj.sensors.framework.managers
+package com.jj.server.framework.managers
 
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
-import com.jj.core.domain.managers.VibrationManager
+import com.jj.server.domain.managers.VibrationManager
 
 class AndroidVibrationManager(
     private val context: Context

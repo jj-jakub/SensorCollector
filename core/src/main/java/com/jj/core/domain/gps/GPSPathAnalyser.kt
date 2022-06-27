@@ -1,3 +1,3 @@
-package com.jj.core.domain.samples.samples.gps
+package com.jj.core.domain.gps
 
 interface GPSPathAnalyser

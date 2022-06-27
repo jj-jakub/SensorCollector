@@ -1,9 +1,9 @@
-package com.jj.sensorcollector.data.csv
+package com.jj.core.data.csv
 
 import android.content.Context
 import android.os.Environment
 import android.util.Log
-import com.jj.sensorcollector.domain.csv.CSVFileCreator
+import com.jj.core.domain.csv.CSVFileCreator
 import com.opencsv.CSVWriter
 import java.io.File
 import java.io.FileWriter

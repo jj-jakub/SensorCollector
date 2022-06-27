@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.domain.csv
+package com.jj.core.domain.csv
 
 interface CSVFileCreator {
 

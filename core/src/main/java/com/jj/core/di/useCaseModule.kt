@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.di.koin
+package com.jj.core.di
 
 import com.jj.core.domain.sensors.SensorUseCases
 import com.jj.core.domain.sensors.StartAccelerometerUseCase

@@ -1,7 +1,7 @@
 package com.jj.server.data.server
 
 import android.util.Log
-import com.jj.core.domain.managers.VibrationManager
+import com.jj.server.domain.managers.VibrationManager
 
 class DefaultRequestDispatcher(
     private val vibrationManager: VibrationManager

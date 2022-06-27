@@ -2,7 +2,7 @@ package com.jj.core.data.samples.gps
 
 import android.util.Log
 import com.jj.core.domain.samples.analysis.AnalysedSample
-import com.jj.core.domain.samples.samples.gps.GPSVelocityCalculator
+import com.jj.core.domain.gps.GPSVelocityCalculator
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sin

@@ -1,7 +1,7 @@
 package com.jj.sensorcollector.playground1.data.initializers
 import android.util.Log
 import com.jj.core.data.sensors.GlobalSensorCollector
-import com.jj.sensorcollector.domain.csv.CSVFileCreator
+import com.jj.core.domain.csv.CSVFileCreator
 import com.jj.core.domain.events.GlobalEventsRepository
 import com.jj.core.domain.sensors.SamplesRepository
 import com.jj.core.data.AccelerometerSampleAnalyzer
@@ -9,8 +9,7 @@ import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.playground1.domain.initializers.AppInitializer
 import com.jj.core.domain.managers.AnalyzerStarter
 import com.jj.core.domain.monitors.SystemStateMonitor
-import com.jj.core.domain.samples.samples.gps.GPSPathAnalyser
-import com.jj.server.domain.server.ServerStarter
+import com.jj.core.domain.gps.GPSPathAnalyser
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 

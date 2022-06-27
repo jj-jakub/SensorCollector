@@ -1,4 +1,4 @@
-package com.jj.core.domain.samples.samples.gps
+package com.jj.core.domain.gps
 
 import com.jj.core.domain.samples.analysis.AnalysedSample
 
