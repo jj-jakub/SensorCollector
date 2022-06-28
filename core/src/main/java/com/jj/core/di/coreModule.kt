@@ -35,6 +35,7 @@ import com.jj.core.domain.events.GlobalEventsRepository
 import com.jj.core.domain.gps.GPSPathAnalyser
 import com.jj.core.domain.gps.GPSVelocityCalculator
 import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.repository.AccelerometerRepository
 import com.jj.core.domain.repository.GPSRepository
 import com.jj.core.domain.repository.GyroscopeRepository
@@ -49,6 +50,7 @@ import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
+import com.jj.core.framework.managers.AndroidCameraManager
 import com.jj.core.framework.notification.NotificationManagerBuilder
 import com.jj.core.framework.presentation.SensorsDataViewModel
 import com.jj.core.framework.text.ComposeTextCreator
@@ -107,9 +109,11 @@ val coreModule = module {
 
 //    single<TextCreator<Spannable>> { AndroidTextCreator() }
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
-    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get()) }
+
+    single<CameraManager> { AndroidCameraManager(androidContext()) }
 
     single<GPSPathAnalyser> {
         DefaultGPSPathAnalyser(

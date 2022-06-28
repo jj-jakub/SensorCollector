@@ -1,5 +1,6 @@
 package com.jj.core.framework.presentation.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,6 +53,7 @@ fun MainScreen(
     MainScreenContent(
         sensorsDataViewModel::onStartAccelerometerClick,
         sensorsDataViewModel::onStopAccelerometerClick,
+        sensorsDataViewModel::onTakePhotoClick,
         sensorsDataViewModel.versionInfoText,
         sensorsDataViewModel.ipAddressText,
         accelerometerState = accelerometerState,
@@ -69,6 +71,7 @@ fun MainScreen(
 private fun MainScreenContent(
     onStartAccelerometerClick: () -> Unit,
     onStopAccelerometerClick: () -> Unit,
+    onTakePhotoClick: () -> Unit,
     versionInfoText: String,
     ipAddressText: String,
     accelerometerState: SystemModuleState,
@@ -106,16 +109,34 @@ private fun MainScreenContent(
             GPSStateView(state = gpsState)
             GPSValueView(sensorData = gpsSample)
 
-            CameraPreview(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
-            )
+            CameraSection(onTakePhotoClick)
         }
 
         Column {
             VersionInfoText(versionInfoText = versionInfoText)
             IPAddressText(ipAddressText = ipAddressText)
+        }
+    }
+}
+
+@Composable
+private fun CameraSection(onTakePhotoClick: () -> Unit) {
+    Row(
+        modifier = Modifier.padding(all = 8.dp)
+    ) {
+        CameraPreview(
+            modifier = Modifier
+                .width(100.dp)
+                .height(100.dp)
+        )
+
+        Button(
+            modifier = Modifier.padding(
+                start = 8.dp
+            ),
+            onClick = onTakePhotoClick
+        ) {
+            Text("Take Photo")
         }
     }
 }
@@ -301,6 +322,7 @@ fun PreviewMainScreen() {
     MainScreenContent(
         onStartAccelerometerClick = {},
         onStopAccelerometerClick = {},
+        onTakePhotoClick = {},
         versionInfoText = "Version: 1.0, commit: ABCD, data: 1234",
         ipAddressText = "192.168.0.1",
         accelerometerState = SystemModuleState.Unknown,

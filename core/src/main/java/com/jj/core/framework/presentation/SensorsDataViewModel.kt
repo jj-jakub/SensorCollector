@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.core.data.text.VersionTextProvider
 import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.monitors.SystemStateMonitor
 import com.jj.core.domain.repository.GPSRepository
 import com.jj.core.domain.repository.SensorsRepository
@@ -26,6 +27,7 @@ class SensorsDataViewModel(
     private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<AnnotatedString>,
     private val analyzerStarter: AnalyzerStarter,
+    private val cameraManager: CameraManager,
     ipProvider: IPProvider,
     versionTextProvider: VersionTextProvider,
     systemStateMonitor: SystemStateMonitor
@@ -64,6 +66,10 @@ class SensorsDataViewModel(
 
     fun onStopAccelerometerClick() {
         analyzerStarter.stopPermanentAccelerometerAnalysis()
+    }
+
+    fun onTakePhotoClick() {
+        cameraManager.takePhoto()
     }
 
     private fun observeAccelerometerSamples() {
