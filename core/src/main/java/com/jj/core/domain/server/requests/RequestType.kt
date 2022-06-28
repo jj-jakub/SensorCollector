@@ -1,4 +1,4 @@
-package com.jj.server.domain.server.requests
+package com.jj.core.domain.server.requests
 
 sealed class RequestType {
     object HomeCalled: RequestType()

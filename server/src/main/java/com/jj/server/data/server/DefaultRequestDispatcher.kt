@@ -1,17 +1,18 @@
 package com.jj.server.data.server
 
-import android.util.Log
-import com.jj.server.domain.managers.VibrationManager
+import com.jj.core.domain.server.RemoteControlManager
+import com.jj.core.domain.server.requests.RequestType
+import com.jj.server.domain.server.requests.RequestDispatcher
 
 class DefaultRequestDispatcher(
-    private val vibrationManager: VibrationManager
-) : com.jj.server.domain.server.requests.RequestDispatcher {
+    private val remoteControlManager: RemoteControlManager
+) : RequestDispatcher {
 
-    override fun dispatchRequest(requestType: com.jj.server.domain.server.requests.RequestType) {
+    override fun dispatchRequest(requestType: RequestType) {
         when (requestType) {
-            com.jj.server.domain.server.requests.RequestType.HomeCalled -> Log.d("ABABS", "HomeCalled dispatch") // TODO Impl
-            com.jj.server.domain.server.requests.RequestType.TakePhoto -> Log.d("ABABS", "TakePhoto dispatch") // TODO Impl
-            com.jj.server.domain.server.requests.RequestType.Vibrate -> vibrationManager.vibrate(1000L)
+            RequestType.HomeCalled -> remoteControlManager.receiveRequest(requestType)
+            RequestType.TakePhoto -> remoteControlManager.receiveRequest(requestType)
+            RequestType.Vibrate -> remoteControlManager.receiveRequest(requestType)
         }
     }
 }

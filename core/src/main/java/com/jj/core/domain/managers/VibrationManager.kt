@@ -1,4 +1,4 @@
-package com.jj.server.domain.managers
+package com.jj.core.domain.managers
 
 interface VibrationManager {
 

@@ -7,6 +7,7 @@ import com.jj.core.data.api.DefaultAccelerometerAPI
 import com.jj.core.data.csv.DefaultCSVFileCreator
 import com.jj.core.data.database.AnalysedSamplesDatabase
 import com.jj.core.data.database.SamplesDatabase
+import com.jj.core.data.managers.DefaultRemoteControlManager
 import com.jj.core.data.repository.DefaultAccelerometerRepository
 import com.jj.core.data.repository.DefaultGPSRepository
 import com.jj.core.data.repository.DefaultGlobalEventRepository
@@ -44,6 +45,7 @@ import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
 import com.jj.core.domain.sensors.IGlobalSensorManager
 import com.jj.core.domain.sensors.SamplesRepository
+import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
@@ -107,6 +109,7 @@ val coreModule = module {
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get()) }
 
+    single<RemoteControlManager> { DefaultRemoteControlManager(get()) }
 
     single<GPSPathAnalyser> {
         DefaultGPSPathAnalyser(

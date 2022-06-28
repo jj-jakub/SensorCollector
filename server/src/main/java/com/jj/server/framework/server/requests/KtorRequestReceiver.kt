@@ -1,14 +1,19 @@
 package com.jj.server.framework.server.requests
 
-class KtorRequestReceiver(
-    private val requestDispatcher: com.jj.server.domain.server.requests.RequestDispatcher
-) : com.jj.server.domain.server.requests.RequestReceiver {
+import com.jj.core.domain.server.requests.RequestType
+import com.jj.server.domain.server.Endpoint
+import com.jj.server.domain.server.requests.RequestDispatcher
+import com.jj.server.domain.server.requests.RequestReceiver
 
-    override fun receive(endpoint: com.jj.server.domain.server.Endpoint) {
+class KtorRequestReceiver(
+    private val requestDispatcher: RequestDispatcher
+) : RequestReceiver {
+
+    override fun receive(endpoint: Endpoint) {
         when (endpoint) {
-            com.jj.server.domain.server.Endpoint.Home -> requestDispatcher.dispatchRequest(com.jj.server.domain.server.requests.RequestType.HomeCalled)
-            com.jj.server.domain.server.Endpoint.TakePhoto -> requestDispatcher.dispatchRequest(com.jj.server.domain.server.requests.RequestType.TakePhoto)
-            com.jj.server.domain.server.Endpoint.Vibrate -> requestDispatcher.dispatchRequest(com.jj.server.domain.server.requests.RequestType.Vibrate)
+            Endpoint.Home -> requestDispatcher.dispatchRequest(RequestType.HomeCalled)
+            Endpoint.TakePhoto -> requestDispatcher.dispatchRequest(RequestType.TakePhoto)
+            Endpoint.Vibrate -> requestDispatcher.dispatchRequest(RequestType.Vibrate)
         }
     }
 }
