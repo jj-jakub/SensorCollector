@@ -26,7 +26,7 @@ class SensorsDataViewModel(
     private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<AnnotatedString>,
     private val analyzerStarter: AnalyzerStarter,
-    private val ipProvider: IPProvider,
+    ipProvider: IPProvider,
     versionTextProvider: VersionTextProvider,
     systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
