@@ -32,6 +32,7 @@ import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.presentation.SensorsDataViewModel
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
+import com.jj.design.CameraPreview
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -104,6 +105,12 @@ private fun MainScreenContent(
 
             GPSStateView(state = gpsState)
             GPSValueView(sensorData = gpsSample)
+
+            CameraPreview(
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp)
+            )
         }
 
         Column {
