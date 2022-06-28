@@ -3,7 +3,7 @@ package com.jj.server.di
 import com.jj.server.domain.managers.VibrationManager
 import com.jj.server.data.server.DefaultRequestDispatcher
 import com.jj.server.data.server.network.RetrofitFactory
-import com.jj.server.domain.server.IPProvider
+import com.jj.core.domain.server.IPProvider
 import com.jj.server.domain.server.ServerStarter
 import com.jj.server.domain.server.requests.RequestDispatcher
 import com.jj.server.domain.server.requests.RequestReceiver

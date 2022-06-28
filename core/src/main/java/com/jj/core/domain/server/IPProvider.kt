@@ -1,4 +1,4 @@
-package com.jj.server.domain.server
+package com.jj.core.domain.server
 
 interface IPProvider {
 

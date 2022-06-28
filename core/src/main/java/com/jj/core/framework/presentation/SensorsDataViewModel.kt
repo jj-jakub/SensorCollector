@@ -10,6 +10,7 @@ import com.jj.core.domain.repository.GPSRepository
 import com.jj.core.domain.repository.SensorsRepository
 import com.jj.core.domain.samples.SensorData
 import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.core.domain.server.IPProvider
 import com.jj.core.domain.ui.colors.DomainColor
 import com.jj.core.domain.ui.text.TextComponent
 import com.jj.core.domain.ui.text.TextCreator
@@ -18,7 +19,6 @@ import com.jj.core.framework.text.AndroidColorMapper.toDomainColor
 import com.jj.core.framework.utils.BufferedMutableSharedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SensorsDataViewModel(
@@ -26,6 +26,7 @@ class SensorsDataViewModel(
     private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<AnnotatedString>,
     private val analyzerStarter: AnalyzerStarter,
+    private val ipProvider: IPProvider,
     versionTextProvider: VersionTextProvider,
     systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
@@ -43,6 +44,7 @@ class SensorsDataViewModel(
     val gpsSamples = _gpsSamples.asSharedFlow()
 
     val versionInfoText = versionTextProvider.getAboutVersionText()
+    val ipAddressText = ipProvider.getIPAddress()
 
     val accelerometerCollectionState = systemStateMonitor.accelerometerCollectionState
     val gyroscopeCollectionState = systemStateMonitor.gyroscopeCollectionState

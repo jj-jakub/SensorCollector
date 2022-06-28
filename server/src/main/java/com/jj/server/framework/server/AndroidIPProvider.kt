@@ -2,10 +2,11 @@ package com.jj.server.framework.server
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.jj.core.domain.server.IPProvider
 
 class AndroidIPProvider(
     private val context: Context
-) : com.jj.server.domain.server.IPProvider {
+) : IPProvider {
 
     // TODO Add listener for network changes and propagate updated IP
     override fun getIPAddress(): String {

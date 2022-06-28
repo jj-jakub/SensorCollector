@@ -1,8 +1,7 @@
 package com.jj.server.framework.server
 
 import android.util.Log
-import com.jj.server.domain.server.Endpoint
-import com.jj.server.domain.server.IPProvider
+import com.jj.core.domain.server.IPProvider
 import com.jj.server.domain.server.ServerStarter
 import com.jj.server.domain.server.requests.RequestReceiver
 import io.ktor.application.Application

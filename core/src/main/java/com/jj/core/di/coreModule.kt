@@ -105,7 +105,7 @@ val coreModule = module {
 
 //    single<TextCreator<Spannable>> { AndroidTextCreator() }
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
-    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get()) }
 
 
     single<GPSPathAnalyser> {

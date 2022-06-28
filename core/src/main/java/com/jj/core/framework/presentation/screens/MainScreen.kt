@@ -52,6 +52,7 @@ fun MainScreen(
         sensorsDataViewModel::onStartAccelerometerClick,
         sensorsDataViewModel::onStopAccelerometerClick,
         sensorsDataViewModel.versionInfoText,
+        sensorsDataViewModel.ipAddressText,
         accelerometerState = accelerometerState,
         accelerometerSample = accelerometerSample,
         gyroscopeState = gyroscopeState,
@@ -68,6 +69,7 @@ private fun MainScreenContent(
     onStartAccelerometerClick: () -> Unit,
     onStopAccelerometerClick: () -> Unit,
     versionInfoText: String,
+    ipAddressText: String,
     accelerometerState: SystemModuleState,
     accelerometerSample: AndroidAnalysedAccUIData?,
     gyroscopeState: SystemModuleState,
@@ -106,6 +108,7 @@ private fun MainScreenContent(
 
         Column {
             VersionInfoText(versionInfoText = versionInfoText)
+            IPAddressText(ipAddressText = ipAddressText)
         }
     }
 }
@@ -274,6 +277,17 @@ private fun VersionInfoText(versionInfoText: String) {
     )
 }
 
+@Composable
+private fun IPAddressText(ipAddressText: String) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        textAlign = TextAlign.Center,
+        text = ipAddressText
+    )
+}
+
 @Preview
 @Composable
 fun PreviewMainScreen() {
@@ -281,6 +295,7 @@ fun PreviewMainScreen() {
         onStartAccelerometerClick = {},
         onStopAccelerometerClick = {},
         versionInfoText = "Version: 1.0, commit: ABCD, data: 1234",
+        ipAddressText = "192.168.0.1",
         accelerometerState = SystemModuleState.Unknown,
         gyroscopeState = SystemModuleState.Unknown,
         magneticFieldState = SystemModuleState.Unknown,
