@@ -1,6 +1,5 @@
 package com.jj.core.framework.presentation.screens
 
-import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,15 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.LifecycleOwner
 import com.jj.core.domain.monitors.SystemModuleState
 import com.jj.core.domain.monitors.toTextAndColor
 import com.jj.core.domain.samples.SensorData
@@ -40,7 +36,6 @@ import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import org.koin.androidx.compose.viewModel
 
 @Composable
 fun MainScreen(
@@ -55,15 +50,10 @@ fun MainScreen(
     val gpsState by sensorsDataViewModel.gpsCollectionState.collectAsState()
     val gpsSample by sensorsDataViewModel.gpsSamples.collectAsState(initial = null)
 
-    val context = LocalContext.current
-
     MainScreenContent(
         sensorsDataViewModel::onStartAccelerometerClick,
         sensorsDataViewModel::onStopAccelerometerClick,
-        {
-            sensorsDataViewModel.onTakePhotoClick(context)
-        },
-        sensorsDataViewModel.imageCapture,
+        sensorsDataViewModel::onTakePhotoClick,
         sensorsDataViewModel.versionInfoText,
         sensorsDataViewModel.ipAddressText,
         accelerometerState = accelerometerState,
@@ -82,7 +72,6 @@ private fun MainScreenContent(
     onStartAccelerometerClick: () -> Unit,
     onStopAccelerometerClick: () -> Unit,
     onTakePhotoClick: () -> Unit,
-    imageCapture: ImageCapture,
     versionInfoText: String,
     ipAddressText: String,
     accelerometerState: SystemModuleState,
@@ -120,7 +109,7 @@ private fun MainScreenContent(
             GPSStateView(state = gpsState)
             GPSValueView(sensorData = gpsSample)
 
-            CameraSection(onTakePhotoClick, imageCapture = imageCapture)
+            CameraSection(onTakePhotoClick)
         }
 
         Column {
@@ -131,15 +120,14 @@ private fun MainScreenContent(
 }
 
 @Composable
-private fun CameraSection(onTakePhotoClick: () -> Unit, imageCapture: ImageCapture) {
+private fun CameraSection(onTakePhotoClick: () -> Unit) {
     Row(
         modifier = Modifier.padding(all = 8.dp)
     ) {
         CameraPreview(
             modifier = Modifier
                 .width(100.dp)
-                .height(100.dp),
-            imageCapture = imageCapture
+                .height(100.dp)
         )
 
         Button(
@@ -355,7 +343,6 @@ fun PreviewMainScreen() {
         ),
         gyroscopeSample = SensorData.GyroscopeSample(1.20f, 1.30f, 1.40f),
         magneticFieldSample = SensorData.MagneticFieldSample(1.50f, 1.60f, 1.70f),
-        gpsSample = SensorData.GPSSample(10.20, 20.40),
-        imageCapture = ImageCapture.Builder().build()
+        gpsSample = SensorData.GPSSample(10.20, 20.40)
     )
 }

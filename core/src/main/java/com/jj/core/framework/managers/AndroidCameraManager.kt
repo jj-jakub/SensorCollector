@@ -6,33 +6,16 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import com.google.common.util.concurrent.ListenableFuture
 import com.jj.core.domain.managers.CameraManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.File
-
-class CustomLifecycle : LifecycleOwner {
-    private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
-    init {
-        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
-    }
-
-    fun doOnResume() {
-        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
-    }
-
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
-    }
-}
 
 class AndroidCameraManager(
     context: Context
@@ -41,20 +24,38 @@ class AndroidCameraManager(
     private val cameraFuture: ListenableFuture<ProcessCameraProvider> = ProcessCameraProvider.getInstance(context)
     private val imageCapture = ImageCapture.Builder().build()
     private val executor = ContextCompat.getMainExecutor(context)
+    private val preview = Preview.Builder().build()
+    private val previewView = PreviewView(context)
     private val selector = CameraSelector.Builder()
         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
         .build()
 
-    private val mylifecycleOwner = CustomLifecycle()
+    private val lifecycleOwner = object : LifecycleOwner {
+        override fun getLifecycle(): Lifecycle {
+            return object : Lifecycle() {
+                override fun addObserver(observer: LifecycleObserver) {
+                    /* no-op */
+                }
+
+                override fun removeObserver(observer: LifecycleObserver) {
+                    /* no-op */
+                }
+
+                override fun getCurrentState(): State {
+                    return State.RESUMED
+                }
+            }
+        }
+    }
 
     init {
-        CoroutineScope(Dispatchers.Main).launch {
-            ProcessCameraProvider.getInstance(context).get().bindToLifecycle(
-                mylifecycleOwner,
-                selector,
-                imageCapture
-            )
-        }
+        preview.setSurfaceProvider(previewView.surfaceProvider)
+        cameraFuture.get().bindToLifecycle(
+            lifecycleOwner,
+            selector,
+            imageCapture,
+            preview
+        )
     }
 
     private val callback = object : ImageCapture.OnImageCapturedCallback() {
@@ -70,10 +71,8 @@ class AndroidCameraManager(
         }
     }
 
-    override fun takePhoto(context: Context) {
+    override fun takePhoto() {
         val outputFileOptions = ImageCapture.OutputFileOptions.Builder(File("aa")).build()
-        CoroutineScope(Dispatchers.Main).launch {
-            imageCapture.takePicture(executor, callback)
-        }
+        imageCapture.takePicture(executor, callback)
     }
 }

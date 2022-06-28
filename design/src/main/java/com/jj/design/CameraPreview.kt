@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -22,14 +21,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 
 @Composable
 fun CameraPreview(
-    modifier: Modifier = Modifier,
-    imageCapture: ImageCapture
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -69,10 +64,9 @@ fun CameraPreview(
 
                     try {
                         cameraProviderFuture.get().bindToLifecycle(
-                            CustomLifecycle(),
+                            lifecycleOwner,
                             selector,
-                            preview,
-                            imageCapture
+                            preview
                         )
                     } catch (e: Exception) {
                         Log.e("ABAB", "Camera launcher exception")
@@ -81,18 +75,5 @@ fun CameraPreview(
                 }
             )
         }
-    }
-}
-class CustomLifecycle : LifecycleOwner {
-    private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
-    init {
-        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
-    }
-    fun doOnResume() {
-        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
-    }
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
     }
 }

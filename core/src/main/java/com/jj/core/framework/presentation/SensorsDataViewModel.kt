@@ -1,10 +1,5 @@
 package com.jj.core.framework.presentation
 
-import android.content.Context
-import android.util.Log
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
 import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +21,6 @@ import com.jj.core.framework.utils.BufferedMutableSharedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executors
 
 class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
@@ -53,7 +47,6 @@ class SensorsDataViewModel(
 
     val versionInfoText = versionTextProvider.getAboutVersionText()
     val ipAddressText = ipProvider.getIPAddress()
-    val imageCapture = ImageCapture.Builder().build()
 
     val accelerometerCollectionState = systemStateMonitor.accelerometerCollectionState
     val gyroscopeCollectionState = systemStateMonitor.gyroscopeCollectionState
@@ -75,23 +68,8 @@ class SensorsDataViewModel(
         analyzerStarter.stopPermanentAccelerometerAnalysis()
     }
 
-
-    private val callback = object : ImageCapture.OnImageCapturedCallback() {
-        override fun onCaptureSuccess(image: ImageProxy) {
-            super.onCaptureSuccess(image)
-            Log.d("ABAB", "Success")
-        }
-
-        override fun onError(exception: ImageCaptureException) {
-            super.onError(exception)
-            Log.d("ABAB", "Error")
-            exception.printStackTrace()
-        }
-    }
-
-    fun onTakePhotoClick(context: Context) {
-        imageCapture.takePicture(Executors.newSingleThreadExecutor(), callback)
-        cameraManager.takePhoto(context)
+    fun onTakePhotoClick() {
+        cameraManager.takePhoto()
     }
 
     private fun observeAccelerometerSamples() {
