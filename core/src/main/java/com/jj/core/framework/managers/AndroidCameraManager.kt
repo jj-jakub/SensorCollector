@@ -100,7 +100,9 @@ class AndroidCameraManager(
     }
 
     override fun registerCameraPreview(useCase: UseCase) {
-        cameraXProvider.getCameraProvider().bindToLifecycle(
+        val provider = cameraXProvider.getCameraProvider()
+        provider.unbindAll()
+        provider.bindToLifecycle(
             lifecycleOwner,
             selector,
             imageCapture,
