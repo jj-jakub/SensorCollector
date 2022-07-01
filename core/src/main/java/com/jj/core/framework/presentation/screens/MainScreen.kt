@@ -1,6 +1,9 @@
 package com.jj.core.framework.presentation.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -54,6 +59,7 @@ fun MainScreen(
         sensorsDataViewModel::onStartAccelerometerClick,
         sensorsDataViewModel::onStopAccelerometerClick,
         sensorsDataViewModel::onTakePhotoClick,
+        sensorsDataViewModel::registerCameraPreview,
         sensorsDataViewModel.versionInfoText,
         sensorsDataViewModel.ipAddressText,
         accelerometerState = accelerometerState,
@@ -72,6 +78,7 @@ private fun MainScreenContent(
     onStartAccelerometerClick: () -> Unit,
     onStopAccelerometerClick: () -> Unit,
     onTakePhotoClick: () -> Unit,
+    registerCameraPreview: (androidx.camera.core.Preview) -> Unit,
     versionInfoText: String,
     ipAddressText: String,
     accelerometerState: SystemModuleState,
@@ -83,9 +90,13 @@ private fun MainScreenContent(
     gpsState: SystemModuleState,
     gpsSample: SensorData?
 ) {
+    val scrollState = rememberScrollState()
+
     Column {
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(scrollState)
         ) {
             AccelerometerChartsRow(accelerometerSample = accelerometerSample)
 
@@ -109,7 +120,7 @@ private fun MainScreenContent(
             GPSStateView(state = gpsState)
             GPSValueView(sensorData = gpsSample)
 
-            CameraSection(onTakePhotoClick)
+            CameraSection(onTakePhotoClick, registerCameraPreview)
         }
 
         Column {
@@ -120,14 +131,18 @@ private fun MainScreenContent(
 }
 
 @Composable
-private fun CameraSection(onTakePhotoClick: () -> Unit) {
+private fun CameraSection(
+    onTakePhotoClick: () -> Unit,
+    registerCameraPreview: (androidx.camera.core.Preview) -> Unit
+) {
     Row(
         modifier = Modifier.padding(all = 8.dp)
     ) {
         CameraPreview(
             modifier = Modifier
                 .width(100.dp)
-                .height(100.dp)
+                .height(100.dp),
+            registerCameraPreview = registerCameraPreview,
         )
 
         Button(
@@ -323,6 +338,7 @@ fun PreviewMainScreen() {
         onStartAccelerometerClick = {},
         onStopAccelerometerClick = {},
         onTakePhotoClick = {},
+        registerCameraPreview = {},
         versionInfoText = "Version: 1.0, commit: ABCD, data: 1234",
         ipAddressText = "192.168.0.1",
         accelerometerState = SystemModuleState.Unknown,

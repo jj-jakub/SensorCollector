@@ -51,6 +51,7 @@ import com.jj.core.domain.time.TimeProvider
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
+import com.jj.core.framework.managers.CameraXProvider
 import com.jj.core.framework.notification.NotificationManagerBuilder
 import com.jj.core.framework.presentation.SensorsDataViewModel
 import com.jj.core.framework.text.ComposeTextCreator
@@ -113,7 +114,8 @@ val coreModule = module {
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get()) }
 
-    single<CameraManager> { AndroidCameraManager(androidContext()) }
+    single { CameraXProvider(androidContext()) }
+    single<CameraManager> { AndroidCameraManager(androidContext(), get()) }
 
     single<GPSPathAnalyser> {
         DefaultGPSPathAnalyser(

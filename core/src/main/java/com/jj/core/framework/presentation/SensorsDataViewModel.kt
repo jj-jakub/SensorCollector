@@ -72,6 +72,10 @@ class SensorsDataViewModel(
         cameraManager.takePhoto()
     }
 
+    fun registerCameraPreview(preview: androidx.camera.core.Preview) {
+        cameraManager.registerCameraPreview(preview)
+    }
+
     private fun observeAccelerometerSamples() {
         viewModelScope.launch {
             sensorsRepository.collectAnalysedAccelerometerSamples().collect {

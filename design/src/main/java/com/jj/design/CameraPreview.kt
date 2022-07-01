@@ -24,13 +24,10 @@ import androidx.core.content.ContextCompat
 
 @Composable
 fun CameraPreview(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    registerCameraPreview: (Preview) -> Unit
 ) {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val cameraProviderFuture = remember {
-        ProcessCameraProvider.getInstance(context)
-    }
     var hasCameraPermission by remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(
@@ -57,20 +54,8 @@ fun CameraPreview(
                 factory = { context ->
                     val previewView = PreviewView(context)
                     val preview = Preview.Builder().build()
-                    val selector = CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                        .build()
                     preview.setSurfaceProvider(previewView.surfaceProvider)
-
-                    try {
-                        cameraProviderFuture.get().bindToLifecycle(
-                            lifecycleOwner,
-                            selector,
-                            preview
-                        )
-                    } catch (e: Exception) {
-                        Log.e("ABAB", "Camera launcher exception")
-                    }
+                    registerCameraPreview(preview)
                     previewView
                 }
             )

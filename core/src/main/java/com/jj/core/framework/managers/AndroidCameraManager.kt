@@ -6,16 +6,21 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
-import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.core.Preview
+import androidx.camera.core.UseCase
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.jj.core.domain.managers.CameraManager
-import java.io.File
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AndroidCameraManager(
-    private val context: Context
+    context: Context,
+    private val cameraXProvider: CameraXProvider
 ) : CameraManager {
 
     private val imageCapture = ImageCapture.Builder().build()
@@ -42,15 +47,23 @@ class AndroidCameraManager(
         }
     }
 
+    init {
+        cameraXProvider.getCameraProvider().bindToLifecycle(
+            lifecycleOwner,
+            selector,
+            imageCapture
+        )
+    }
+
     private val callback = object : ImageCapture.OnImageCapturedCallback() {
         override fun onCaptureSuccess(image: ImageProxy) {
             super.onCaptureSuccess(image)
-            Log.d("ABAB", "Success")
+            Log.e("ABAB", "onCaptureSuccess")
+            image.close()
         }
 
         override fun onError(exception: ImageCaptureException) {
             super.onError(exception)
-            Log.d("ABAB", "Error")
             exception.printStackTrace()
         }
     }
@@ -59,12 +72,19 @@ class AndroidCameraManager(
     // 2. Don't pass preview if it is not used
     // TODO Try to return preview from here to other views? just to have getInstance in one place called once
     override fun takePhoto() {
-        ProcessCameraProvider.getInstance(context).get().bindToLifecycle(
+        try {
+            imageCapture.takePicture(executor, callback)
+        } catch (e: Exception) {
+            Log.e("ABAB", "Camera launcher exception")
+        }
+    }
+
+    override fun registerCameraPreview(useCase: UseCase) {
+        cameraXProvider.getCameraProvider().bindToLifecycle(
             lifecycleOwner,
             selector,
-            imageCapture
+            imageCapture,
+            useCase
         )
-        val outputFileOptions = ImageCapture.OutputFileOptions.Builder(File("aa")).build()
-        imageCapture.takePicture(executor, callback)
     }
 }

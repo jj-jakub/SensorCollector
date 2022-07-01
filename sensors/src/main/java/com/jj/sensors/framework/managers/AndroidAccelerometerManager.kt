@@ -26,7 +26,7 @@ class AndroidAccelerometerManager(
     override val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(p0: SensorEvent?) {
             val sensorData = convertSensorEvent(p0)
-            Log.d("ABABX", "emit: ${p0?.values?.get(0)} ${p0?.values?.get(1)} ${p0?.values?.get(2)}")
+//            Log.d("ABABX", "emit: ${p0?.values?.get(0)} ${p0?.values?.get(1)} ${p0?.values?.get(2)}")
             sensorSamples.tryEmit(sensorData)
         }
 
