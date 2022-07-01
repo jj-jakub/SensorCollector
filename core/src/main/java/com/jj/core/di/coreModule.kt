@@ -112,7 +112,7 @@ val coreModule = module {
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 
-    single<RemoteControlManager> { DefaultRemoteControlManager(get()) }
+    single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
 
     single { CameraXProvider(androidContext()) }
     single<CameraManager> { AndroidCameraManager(androidContext(), get()) }

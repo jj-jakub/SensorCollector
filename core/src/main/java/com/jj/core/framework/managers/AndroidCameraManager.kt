@@ -1,6 +1,9 @@
 package com.jj.core.framework.managers
 
+import android.content.ContentValues
 import android.content.Context
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -17,9 +20,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AndroidCameraManager(
-    context: Context,
+    private val context: Context,
     private val cameraXProvider: CameraXProvider
 ) : CameraManager {
 
@@ -55,16 +60,13 @@ class AndroidCameraManager(
         )
     }
 
-    private val callback = object : ImageCapture.OnImageCapturedCallback() {
-        override fun onCaptureSuccess(image: ImageProxy) {
-            super.onCaptureSuccess(image)
-            Log.e("ABAB", "onCaptureSuccess")
-            image.close()
+    private val callback = object : ImageCapture.OnImageSavedCallback {
+        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+            Log.d("ABAB", "onImageSaved, results: $outputFileResults")
         }
 
         override fun onError(exception: ImageCaptureException) {
-            super.onError(exception)
-            exception.printStackTrace()
+            Log.d("ABAB", "onError, ", exception)
         }
     }
 
@@ -73,9 +75,27 @@ class AndroidCameraManager(
     // TODO Try to return preview from here to other views? just to have getInstance in one place called once
     override fun takePhoto() {
         try {
-            imageCapture.takePicture(executor, callback)
+            imageCapture.takePicture(getOutputOptions(), executor, callback)
         } catch (e: Exception) {
             Log.e("ABAB", "Camera launcher exception")
+        }
+    }
+
+    private fun getOutputOptions() =
+        ImageCapture.OutputFileOptions.Builder(
+            context.contentResolver,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            getContentValues()
+        ).build()
+
+    private fun getContentValues(): ContentValues {
+        val name = System.currentTimeMillis()
+        return ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+            }
         }
     }
 

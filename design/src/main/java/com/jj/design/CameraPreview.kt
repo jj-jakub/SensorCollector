@@ -50,6 +50,8 @@ fun CameraPreview(
         modifier = modifier
     ) {
         if (hasCameraPermission) {
+            // TODO Cannot bind preview to camera after view is recreated. Check it out
+            // TODO Taking photo don't work either
             AndroidView(
                 factory = { context ->
                     val previewView = PreviewView(context)
