@@ -28,33 +28,16 @@ class AndroidCameraManager(
     private val cameraXProvider: CameraXProvider
 ) : CameraManager {
 
+    private val cameraXLifecycleOwner = CameraXLifecycleOwner()
     private val imageCapture = ImageCapture.Builder().build()
     private val executor = ContextCompat.getMainExecutor(context)
     private val selector = CameraSelector.Builder()
         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
         .build()
 
-    private val lifecycleOwner = object : LifecycleOwner {
-        override fun getLifecycle(): Lifecycle {
-            return object : Lifecycle() {
-                override fun addObserver(observer: LifecycleObserver) {
-                    /* no-op */
-                }
-
-                override fun removeObserver(observer: LifecycleObserver) {
-                    /* no-op */
-                }
-
-                override fun getCurrentState(): State {
-                    return State.RESUMED
-                }
-            }
-        }
-    }
-
     init {
         cameraXProvider.getCameraProvider().bindToLifecycle(
-            lifecycleOwner,
+            cameraXLifecycleOwner,
             selector,
             imageCapture
         )
@@ -70,9 +53,6 @@ class AndroidCameraManager(
         }
     }
 
-    // 1. Get instance before someone else takes it, i.e. view
-    // 2. Don't pass preview if it is not used
-    // TODO Try to return preview from here to other views? just to have getInstance in one place called once
     override fun takePhoto() {
         try {
             imageCapture.takePicture(getOutputOptions(), executor, callback)
@@ -103,7 +83,7 @@ class AndroidCameraManager(
         val provider = cameraXProvider.getCameraProvider()
         provider.unbindAll()
         provider.bindToLifecycle(
-            lifecycleOwner,
+            cameraXLifecycleOwner,
             selector,
             imageCapture,
             useCase
