@@ -19,9 +19,12 @@ import com.jj.core.domain.managers.CameraManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class AndroidCameraManager(
     private val context: Context,
@@ -53,9 +56,19 @@ class AndroidCameraManager(
         }
     }
 
-    override fun takePhoto() {
+    override suspend fun takePhoto() = suspendCoroutine<Boolean> { continuation ->
         try {
-            imageCapture.takePicture(getOutputOptions(), executor, callback)
+            imageCapture.takePicture(getOutputOptions(), executor, object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    Log.d("ABAB", "onImageSaved, results: $outputFileResults")
+                    continuation.resume(true)
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    continuation.resume(false)
+                    Log.d("ABAB", "onError, ", exception)
+                }
+            })
         } catch (e: Exception) {
             Log.e("ABAB", "Camera launcher exception")
         }

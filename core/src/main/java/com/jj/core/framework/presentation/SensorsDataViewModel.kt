@@ -69,7 +69,9 @@ class SensorsDataViewModel(
     }
 
     fun onTakePhotoClick() {
-        cameraManager.takePhoto()
+        viewModelScope.launch {
+            cameraManager.takePhoto()
+        }
     }
 
     fun registerCameraPreview(preview: androidx.camera.core.Preview) {

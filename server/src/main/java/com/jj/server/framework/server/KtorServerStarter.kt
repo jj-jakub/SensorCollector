@@ -44,8 +44,8 @@ class KtorServerStarter(
                 call.respond(mapOf("message" to "Hello home"))
             }
             get(com.jj.server.domain.server.Endpoint.TakePhoto.url) {
-                requestReceiver.receive(com.jj.server.domain.server.Endpoint.TakePhoto)
-                call.respond(mapOf("message" to "Take photo"))
+                val result = requestReceiver.receive(com.jj.server.domain.server.Endpoint.TakePhoto)
+                call.respond(mapOf("message" to "Take photo result: $result"))
             }
             get(com.jj.server.domain.server.Endpoint.Vibrate.url) {
                 requestReceiver.receive(com.jj.server.domain.server.Endpoint.Vibrate)

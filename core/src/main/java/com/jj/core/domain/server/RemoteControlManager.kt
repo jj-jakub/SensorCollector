@@ -4,5 +4,5 @@ import com.jj.core.domain.server.requests.RequestType
 
 interface RemoteControlManager {
 
-    fun receiveRequest(requestType: RequestType)
+    suspend fun receiveRequest(requestType: RequestType): Boolean
 }

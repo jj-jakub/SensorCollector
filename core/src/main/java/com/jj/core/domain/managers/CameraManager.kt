@@ -4,6 +4,6 @@ import androidx.camera.core.UseCase
 
 interface CameraManager {
 
-    fun takePhoto()
+    suspend fun takePhoto(): Boolean
     fun registerCameraPreview(useCase: UseCase)
 }
