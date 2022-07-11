@@ -19,7 +19,7 @@ class DefaultGPSVelocityCalculatorTest {
         val firstSample = AnalysedSample.AnalysedGPSSample(1.0, 1.0, 1)
         val secondSample = AnalysedSample.AnalysedGPSSample(1.1, 1.1, 1)
         println(
-            defaultGPSVelocityCalculator.calculateVelocity(
+            defaultGPSVelocityCalculator.calculateAverageVelocity(
                 firstSample = firstSample,
                 secondSample = secondSample
             )

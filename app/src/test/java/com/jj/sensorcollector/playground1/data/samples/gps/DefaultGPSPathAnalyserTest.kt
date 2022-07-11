@@ -1,6 +1,8 @@
 package com.jj.sensorcollector.playground1.data.samples.gps
 
+import com.jj.core.data.coroutines.DefaultCoroutineScopeProvider
 import com.jj.core.data.samples.gps.DefaultGPSPathAnalyser
+import com.jj.core.domain.gps.GPSVelocityCalculator
 import com.jj.core.domain.repository.GPSRepository
 import com.jj.core.domain.repository.PathRepository
 import com.jj.core.domain.samples.analysis.AnalysedSample
@@ -20,8 +22,13 @@ class DefaultGPSPathAnalyserTest {
     @MockK
     private lateinit var gpsRepository: GPSRepository
 
+    @MockK
+    private lateinit var gpsVelocityCalculator: GPSVelocityCalculator
+
     @RelaxedMockK
     private lateinit var pathRepository: PathRepository
+
+    private val coroutineScopeProvider = DefaultCoroutineScopeProvider()
 
     private lateinit var defaultGPSPathAnalyser: DefaultGPSPathAnalyser
 
@@ -50,13 +57,13 @@ class DefaultGPSPathAnalyserTest {
     }
 
     private fun setupDefaultGPSPathAnalyser() {
-        defaultGPSPathAnalyser = DefaultGPSPathAnalyser(gpsRepository, pathRepository)
+        defaultGPSPathAnalyser = DefaultGPSPathAnalyser(gpsRepository, pathRepository, gpsVelocityCalculator, coroutineScopeProvider)
     }
 
     private fun setupRandomResponsesFlow() {
         val gpsSamplesFlow = flow {
             repeat(10) {
-                emit(AnalysedSample.AnalysedGPSSample(1.0 + it/10, 1.0 + it/10, 1L + it))
+                emit(AnalysedSample.AnalysedGPSSample(1.0 + it / 10, 1.0 + it / 10, 1L + it))
             }
         }
     }

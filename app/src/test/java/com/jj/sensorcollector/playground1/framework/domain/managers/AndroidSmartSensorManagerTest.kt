@@ -38,7 +38,7 @@ class AndroidSmartSensorManagerTest {
     @MockK
     private lateinit var sensor: Sensor
 
-    private lateinit var androidSmartSensorManager: AndroidSmartSensorManager
+    private lateinit var androidSmartSensorManager: AndroidSmartSensorManager<com.jj.core.domain.sensors.SensorData.AccelerometerData>
 
     private lateinit var testCoroutineScope: TestCoroutineScope
 
@@ -264,16 +264,16 @@ class AndroidSmartSensorManagerTest {
     @Test
     fun `when onSensorChanged is called, then should emit sensorData to subscribers`() =
         testCoroutineScope.runBlockingTest {
-        val listenerCapture = slot<SensorEventListener>()
-        every { sensorManager.registerListener(capture(listenerCapture), any(), any()) } returns true
+            val listenerCapture = slot<SensorEventListener>()
+            every { sensorManager.registerListener(capture(listenerCapture), any(), any()) } returns true
 
-        setupAndroidSmartSensorManager()
+            setupAndroidSmartSensorManager()
 
-        androidSmartSensorManager.collectRawSensorSamples().test {
-            listenerCapture.captured.onSensorChanged(mockk(relaxed = true))
-            awaitItem()
+            androidSmartSensorManager.collectRawSensorSamples().test {
+                listenerCapture.captured.onSensorChanged(mockk(relaxed = true))
+                awaitItem()
+            }
         }
-    }
 
     @Test
     fun `when subscriber stops collecting and onInactive is called, then should unregister listener`() {
@@ -367,20 +367,21 @@ class AndroidSmartSensorManagerTest {
         activeCalls = 0
         inactiveCalls = 0
 
-        androidSmartSensorManager = object : AndroidSmartSensorManager(context, 1, testCoroutineScope) {
-            override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData {
-                return SensorData.AccSample(1f, 1f, 1f)
-            }
+        androidSmartSensorManager =
+            object : AndroidSmartSensorManager<com.jj.core.domain.sensors.SensorData.AccelerometerData>(context, 1, testCoroutineScope) {
+                override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData {
+                    return SensorData.AccSample(1f, 1f, 1f)
+                }
 
-            override suspend fun onActive(): Boolean {
-                activeCalls++
-                return super.onActive()
-            }
+                override suspend fun onActive(): Boolean {
+                    activeCalls++
+                    return super.onActive()
+                }
 
-            override fun onInactive() {
-                inactiveCalls++
-                super.onInactive()
+                override fun onInactive() {
+                    inactiveCalls++
+                    super.onInactive()
+                }
             }
-        }
     }
 }
