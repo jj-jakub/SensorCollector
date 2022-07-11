@@ -1,9 +1,6 @@
 package com.jj.core.framework.presentation.screens
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,8 +37,11 @@ import com.jj.core.framework.presentation.SensorsDataViewModel
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
+import com.jj.design.charts.BaseChart
+import com.jj.design.charts.ChartPoint
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
+import kotlin.math.absoluteValue
 
 @Composable
 fun MainScreen(
@@ -180,6 +181,7 @@ private fun AccelerometerControlButtons(
 @Composable
 private fun AccelerometerChartsRow(accelerometerSample: AndroidAnalysedAccUIData?) {
     Row {
+        BaseChartSection(accelerometerSample)
         repeat(times = 4) {
             Column {
                 repeat(times = 3) {
@@ -188,6 +190,25 @@ private fun AccelerometerChartsRow(accelerometerSample: AndroidAnalysedAccUIData
             }
         }
     }
+}
+
+@Composable
+private fun BaseChartSection(accelerometerSample: AndroidAnalysedAccUIData?) {
+    val sampleList = remember { mutableListOf<AnalysedSample.AnalysedAccSample>() }
+    accelerometerSample?.analysedSample?.let {
+        sampleList.add(it)
+        if (sampleList.size >= 16) {
+            sampleList.drop(1)
+        }
+    }
+    BaseChart(
+        chartPoints = sampleList.takeLast(15).map { ChartPoint(it.analysedZ.value?.absoluteValue ?: 10f) },
+        isDynamicChart = true,
+        modifier = Modifier
+            .height(45.dp)
+            .width(100.dp)
+            .background(Color.Gray)
+    )
 }
 
 @Composable
