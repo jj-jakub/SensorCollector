@@ -3,6 +3,7 @@ package com.jj.core.framework.presentation.navigation
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
@@ -11,7 +12,9 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.jj.core.framework.presentation.navigation.Routes.MAIN_GRAPH
 import com.jj.core.framework.presentation.navigation.Routes.MAIN_START_ROUTE
+import com.jj.core.framework.presentation.navigation.Routes.SETTINGS_ROUTE
 import com.jj.core.framework.presentation.screens.MainScreen
+import com.jj.core.framework.presentation.screens.SettingsScreen
 
 @Composable
 fun MainViewRoot(
@@ -19,7 +22,7 @@ fun MainViewRoot(
 ) {
     val navController = rememberNavController()
     MaterialTheme {
-        Scaffold(topBar = {}) {
+        Scaffold(topBar = {}, bottomBar = { BottomNavigationBar(navController = navController) }) {
             NavHost(
                 navController = navController,
                 startDestination = startDestination,
@@ -32,10 +35,20 @@ fun MainViewRoot(
     }
 }
 
+@Preview
+@Composable
+fun PreviewMainViewRoot() {
+    MainViewRoot()
+}
+
+
 fun NavGraphBuilder.mainGraph(navController: NavController) {
     navigation(startDestination = MAIN_START_ROUTE, route = MAIN_GRAPH) {
         composable(route = MAIN_START_ROUTE) {
             MainScreen(navController)
+        }
+        composable(route = SETTINGS_ROUTE) {
+            SettingsScreen()
         }
     }
 }
