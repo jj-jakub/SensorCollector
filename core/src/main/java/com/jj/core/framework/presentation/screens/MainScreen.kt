@@ -85,7 +85,7 @@ private fun MainScreenContent(
     versionInfoText: String,
     ipAddressText: String,
     accelerometerState: SystemModuleState,
-    accelerometerSample: AndroidAnalysedAccUIData?,
+    accelerometerSample: AndroidAnalysedAccUIData<AnnotatedString>?,
     gyroscopeState: SystemModuleState,
     gyroscopeSample: SensorData?,
     magneticFieldState: SystemModuleState,
@@ -181,21 +181,19 @@ private fun AccelerometerControlButtons(
 }
 
 @Composable
-private fun AccelerometerChartsRow(accelerometerSample: AndroidAnalysedAccUIData?) {
+private fun AccelerometerChartsRow(accelerometerSample: AndroidAnalysedAccUIData<AnnotatedString>?) {
     Row {
         BaseChartSection(accelerometerSample)
         repeat(times = 4) {
             Column {
-                repeat(times = 3) {
-                    AccelerometerChart(sample = accelerometerSample?.analysedSample)
-                }
+                AccelerometerChart(sample = accelerometerSample?.analysedSample)
             }
         }
     }
 }
 
 @Composable
-private fun BaseChartSection(accelerometerSample: AndroidAnalysedAccUIData?) {
+private fun BaseChartSection(accelerometerSample: AndroidAnalysedAccUIData<AnnotatedString>?) {
     val sampleList = remember { mutableListOf<AnalysedSample.AnalysedAccSample>() }
     accelerometerSample?.analysedSample?.let {
         sampleList.add(it)
@@ -253,9 +251,9 @@ private fun StateInfoRow(firstLabel: String, state: SystemModuleState) {
 }
 
 @Composable
-private fun AccelerometerValueView(androidAnalysedAccUIData: AndroidAnalysedAccUIData?) {
+private fun AccelerometerValueView(androidAnalysedAccUIData: AndroidAnalysedAccUIData<AnnotatedString>?) {
     androidAnalysedAccUIData?.let { data ->
-        ValueInfoRow(firstLabel = "Accelerometer: ", value = AnnotatedString(data.analysedSampleString))
+        ValueInfoRow(firstLabel = "Accelerometer: ", value = data.analysedSampleString)
     }
 }
 
@@ -263,9 +261,12 @@ private fun AccelerometerValueView(androidAnalysedAccUIData: AndroidAnalysedAccU
 private fun GyroscopeValueView(sensorData: SensorData?) {
     sensorData?.let { data ->
         if (data is SensorData.GyroscopeSample) {
+            val xValue = "%.${3}f".format(data.x)
+            val yValue = "%.${3}f".format(data.y)
+            val zValue = "%.${3}f".format(data.z)
             ValueInfoRow(
                 firstLabel = "Gyroscope: ",
-                value = AnnotatedString("X: ${data.x}, Y: ${data.y}, Z: ${data.z}")
+                value = AnnotatedString("X: $xValue, Y: $yValue, Z: $zValue")
             )
         }
     }
@@ -275,9 +276,12 @@ private fun GyroscopeValueView(sensorData: SensorData?) {
 private fun MagneticFieldValueView(sensorData: SensorData?) {
     sensorData?.let { data ->
         if (data is SensorData.MagneticFieldSample) {
+            val xValue = "%.${3}f".format(data.x)
+            val yValue = "%.${3}f".format(data.y)
+            val zValue = "%.${3}f".format(data.z)
             ValueInfoRow(
                 firstLabel = "Magnetic field: ",
-                value = AnnotatedString("X: ${data.x}, Y: ${data.y}, Z: ${data.z}")
+                value = AnnotatedString("X: $xValue, Y: $yValue, Z: $zValue")
             )
         }
     }
@@ -378,7 +382,7 @@ fun PreviewMainScreen() {
             analysedSampleString = AnnotatedString(
                 text = "X: 1.20, Y: 1.25, Z: 1.30",
                 spanStyle = SpanStyle(Color.Green)
-            ).toString()
+            )
         ),
         gyroscopeSample = SensorData.GyroscopeSample(1.20f, 1.30f, 1.40f),
         magneticFieldSample = SensorData.MagneticFieldSample(1.50f, 1.60f, 1.70f),

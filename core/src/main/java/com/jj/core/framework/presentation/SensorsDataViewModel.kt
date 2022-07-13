@@ -33,7 +33,7 @@ class SensorsDataViewModel(
     systemStateMonitor: SystemStateMonitor
 ) : ViewModel() {
 
-    private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<AndroidAnalysedAccUIData>()
+    private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<AndroidAnalysedAccUIData<AnnotatedString>>()
     val analysedAccelerometerSampleString = _analysedAccelerometerSampleString.asSharedFlow()
 
     private val _gyroscopeSamples = BufferedMutableSharedFlow<SensorData>()
@@ -82,7 +82,7 @@ class SensorsDataViewModel(
         viewModelScope.launch {
             sensorsRepository.collectAnalysedAccelerometerSamples().collect {
                 val coloredSpannable = createColoredSpannable(it)
-                val uiData = AndroidAnalysedAccUIData(it, coloredSpannable.toString())
+                val uiData = AndroidAnalysedAccUIData(it, coloredSpannable)
                 _analysedAccelerometerSampleString.tryEmit(uiData)
             }
         }
@@ -91,11 +91,11 @@ class SensorsDataViewModel(
     private fun createColoredSpannable(analysedSample: AnalysedSample.AnalysedAccSample): AnnotatedString =
         textCreator.buildColoredString(
             TextComponent("X: ", DomainColor.Default),
-            TextComponent(analysedSample.analysedX.value.toString(), analysedSample.analysedX.analysisResult.toDomainColor()),
+            TextComponent("%.${3}f".format(analysedSample.analysedX.value), analysedSample.analysedX.analysisResult.toDomainColor()),
             TextComponent(" Y: ", DomainColor.Default),
-            TextComponent(analysedSample.analysedY.value.toString(), analysedSample.analysedY.analysisResult.toDomainColor()),
+            TextComponent("%.${3}f".format(analysedSample.analysedY.value), analysedSample.analysedY.analysisResult.toDomainColor()),
             TextComponent(" Z: ", DomainColor.Default),
-            TextComponent(analysedSample.analysedZ.value.toString(), analysedSample.analysedZ.analysisResult.toDomainColor())
+            TextComponent("%.${3}f".format(analysedSample.analysedZ.value), analysedSample.analysedZ.analysisResult.toDomainColor())
         )
 
     private fun observeGyroscopeSamples() {
