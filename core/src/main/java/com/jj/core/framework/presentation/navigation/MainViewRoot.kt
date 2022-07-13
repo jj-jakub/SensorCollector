@@ -1,8 +1,11 @@
 package com.jj.core.framework.presentation.navigation
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -22,14 +25,20 @@ fun MainViewRoot(
 ) {
     val navController = rememberNavController()
     MaterialTheme {
-        Scaffold(topBar = {}, bottomBar = { BottomNavigationBar(navController = navController) }) {
-            NavHost(
-                navController = navController,
-                startDestination = startDestination,
+        Scaffold(
+            topBar = {},
+            bottomBar = { BottomNavigationBar(navController = navController) }) { paddingValues ->
+            Column(
+                modifier = Modifier.padding(paddingValues)
             ) {
-                mainGraph(
-                    navController = navController
-                )
+                NavHost(
+                    navController = navController,
+                    startDestination = startDestination,
+                ) {
+                    mainGraph(
+                        navController = navController
+                    )
+                }
             }
         }
     }
