@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import com.jj.core.domain.monitors.SystemModuleState
 import com.jj.core.domain.monitors.toTextAndColor
 import com.jj.core.domain.samples.SensorData
@@ -45,6 +46,7 @@ import kotlin.math.absoluteValue
 
 @Composable
 fun MainScreen(
+    navController: NavController,
     sensorsDataViewModel: SensorsDataViewModel = getViewModel()
 ) {
     val accelerometerState by sensorsDataViewModel.accelerometerCollectionState.collectAsState()
