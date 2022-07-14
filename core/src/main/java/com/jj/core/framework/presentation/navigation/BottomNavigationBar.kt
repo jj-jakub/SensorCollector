@@ -37,10 +37,7 @@ fun BottomNavigationBar(
     BottomNavigation {
         items.forEach {
             BottomNavigationItem(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .wrapContentHeight(),
-                icon = @Composable { Icon(painterResource(id = R.drawable.ic_launcher_foreground), contentDescription = "") },
+                icon = @Composable { Icon(painterResource(id = R.drawable.ic_tick), contentDescription = "") },
                 label = @Composable { Text(it) },
                 alwaysShowLabel = true,
                 selectedContentColor = Color.Red,
