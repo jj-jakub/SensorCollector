@@ -8,23 +8,13 @@ import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
-import androidx.camera.core.Preview
 import androidx.camera.core.UseCase
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import com.jj.core.domain.managers.CameraManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Locale
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import com.jj.core.domain.result.CameraPhotoResult
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 class AndroidCameraManager(
     private val context: Context,
@@ -56,22 +46,28 @@ class AndroidCameraManager(
         }
     }
 
-    override suspend fun takePhoto() = suspendCoroutine<Boolean> { continuation ->
+    override suspend fun takePhoto() = callbackFlow {
         try {
+            trySend(CameraPhotoResult.InProgress)
             imageCapture.takePicture(getOutputOptions(), executor, object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     Log.d("ABAB", "onImageSaved, results: $outputFileResults")
-                    continuation.resume(true)
+//                    continuation.resume(true)
+                    trySend(CameraPhotoResult.Success)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    continuation.resume(false)
+//                    continuation.resume(false)
                     Log.d("ABAB", "onError, ", exception)
+                    trySend(CameraPhotoResult.Failure)
                 }
             })
         } catch (e: Exception) {
             Log.e("ABAB", "Camera launcher exception")
+            trySend(CameraPhotoResult.Failure)
         }
+
+        awaitClose { channel.close() }
     }
 
     private fun getOutputOptions() =
