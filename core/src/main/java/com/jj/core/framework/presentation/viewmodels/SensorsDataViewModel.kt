@@ -1,4 +1,4 @@
-package com.jj.core.framework.presentation
+package com.jj.core.framework.presentation.viewmodels
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel

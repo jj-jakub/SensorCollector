@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.jj.core.R
 import com.jj.core.domain.monitors.SystemModuleState
 import com.jj.core.domain.monitors.toTextAndColor
 import com.jj.core.domain.samples.SensorData
@@ -34,12 +37,14 @@ import com.jj.core.domain.samples.analysis.AnalysedSample
 import com.jj.core.domain.samples.analysis.AnalysedValue
 import com.jj.core.domain.samples.analysis.AnalysisResult
 import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
-import com.jj.core.framework.presentation.SensorsDataViewModel
+import com.jj.core.framework.presentation.viewmodels.SensorsDataViewModel
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
 import com.jj.design.charts.BaseChart
 import com.jj.design.charts.ChartPoint
+import com.jj.design.components.BaseContainer
+import com.jj.design.components.BaseTopAppBar
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.absoluteValue
@@ -95,40 +100,44 @@ private fun MainScreenContent(
 ) {
     val scrollState = rememberScrollState()
 
-    Column {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(scrollState)
-        ) {
-            AccelerometerChartsRow(accelerometerSample = accelerometerSample)
-
-            Divider(thickness = 10.dp)
-
-            AccelerometerChartsRow(accelerometerSample = accelerometerSample)
-
-            AccelerometerStateView(state = accelerometerState)
-            AccelerometerValueView(androidAnalysedAccUIData = accelerometerSample)
-            AccelerometerControlButtons(
-                onStartAccelerometerClick = onStartAccelerometerClick,
-                onStopAccelerometerClick = onStopAccelerometerClick
-            )
-
-            GyroscopeStateView(state = gyroscopeState)
-            GyroscopeValueView(sensorData = gyroscopeSample)
-
-            MagneticFieldStateView(state = magneticFieldState)
-            MagneticFieldValueView(sensorData = magneticFieldSample)
-
-            GPSStateView(state = gpsState)
-            GPSValueView(sensorData = gpsSample)
-
-            CameraSection(onTakePhotoClick, registerCameraPreview)
-        }
-
+    BaseContainer(
+        appBarTitle = stringResource(R.string.control_screen)
+    ) {
         Column {
-            VersionInfoText(versionInfoText = versionInfoText)
-            IPAddressText(ipAddressText = ipAddressText)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(scrollState)
+            ) {
+                AccelerometerChartsRow(accelerometerSample = accelerometerSample)
+
+                Divider(thickness = 10.dp)
+
+                AccelerometerChartsRow(accelerometerSample = accelerometerSample)
+
+                AccelerometerStateView(state = accelerometerState)
+                AccelerometerValueView(androidAnalysedAccUIData = accelerometerSample)
+                AccelerometerControlButtons(
+                    onStartAccelerometerClick = onStartAccelerometerClick,
+                    onStopAccelerometerClick = onStopAccelerometerClick
+                )
+
+                GyroscopeStateView(state = gyroscopeState)
+                GyroscopeValueView(sensorData = gyroscopeSample)
+
+                MagneticFieldStateView(state = magneticFieldState)
+                MagneticFieldValueView(sensorData = magneticFieldSample)
+
+                GPSStateView(state = gpsState)
+                GPSValueView(sensorData = gpsSample)
+
+                CameraSection(onTakePhotoClick, registerCameraPreview)
+            }
+
+            Column {
+                VersionInfoText(versionInfoText = versionInfoText)
+                IPAddressText(ipAddressText = ipAddressText)
+            }
         }
     }
 }
