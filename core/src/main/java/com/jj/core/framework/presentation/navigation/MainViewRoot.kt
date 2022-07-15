@@ -13,9 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.jj.core.framework.presentation.navigation.Routes.MAIN_GRAPH
-import com.jj.core.framework.presentation.navigation.Routes.MAIN_START_ROUTE
-import com.jj.core.framework.presentation.navigation.Routes.SETTINGS_ROUTE
+import com.jj.core.framework.presentation.navigation.Route.CAMERA_ROUTE
+import com.jj.core.framework.presentation.navigation.Route.MAIN_GRAPH
+import com.jj.core.framework.presentation.navigation.Route.MAIN_START_ROUTE
+import com.jj.core.framework.presentation.navigation.Route.SETTINGS_ROUTE
+import com.jj.core.framework.presentation.screens.CameraScreen
 import com.jj.core.framework.presentation.screens.MainScreen
 import com.jj.core.framework.presentation.screens.SettingsScreen
 
@@ -58,6 +60,9 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         }
         composable(route = SETTINGS_ROUTE) {
             SettingsScreen()
+        }
+        composable(route = CAMERA_ROUTE) {
+            CameraScreen()
         }
     }
 }

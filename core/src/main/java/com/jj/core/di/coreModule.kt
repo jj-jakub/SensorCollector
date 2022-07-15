@@ -53,6 +53,7 @@ import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
 import com.jj.core.framework.managers.CameraXProvider
 import com.jj.core.framework.notification.NotificationManagerBuilder
+import com.jj.core.framework.presentation.viewmodels.CameraScreenViewModel
 import com.jj.core.framework.presentation.viewmodels.SensorsDataViewModel
 import com.jj.core.framework.presentation.viewmodels.SettingsScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
@@ -113,6 +114,7 @@ val coreModule = module {
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SettingsScreenViewModel(get()) }
+    viewModel { CameraScreenViewModel(get()) }
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
 
