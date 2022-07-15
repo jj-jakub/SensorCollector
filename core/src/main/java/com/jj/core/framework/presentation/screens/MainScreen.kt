@@ -43,6 +43,7 @@ import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
 import com.jj.design.charts.BaseChart
 import com.jj.design.charts.ChartPoint
+import com.jj.design.charts.MultipleValuesChart
 import com.jj.design.components.BaseContainer
 import com.jj.design.components.BaseTopAppBar
 import kotlinx.coroutines.launch
@@ -210,8 +211,21 @@ private fun BaseChartSection(accelerometerSample: AndroidAnalysedAccUIData<Annot
             sampleList.drop(1)
         }
     }
-    BaseChart(
-        chartPoints = sampleList.takeLast(15).map { ChartPoint(it.analysedZ.value?.absoluteValue ?: 10f) },
+//    BaseChart(
+//        chartPoints = sampleList.takeLast(15).map { ChartPoint(it.analysedZ.value?.absoluteValue ?: 10f) },
+//        isDynamicChart = true,
+//        modifier = Modifier
+//            .height(45.dp)
+//            .width(100.dp)
+//            .background(Color.Gray)
+//    )
+    val samples = sampleList.takeLast(15)
+    val xValues = samples.map { ChartPoint(it.analysedX.value?.absoluteValue ?: 10f) }
+    val yValues = samples.map { ChartPoint(it.analysedY.value?.absoluteValue ?: 10f) }
+    val zValues = samples.map { ChartPoint(it.analysedZ.value?.absoluteValue ?: 10f) }
+
+    MultipleValuesChart(
+        linesInfo = listOf(xValues, yValues, zValues),
         isDynamicChart = true,
         modifier = Modifier
             .height(45.dp)
