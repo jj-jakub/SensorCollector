@@ -192,18 +192,6 @@ private fun AccelerometerControlButtons(
 
 @Composable
 private fun AccelerometerChartsRow(accelerometerSample: AndroidAnalysedAccUIData<AnnotatedString>?) {
-    Row {
-        BaseChartSection(accelerometerSample)
-        repeat(times = 4) {
-            Column {
-                AccelerometerChart(sample = accelerometerSample?.analysedSample)
-            }
-        }
-    }
-}
-
-@Composable
-private fun BaseChartSection(accelerometerSample: AndroidAnalysedAccUIData<AnnotatedString>?) {
     val sampleList = remember { mutableListOf<AnalysedSample.AnalysedAccSample>() }
     accelerometerSample?.analysedSample?.let {
         sampleList.add(it)
@@ -211,27 +199,26 @@ private fun BaseChartSection(accelerometerSample: AndroidAnalysedAccUIData<Annot
             sampleList.drop(1)
         }
     }
-//    BaseChart(
-//        chartPoints = sampleList.takeLast(15).map { ChartPoint(it.analysedZ.value?.absoluteValue ?: 10f) },
-//        isDynamicChart = true,
-//        modifier = Modifier
-//            .height(45.dp)
-//            .width(100.dp)
-//            .background(Color.Gray)
-//    )
+
     val samples = sampleList.takeLast(15)
     val xValues = samples.map { ChartPoint(it.analysedX.value?.absoluteValue ?: 10f) }
     val yValues = samples.map { ChartPoint(it.analysedY.value?.absoluteValue ?: 10f) }
     val zValues = samples.map { ChartPoint(it.analysedZ.value?.absoluteValue ?: 10f) }
 
-    MultipleValuesChart(
-        linesInfo = listOf(xValues, yValues, zValues),
-        isDynamicChart = true,
-        modifier = Modifier
-            .height(45.dp)
-            .width(100.dp)
-            .background(Color.Gray)
-    )
+    Row {
+        repeat(times = 4) {
+            Column {
+                MultipleValuesChart(
+                    linesInfo = listOf(xValues, yValues, zValues),
+                    isDynamicChart = true,
+                    modifier = Modifier
+                        .height(45.dp)
+                        .width(100.dp)
+                        .background(Color.Gray)
+                )
+            }
+        }
+    }
 }
 
 @Composable
