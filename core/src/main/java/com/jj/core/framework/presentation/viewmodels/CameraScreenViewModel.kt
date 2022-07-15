@@ -20,6 +20,9 @@ class CameraScreenViewModel(
     private val _takePhotoButtonActive = MutableStateFlow(true)
     val takePhotoButtonActive = _takePhotoButtonActive.asStateFlow()
 
+    private val _lastImageUri = MutableStateFlow("")
+    val lastImageUri = _lastImageUri.asStateFlow()
+
     fun registerCameraPreview(preview: androidx.camera.core.Preview) {
         cameraManager.registerCameraPreview(preview)
     }
@@ -43,8 +46,9 @@ class CameraScreenViewModel(
                 _takePhotoButtonActive.value = false
                 _cameraStatus.value = CameraStatus.Working
             }
-            CameraPhotoResult.Success -> {
+            is CameraPhotoResult.Success -> {
                 _takePhotoButtonActive.value = true
+                _lastImageUri.value = cameraPhotoResult.imageUri
                 _cameraStatus.value = CameraStatus.Available
             }
         }

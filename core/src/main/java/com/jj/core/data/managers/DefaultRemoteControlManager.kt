@@ -32,7 +32,7 @@ class DefaultRemoteControlManager(
     }
 
     private suspend fun takePhoto(): Boolean = cameraManager.takePhoto().first { result ->
-        result == CameraPhotoResult.Failure || result == CameraPhotoResult.Success
-    } == CameraPhotoResult.Success
+        result == CameraPhotoResult.Failure || result is CameraPhotoResult.Success
+    } is CameraPhotoResult.Success
 }
 

@@ -53,7 +53,7 @@ class AndroidCameraManager(
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     Log.d("ABAB", "onImageSaved, results: $outputFileResults")
 //                    continuation.resume(true)
-                    trySend(CameraPhotoResult.Success)
+                    trySend(CameraPhotoResult.Success(outputFileResults.savedUri.toString()))
                 }
 
                 override fun onError(exception: ImageCaptureException) {
