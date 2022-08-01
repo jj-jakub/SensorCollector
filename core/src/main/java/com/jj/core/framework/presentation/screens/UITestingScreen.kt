@@ -6,6 +6,7 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Slider
@@ -20,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jj.design.canvas.custom.Insignia
+import com.jj.design.canvas.custom.Propeller
 import kotlinx.coroutines.launch
+import kotlin.math.pow
 
 @Composable
 fun UITestingScreen() {
     val maxDegrees = 360F
-    val maxAnimationMillis = 10000F
+    val maxAnimationMillis = 500F
     val minAnimationMillis = 17 // 17 is minimum value, it stops animating at 16
     val sliderSteps = 1000
 
@@ -58,9 +61,14 @@ fun UITestingScreen() {
     Column(
         modifier = Modifier.wrapContentSize()
     ) {
-        Insignia(
-            rotationDegrees = animatableDegrees.value
-        )
+        Insignia()
+        Row {
+            repeat(4) {
+                Propeller(
+                    rotationDegrees = (animatableDegrees.value + (it * 20)) * ((-1.0).pow(it.toDouble())).toFloat()
+                )
+            }
+        }
         Slider(
             modifier = Modifier.padding(50.dp),
             value = sliderValue,
