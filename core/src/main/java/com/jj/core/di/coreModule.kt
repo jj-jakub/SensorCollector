@@ -53,9 +53,11 @@ import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
 import com.jj.core.framework.managers.CameraXProvider
 import com.jj.core.framework.notification.NotificationManagerBuilder
+import com.jj.core.framework.presentation.screens.UITestingScreen
 import com.jj.core.framework.presentation.viewmodels.CameraScreenViewModel
 import com.jj.core.framework.presentation.viewmodels.SensorsDataViewModel
 import com.jj.core.framework.presentation.viewmodels.SettingsScreenViewModel
+import com.jj.core.framework.presentation.viewmodels.UITestingScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -115,6 +117,7 @@ val coreModule = module {
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SettingsScreenViewModel(get()) }
     viewModel { CameraScreenViewModel(get()) }
+    viewModel { UITestingScreenViewModel() }
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
 
