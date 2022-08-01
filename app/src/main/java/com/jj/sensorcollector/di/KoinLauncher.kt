@@ -14,7 +14,7 @@ class KoinLauncher {
 
     fun startKoin(applicationContext: Context) {
         startKoin {
-            androidLogger(Level.ERROR)
+            androidLogger(Level.DEBUG)
             androidContext(applicationContext)
             modules(mainModule, useCaseModule, sensorsModule, coreModule, serverModule)
         }
