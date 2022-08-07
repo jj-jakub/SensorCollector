@@ -48,6 +48,7 @@ import com.jj.core.domain.sensors.IGlobalSensorManager
 import com.jj.core.domain.sensors.SamplesRepository
 import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
+import com.jj.core.domain.travel.GetTravelItems
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
@@ -57,6 +58,7 @@ import com.jj.core.framework.presentation.screens.UITestingScreen
 import com.jj.core.framework.presentation.viewmodels.CameraScreenViewModel
 import com.jj.core.framework.presentation.viewmodels.SensorsDataViewModel
 import com.jj.core.framework.presentation.viewmodels.SettingsScreenViewModel
+import com.jj.core.framework.presentation.viewmodels.TravelScreenViewModel
 import com.jj.core.framework.presentation.viewmodels.UITestingScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
 import org.koin.android.ext.koin.androidContext
@@ -117,6 +119,7 @@ val coreModule = module {
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SettingsScreenViewModel(get()) }
     viewModel { CameraScreenViewModel(get()) }
+    viewModel { TravelScreenViewModel(get()) }
     viewModel { UITestingScreenViewModel() }
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
@@ -136,4 +139,6 @@ val coreModule = module {
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
 
     single<GPSVelocityCalculator> { DefaultGPSVelocityCalculator() }
+
+    single { GetTravelItems() }
 }
