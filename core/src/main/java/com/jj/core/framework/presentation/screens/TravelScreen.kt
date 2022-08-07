@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.jj.core.framework.domain.model.Checklist
 import com.jj.core.framework.domain.model.ChecklistItem
 import com.jj.core.framework.presentation.viewmodels.TravelScreenViewModel
 import org.koin.androidx.compose.getViewModel
@@ -23,12 +24,12 @@ fun TravelScreen(
     viewModel: TravelScreenViewModel = getViewModel()
 ) {
 
-    val firstListItems by viewModel.firstListItems.collectAsState()
-    val secondListItems by viewModel.secondListItems.collectAsState()
+    val firstChecklist by viewModel.firstListItems.collectAsState()
+    val secondChecklist by viewModel.secondListItems.collectAsState()
 
     TravelScreenContent(
-        firstListItems = firstListItems,
-        secondListItems = secondListItems,
+        firstChecklist = firstChecklist,
+        secondChecklist = secondChecklist,
         onFirstListItemCheckedChange = viewModel::onFirstListItemCheckedChange,
         onSecondListItemCheckedChange = viewModel::onSecondListItemCheckedChange
     )
@@ -36,8 +37,8 @@ fun TravelScreen(
 
 @Composable
 private fun TravelScreenContent(
-    firstListItems: List<ChecklistItem>,
-    secondListItems: List<ChecklistItem>,
+    firstChecklist: Checklist,
+    secondChecklist: Checklist,
     onFirstListItemCheckedChange: (ChecklistItem) -> Unit,
     onSecondListItemCheckedChange: (ChecklistItem) -> Unit,
 ) {
@@ -47,8 +48,8 @@ private fun TravelScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
-                listTitle = "Ja",
-                listItems = firstListItems,
+                listTitle = firstChecklist.id,
+                listItems = firstChecklist.items,
                 onCheckedChange = onFirstListItemCheckedChange
             )
         }
@@ -57,8 +58,8 @@ private fun TravelScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
-                listTitle = "Siwy",
-                listItems = secondListItems,
+                listTitle = secondChecklist.id,
+                listItems = secondChecklist.items,
                 onCheckedChange = onSecondListItemCheckedChange
             )
         }
@@ -67,7 +68,9 @@ private fun TravelScreenContent(
 
 @Composable
 private fun ItemsList(listTitle: String, listItems: List<ChecklistItem>, onCheckedChange: (ChecklistItem) -> Unit) {
-    Column {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Text(listTitle, textAlign = TextAlign.Center)
         listItems.forEach {
             ListItem(
@@ -96,24 +99,30 @@ private fun ListItem(checklistItem: ChecklistItem, onCheckedChange: (ChecklistIt
 @Composable
 fun PreviewTravelScreen() {
     TravelScreenContent(
-        firstListItems = listOf(
-            ChecklistItem(
-                name = "A",
-                isChecked = false
-            ),
-            ChecklistItem(
-                name = "B",
-                isChecked = true
+        firstChecklist = Checklist(
+            id = "Ja",
+            items = listOf(
+                ChecklistItem(
+                    name = "A",
+                    isChecked = false
+                ),
+                ChecklistItem(
+                    name = "B",
+                    isChecked = true
+                ),
             ),
         ),
-        secondListItems = listOf(
-            ChecklistItem(
-                name = "C",
-                isChecked = true
-            ),
-            ChecklistItem(
-                name = "D",
-                isChecked = false
+        secondChecklist = Checklist(
+            id = "Siwy",
+            items = listOf(
+                ChecklistItem(
+                    name = "C",
+                    isChecked = true
+                ),
+                ChecklistItem(
+                    name = "D",
+                    isChecked = false
+                ),
             ),
         ),
         onFirstListItemCheckedChange = {},

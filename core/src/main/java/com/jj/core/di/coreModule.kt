@@ -49,6 +49,7 @@ import com.jj.core.domain.sensors.SamplesRepository
 import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.domain.travel.GetTravelItems
+import com.jj.core.domain.travel.SaveTravelItems
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
@@ -119,7 +120,7 @@ val coreModule = module {
     viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SettingsScreenViewModel(get()) }
     viewModel { CameraScreenViewModel(get()) }
-    viewModel { TravelScreenViewModel(get()) }
+    viewModel { TravelScreenViewModel(get(), get()) }
     viewModel { UITestingScreenViewModel() }
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
@@ -141,4 +142,5 @@ val coreModule = module {
     single<GPSVelocityCalculator> { DefaultGPSVelocityCalculator() }
 
     single { GetTravelItems() }
+    single { SaveTravelItems() }
 }
