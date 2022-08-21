@@ -1,8 +1,8 @@
 package com.jj.core.framework.presentation.travel
 
+import android.view.KeyEvent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
@@ -24,12 +24,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jj.core.R
 import com.jj.core.domain.travel.model.TravelItem
 import com.jj.core.framework.domain.cyan
@@ -159,7 +159,9 @@ private fun AddTravelItemSection(
     ) {
         TextField(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .onEnterClick(onAddTravelItemSaveClicked),
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
             value = addTravelItemText,
             onValueChange = onAddTravelItemTextChanged,
             label = {
@@ -178,6 +180,18 @@ private fun AddTravelItemSection(
         )
     }
 }
+
+private fun Modifier.onEnterClick(saveAction: () -> Unit): Modifier =
+    this.apply {
+        onKeyEvent {
+            if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                saveAction()
+                true
+            } else {
+                false
+            }
+        }
+    }
 
 @Composable
 private fun ItemsList(
@@ -219,7 +233,10 @@ private fun ListItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = travelItem.text)
+        Text(
+//            modifier = Modifier.weight(1f),
+            text = travelItem.text
+        )
         Checkbox(
             checked = travelItem.isChecked,
             onCheckedChange = { onCheckedChange(travelItem) },
@@ -247,7 +264,7 @@ private fun getTestListItems() = mutableListOf<TravelItem>().apply {
     repeat(5) {
         add(
             TravelItem(
-                text = "A",
+                text = "ALongtextALongtextALongtext",
                 isChecked = false,
                 listId = ""
             )

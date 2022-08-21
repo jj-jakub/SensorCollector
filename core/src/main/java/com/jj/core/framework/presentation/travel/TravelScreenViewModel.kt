@@ -30,12 +30,12 @@ class TravelScreenViewModel(
     init {
         viewModelScope.launch {
             getTravelItemsForList(TravelList.MY.listId).collectLatest {
-                _firstListItems.value = it
+                _firstListItems.value = it.asReversed()
             }
         }
         viewModelScope.launch {
             getTravelItemsForList(TravelList.HER.listId).collectLatest {
-                _secondListItems.value = it
+                _secondListItems.value = it.asReversed()
             }
         }
     }
@@ -59,7 +59,7 @@ class TravelScreenViewModel(
     }
 
     fun onAddTravelItemSaveClicked() {
-        val textToSave = addTravelItemText.value
+        val textToSave = addTravelItemText.value.filter { it != '\n' }
         if (textToSave.isNotBlank()) {
             saveItem(TravelItem(listId = TravelList.MY.listId, text = textToSave, isChecked = false))
             saveItem(TravelItem(listId = TravelList.HER.listId, text = textToSave, isChecked = false))
