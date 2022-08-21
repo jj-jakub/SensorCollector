@@ -27,6 +27,7 @@ import com.jj.core.data.sensors.GlobalSensorCollector
 import com.jj.core.data.sensors.GlobalSensorManager
 import com.jj.core.data.text.VersionTextProvider
 import com.jj.core.data.time.DefaultTimeProvider
+import com.jj.core.data.travel.database.TravelDatabase
 import com.jj.core.domain.api.AccelerometerAPI
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.csv.CSVFileCreator
@@ -70,6 +71,7 @@ val coreModule = module {
 
     single { Room.databaseBuilder(androidContext(), SamplesDatabase::class.java, "samples_database.db").build() }
     single { Room.databaseBuilder(androidContext(), AnalysedSamplesDatabase::class.java, "analysed_samples_database.db").build() }
+    single { Room.databaseBuilder(androidContext(), TravelDatabase::class.java, "travel_database.db").build() }
 
     single<SamplesRepository> { DefaultSamplesRepository(get<SamplesDatabase>().gpsDataDao, get<SamplesDatabase>().accelerationDataDao) }
     single<GlobalEventsRepository> { DefaultGlobalEventRepository(get<SamplesDatabase>().globalEventDataDao) }
