@@ -1,10 +1,11 @@
 package com.jj.core.domain.travel
 
-import com.jj.core.framework.domain.model.Checklist
+import com.jj.core.domain.repository.TravelRepository
+import com.jj.core.domain.travel.model.TravelItem
 
-class SaveTravelItems {
+class SaveTravelItems(
+    private val travelRepository: TravelRepository
+) {
 
-    suspend operator fun invoke(checklistItems: Checklist) {
-        // TODO
-    }
+    suspend operator fun invoke(travelItem: TravelItem) = travelRepository.saveTravelItem(travelItem = travelItem)
 }

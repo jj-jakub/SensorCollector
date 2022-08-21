@@ -22,8 +22,8 @@ import com.jj.core.framework.presentation.navigation.Route.UI_TESTING_ROUTE
 import com.jj.core.framework.presentation.screens.CameraScreen
 import com.jj.core.framework.presentation.screens.MainScreen
 import com.jj.core.framework.presentation.screens.SettingsScreen
-import com.jj.core.framework.presentation.screens.TravelScreen
 import com.jj.core.framework.presentation.screens.UITestingScreen
+import com.jj.core.framework.presentation.travel.TravelScreen
 
 @Composable
 fun MainViewRoot(

@@ -1,4 +1,4 @@
-package com.jj.core.framework.presentation.screens
+package com.jj.core.framework.presentation.travel
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,16 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.jj.core.framework.domain.model.Checklist
-import com.jj.core.framework.domain.model.ChecklistItem
-import com.jj.core.framework.presentation.viewmodels.TravelScreenViewModel
+import com.jj.core.domain.travel.model.TravelItem
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun TravelScreen(
     viewModel: TravelScreenViewModel = getViewModel()
 ) {
-
     val firstChecklist by viewModel.firstListItems.collectAsState()
     val secondChecklist by viewModel.secondListItems.collectAsState()
 
@@ -37,10 +34,10 @@ fun TravelScreen(
 
 @Composable
 private fun TravelScreenContent(
-    firstChecklist: Checklist,
-    secondChecklist: Checklist,
-    onFirstListItemCheckedChange: (ChecklistItem) -> Unit,
-    onSecondListItemCheckedChange: (ChecklistItem) -> Unit,
+    firstChecklist: List<TravelItem>,
+    secondChecklist: List<TravelItem>,
+    onFirstListItemCheckedChange: (TravelItem) -> Unit,
+    onSecondListItemCheckedChange: (TravelItem) -> Unit,
 ) {
     Row {
         Column(
@@ -48,8 +45,8 @@ private fun TravelScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
-                listTitle = firstChecklist.id,
-                listItems = firstChecklist.items,
+                listTitle = "1",
+                listItems = firstChecklist,
                 onCheckedChange = onFirstListItemCheckedChange
             )
         }
@@ -58,8 +55,8 @@ private fun TravelScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
-                listTitle = secondChecklist.id,
-                listItems = secondChecklist.items,
+                listTitle = "2",
+                listItems = secondChecklist,
                 onCheckedChange = onSecondListItemCheckedChange
             )
         }
@@ -67,14 +64,14 @@ private fun TravelScreenContent(
 }
 
 @Composable
-private fun ItemsList(listTitle: String, listItems: List<ChecklistItem>, onCheckedChange: (ChecklistItem) -> Unit) {
+private fun ItemsList(listTitle: String, listItems: List<TravelItem>, onCheckedChange: (TravelItem) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(listTitle, textAlign = TextAlign.Center)
         listItems.forEach {
             ListItem(
-                checklistItem = it,
+                TravelItem = it,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -82,7 +79,7 @@ private fun ItemsList(listTitle: String, listItems: List<ChecklistItem>, onCheck
 }
 
 @Composable
-private fun ListItem(checklistItem: ChecklistItem, onCheckedChange: (ChecklistItem) -> Unit) {
+private fun ListItem(TravelItem: TravelItem, onCheckedChange: (TravelItem) -> Unit) {
     Row(
         modifier = Modifier
             .wrapContentHeight()
@@ -90,8 +87,8 @@ private fun ListItem(checklistItem: ChecklistItem, onCheckedChange: (ChecklistIt
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = checklistItem.name)
-        Checkbox(checked = checklistItem.isChecked, onCheckedChange = { onCheckedChange(checklistItem) })
+        Text(text = TravelItem.text)
+        Checkbox(checked = TravelItem.isChecked, onCheckedChange = { onCheckedChange(TravelItem) })
     }
 }
 
@@ -99,30 +96,24 @@ private fun ListItem(checklistItem: ChecklistItem, onCheckedChange: (ChecklistIt
 @Composable
 fun PreviewTravelScreen() {
     TravelScreenContent(
-        firstChecklist = Checklist(
-            id = "Ja",
-            items = listOf(
-                ChecklistItem(
-                    name = "A",
-                    isChecked = false
-                ),
-                ChecklistItem(
-                    name = "B",
-                    isChecked = true
-                ),
+        firstChecklist = listOf(
+            TravelItem(
+                text = "A",
+                isChecked = false
+            ),
+            TravelItem(
+                text = "B",
+                isChecked = true
             ),
         ),
-        secondChecklist = Checklist(
-            id = "Siwy",
-            items = listOf(
-                ChecklistItem(
-                    name = "C",
-                    isChecked = true
-                ),
-                ChecklistItem(
-                    name = "D",
-                    isChecked = false
-                ),
+        secondChecklist = listOf(
+            TravelItem(
+                text = "C",
+                isChecked = true
+            ),
+            TravelItem(
+                text = "D",
+                isChecked = false
             ),
         ),
         onFirstListItemCheckedChange = {},

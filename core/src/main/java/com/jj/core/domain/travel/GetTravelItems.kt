@@ -1,24 +1,12 @@
 package com.jj.core.domain.travel
 
-import com.jj.core.framework.domain.model.Checklist
-import com.jj.core.framework.domain.model.ChecklistId
-import com.jj.core.framework.domain.model.ChecklistItem
+import com.jj.core.domain.repository.TravelRepository
+import com.jj.core.domain.travel.model.TravelItem
+import kotlinx.coroutines.flow.Flow
 
-class GetTravelItems {
+class GetTravelItems(
+    private val travelRepository: TravelRepository,
+) {
 
-    suspend operator fun invoke(checklistId: ChecklistId): Checklist {
-        // TODO
-        return Checklist(
-            checklistId.name, listOf(
-                ChecklistItem(
-                    name = "A",
-                    isChecked = false
-                ),
-                ChecklistItem(
-                    name = "B",
-                    isChecked = true
-                ),
-            )
-        )
-    }
+    suspend operator fun invoke(): Flow<List<TravelItem>> = travelRepository.getTravelItems()
 }

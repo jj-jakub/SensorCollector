@@ -27,6 +27,7 @@ import com.jj.core.data.sensors.GlobalSensorCollector
 import com.jj.core.data.sensors.GlobalSensorManager
 import com.jj.core.data.text.VersionTextProvider
 import com.jj.core.data.time.DefaultTimeProvider
+import com.jj.core.data.travel.DefaultTravelRepository
 import com.jj.core.data.travel.database.TravelDatabase
 import com.jj.core.domain.api.AccelerometerAPI
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
@@ -43,6 +44,7 @@ import com.jj.core.domain.repository.GyroscopeRepository
 import com.jj.core.domain.repository.MagneticFieldRepository
 import com.jj.core.domain.repository.PathRepository
 import com.jj.core.domain.repository.SensorsRepository
+import com.jj.core.domain.repository.TravelRepository
 import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
 import com.jj.core.domain.sensors.IGlobalSensorManager
@@ -56,11 +58,10 @@ import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
 import com.jj.core.framework.managers.CameraXProvider
 import com.jj.core.framework.notification.NotificationManagerBuilder
-import com.jj.core.framework.presentation.screens.UITestingScreen
 import com.jj.core.framework.presentation.viewmodels.CameraScreenViewModel
 import com.jj.core.framework.presentation.viewmodels.SensorsDataViewModel
 import com.jj.core.framework.presentation.viewmodels.SettingsScreenViewModel
-import com.jj.core.framework.presentation.viewmodels.TravelScreenViewModel
+import com.jj.core.framework.presentation.travel.TravelScreenViewModel
 import com.jj.core.framework.presentation.viewmodels.UITestingScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
 import org.koin.android.ext.koin.androidContext
@@ -98,6 +99,7 @@ val coreModule = module {
 
     single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
     single<PathRepository> { DefaultPathRepository() }
+    single<TravelRepository> { DefaultTravelRepository(get<TravelDatabase>().travelItemDataDao) }
 
     single { AccelerometerSampleAnalyzer(get(), get(), get(), get()) }
     single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
@@ -143,6 +145,6 @@ val coreModule = module {
 
     single<GPSVelocityCalculator> { DefaultGPSVelocityCalculator() }
 
-    single { GetTravelItems() }
-    single { SaveTravelItems() }
+    single { GetTravelItems(get()) }
+    single { SaveTravelItems(get()) }
 }

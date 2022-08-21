@@ -1,9 +1,9 @@
-package com.jj.core.framework.domain.model
+package com.jj.core.domain.travel.model
 
 import java.util.UUID
 
-data class ChecklistItem(
+data class TravelItem(
     val id: UUID? = UUID.randomUUID(),
-    val name: String,
+    val text: String,
     val isChecked: Boolean
 )

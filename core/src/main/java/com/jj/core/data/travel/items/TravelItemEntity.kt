@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class TravelItemEntity(
     @PrimaryKey
     val id: Int? = null,
-    val text: String?
+    val text: String,
+    val isChecked: Boolean,
 )
