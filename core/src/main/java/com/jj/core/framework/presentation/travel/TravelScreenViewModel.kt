@@ -3,16 +3,17 @@ package com.jj.core.framework.presentation.travel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.core.domain.travel.DeleteTravelItem
-import com.jj.core.domain.travel.GetTravelItems
+import com.jj.core.domain.travel.GetTravelItemsForList
 import com.jj.core.domain.travel.SaveTravelItem
 import com.jj.core.domain.travel.model.TravelItem
+import com.jj.core.domain.travel.model.TravelList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class TravelScreenViewModel(
-    private val getTravelItems: GetTravelItems,
+    private val getTravelItemsForList: GetTravelItemsForList,
     private val saveTravelItem: SaveTravelItem,
     private val deleteTravelItem: DeleteTravelItem,
 ) : ViewModel() {
@@ -28,8 +29,12 @@ class TravelScreenViewModel(
 
     init {
         viewModelScope.launch {
-            getTravelItems().collectLatest {
+            getTravelItemsForList(TravelList.MY.listId).collectLatest {
                 _firstListItems.value = it
+            }
+        }
+        viewModelScope.launch {
+            getTravelItemsForList(TravelList.HER.listId).collectLatest {
                 _secondListItems.value = it
             }
         }
@@ -56,7 +61,8 @@ class TravelScreenViewModel(
     fun onAddTravelItemSaveClicked() {
         val textToSave = addTravelItemText.value
         if (textToSave.isNotBlank()) {
-            saveItem(TravelItem(text = textToSave, isChecked = false))
+            saveItem(TravelItem(listId = TravelList.MY.listId, text = textToSave, isChecked = false))
+            saveItem(TravelItem(listId = TravelList.HER.listId, text = textToSave, isChecked = false))
             _addTravelItemText.value = ""
         }
     }

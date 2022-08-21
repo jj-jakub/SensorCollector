@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.jj.core.domain.travel.model.TravelItem
 import org.koin.androidx.compose.getViewModel
 
@@ -95,7 +97,7 @@ private fun ItemsSection(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
-                listTitle = "1",
+                listTitle = "Ja",
                 listItems = firstTravelItems,
                 onCheckedChange = onFirstTravelItemsCheckedChange,
                 onDeleteTravelItem = onDeleteTravelItem,
@@ -108,7 +110,7 @@ private fun ItemsSection(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
-                listTitle = "2",
+                listTitle = "Misiun",
                 listItems = secondTravelItems,
                 onCheckedChange = onSecondTravelItemsCheckedChange,
                 onDeleteTravelItem = onDeleteTravelItem,
@@ -151,6 +153,7 @@ private fun ItemsList(
     onDeleteTravelItem: (TravelItem) -> Unit,
 ) {
     Column(
+        modifier = Modifier.padding(horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(listTitle, textAlign = TextAlign.Center)
@@ -208,6 +211,7 @@ private fun getTestListItems() = mutableListOf<TravelItem>().apply {
             TravelItem(
                 text = "A",
                 isChecked = false,
+                listId = ""
             )
         )
     }

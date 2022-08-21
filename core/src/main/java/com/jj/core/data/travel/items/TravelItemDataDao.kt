@@ -16,6 +16,9 @@ interface TravelItemDataDao {
     @Query("SELECT * FROM TravelItemEntity")
     fun getTravelItemEntities(): Flow<List<TravelItemEntity>>
 
+    @Query("SELECT * FROM TravelItemEntity WHERE listId=:listId")
+    fun getTravelItemEntitiesForListId(listId: String): Flow<List<TravelItemEntity>>
+
     @Query("SELECT * FROM TravelItemEntity WHERE id=(SELECT max(id) FROM TravelItemEntity)")
     fun getLatestTravelItemEntity(): Flow<TravelItemEntity>
 

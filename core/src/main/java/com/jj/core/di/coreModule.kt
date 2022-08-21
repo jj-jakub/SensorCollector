@@ -53,7 +53,8 @@ import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.domain.travel.ClearAllTravelItems
 import com.jj.core.domain.travel.DeleteTravelItem
-import com.jj.core.domain.travel.GetTravelItems
+import com.jj.core.domain.travel.GetAllTravelItems
+import com.jj.core.domain.travel.GetTravelItemsForList
 import com.jj.core.domain.travel.SaveTravelItem
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
@@ -147,7 +148,8 @@ val coreModule = module {
 
     single<GPSVelocityCalculator> { DefaultGPSVelocityCalculator() }
 
-    single { GetTravelItems(get()) }
+    single { GetAllTravelItems(get()) }
+    single { GetTravelItemsForList(get()) }
     single { SaveTravelItem(get()) }
     single { ClearAllTravelItems(get()) }
     single { DeleteTravelItem(get()) }

@@ -19,6 +19,10 @@ class DefaultTravelRepository(
     override suspend fun getTravelItems(): Flow<List<TravelItem>> =
         travelItemDataDao.getTravelItemEntities().map { entities -> entities.map { entity -> entity.toTravelItem() } }
 
+    override suspend fun getTravelItemsForListId(listId: String): Flow<List<TravelItem>> =
+        travelItemDataDao.getTravelItemEntitiesForListId(listId = listId)
+            .map { entities -> entities.map { entity -> entity.toTravelItem() } }
+
     override suspend fun clearAllTravelItems() = travelItemDataDao.deleteAllTravelItemEntities()
 
     override suspend fun deleteTravelItem(travelItem: TravelItem) =
