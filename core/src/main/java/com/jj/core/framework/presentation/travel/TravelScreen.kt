@@ -1,12 +1,18 @@
 package com.jj.core.framework.presentation.travel
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,72 +29,161 @@ fun TravelScreen(
 ) {
     val firstChecklist by viewModel.firstListItems.collectAsState()
     val secondChecklist by viewModel.secondListItems.collectAsState()
+    val addTravelItemText by viewModel.addTravelItemText.collectAsState()
 
     TravelScreenContent(
-        firstChecklist = firstChecklist,
-        secondChecklist = secondChecklist,
-        onFirstListItemCheckedChange = viewModel::onFirstListItemCheckedChange,
-        onSecondListItemCheckedChange = viewModel::onSecondListItemCheckedChange
+        firstTravelItems = firstChecklist,
+        secondTravelItems = secondChecklist,
+        onFirstTravelItemsCheckedChange = viewModel::onFirstListItemCheckedChange,
+        onSecondTravelItemsCheckedChange = viewModel::onSecondListItemCheckedChange,
+        addTravelItemText = addTravelItemText,
+        onAddTravelItemTextChanged = viewModel::onAddTravelItemTextChanged,
+        onAddTravelItemSaveClicked = viewModel::onAddTravelItemSaveClicked,
+        onDeleteTravelItem = viewModel::onDeleteTravelItem,
     )
 }
 
 @Composable
 private fun TravelScreenContent(
-    firstChecklist: List<TravelItem>,
-    secondChecklist: List<TravelItem>,
-    onFirstListItemCheckedChange: (TravelItem) -> Unit,
-    onSecondListItemCheckedChange: (TravelItem) -> Unit,
+    firstTravelItems: List<TravelItem>,
+    secondTravelItems: List<TravelItem>,
+    onFirstTravelItemsCheckedChange: (TravelItem) -> Unit,
+    onSecondTravelItemsCheckedChange: (TravelItem) -> Unit,
+    addTravelItemText: String,
+    onAddTravelItemTextChanged: (String) -> Unit,
+    onAddTravelItemSaveClicked: () -> Unit,
+    onDeleteTravelItem: (TravelItem) -> Unit,
 ) {
-    Row {
-        Column(
+
+    Column(
+        verticalArrangement = Arrangement.SpaceBetween,
+    ) {
+        AddTravelItemSection(
+            addTravelItemText = addTravelItemText,
+            onAddTravelItemTextChanged = onAddTravelItemTextChanged,
+            onAddTravelItemSaveClicked = onAddTravelItemSaveClicked
+        )
+        ItemsSection(
             modifier = Modifier.weight(1f),
+            firstTravelItems = firstTravelItems,
+            secondTravelItems = secondTravelItems,
+            onFirstTravelItemsCheckedChange = onFirstTravelItemsCheckedChange,
+            onSecondTravelItemsCheckedChange = onSecondTravelItemsCheckedChange,
+            onDeleteTravelItem = onDeleteTravelItem,
+        )
+    }
+}
+
+@Composable
+private fun ItemsSection(
+    modifier: Modifier,
+    firstTravelItems: List<TravelItem>,
+    secondTravelItems: List<TravelItem>,
+    onFirstTravelItemsCheckedChange: (TravelItem) -> Unit,
+    onSecondTravelItemsCheckedChange: (TravelItem) -> Unit,
+    onDeleteTravelItem: (TravelItem) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .then(modifier)
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .wrapContentHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
                 listTitle = "1",
-                listItems = firstChecklist,
-                onCheckedChange = onFirstListItemCheckedChange
+                listItems = firstTravelItems,
+                onCheckedChange = onFirstTravelItemsCheckedChange,
+                onDeleteTravelItem = onDeleteTravelItem,
             )
         }
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .wrapContentHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ItemsList(
                 listTitle = "2",
-                listItems = secondChecklist,
-                onCheckedChange = onSecondListItemCheckedChange
+                listItems = secondTravelItems,
+                onCheckedChange = onSecondTravelItemsCheckedChange,
+                onDeleteTravelItem = onDeleteTravelItem,
             )
         }
     }
 }
 
 @Composable
-private fun ItemsList(listTitle: String, listItems: List<TravelItem>, onCheckedChange: (TravelItem) -> Unit) {
+private fun AddTravelItemSection(
+    addTravelItemText: String,
+    onAddTravelItemTextChanged: (String) -> Unit,
+    onAddTravelItemSaveClicked: () -> Unit
+) {
+    Column {
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = addTravelItemText,
+            onValueChange = onAddTravelItemTextChanged,
+            label = {
+                Text(text = "Write new item")
+            }
+        )
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            content = {
+                Text(text = "Save new item")
+            },
+            onClick = onAddTravelItemSaveClicked,
+        )
+    }
+}
+
+@Composable
+private fun ItemsList(
+    listTitle: String,
+    listItems: List<TravelItem>,
+    onCheckedChange: (TravelItem) -> Unit,
+    onDeleteTravelItem: (TravelItem) -> Unit,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(listTitle, textAlign = TextAlign.Center)
         listItems.forEach {
             ListItem(
-                TravelItem = it,
-                onCheckedChange = onCheckedChange
+                travelItem = it,
+                onCheckedChange = onCheckedChange,
+                onDeleteTravelItem = onDeleteTravelItem,
             )
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ListItem(TravelItem: TravelItem, onCheckedChange: (TravelItem) -> Unit) {
+private fun ListItem(
+    travelItem: TravelItem,
+    onCheckedChange: (TravelItem) -> Unit,
+    onDeleteTravelItem: (TravelItem) -> Unit,
+) {
     Row(
         modifier = Modifier
             .wrapContentHeight()
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .combinedClickable(
+                onLongClick = { onDeleteTravelItem(travelItem) },
+                onClick = {}
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = TravelItem.text)
-        Checkbox(checked = TravelItem.isChecked, onCheckedChange = { onCheckedChange(TravelItem) })
+        Text(text = travelItem.text)
+        Checkbox(checked = travelItem.isChecked, onCheckedChange = { onCheckedChange(travelItem) })
     }
 }
 
@@ -96,27 +191,24 @@ private fun ListItem(TravelItem: TravelItem, onCheckedChange: (TravelItem) -> Un
 @Composable
 fun PreviewTravelScreen() {
     TravelScreenContent(
-        firstChecklist = listOf(
+        firstTravelItems = getTestListItems(),
+        secondTravelItems = getTestListItems(),
+        onFirstTravelItemsCheckedChange = {},
+        onSecondTravelItemsCheckedChange = {},
+        addTravelItemText = "addTravelItemText",
+        onAddTravelItemTextChanged = {},
+        onAddTravelItemSaveClicked = {},
+        onDeleteTravelItem = {},
+    )
+}
+
+private fun getTestListItems() = mutableListOf<TravelItem>().apply {
+    repeat(5) {
+        add(
             TravelItem(
                 text = "A",
-                isChecked = false
-            ),
-            TravelItem(
-                text = "B",
-                isChecked = true
-            ),
-        ),
-        secondChecklist = listOf(
-            TravelItem(
-                text = "C",
-                isChecked = true
-            ),
-            TravelItem(
-                text = "D",
-                isChecked = false
-            ),
-        ),
-        onFirstListItemCheckedChange = {},
-        onSecondListItemCheckedChange = {}
-    )
+                isChecked = false,
+            )
+        )
+    }
 }

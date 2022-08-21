@@ -3,7 +3,7 @@ package com.jj.core.domain.travel
 import com.jj.core.domain.repository.TravelRepository
 import com.jj.core.domain.travel.model.TravelItem
 
-class SaveTravelItems(
+class SaveTravelItem(
     private val travelRepository: TravelRepository
 ) {
 

@@ -1,9 +1,7 @@
 package com.jj.core.domain.travel.model
 
-import java.util.UUID
-
 data class TravelItem(
-    val id: UUID? = UUID.randomUUID(),
+    val id: Int? = null,
     val text: String,
     val isChecked: Boolean
 )
