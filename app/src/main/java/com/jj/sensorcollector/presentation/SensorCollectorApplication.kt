@@ -14,6 +14,6 @@ class SensorCollectorApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         koinLauncher.startKoin(this)
-        appInitializer.initialize()
+//        appInitializer.initialize()
     }
 }
