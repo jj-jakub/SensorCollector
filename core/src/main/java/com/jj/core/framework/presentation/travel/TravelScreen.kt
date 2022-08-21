@@ -1,6 +1,8 @@
 package com.jj.core.framework.presentation.travel
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +13,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -19,10 +24,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.jj.core.R
 import com.jj.core.domain.travel.model.TravelItem
+import com.jj.core.framework.domain.cyan
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -60,6 +70,7 @@ private fun TravelScreenContent(
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
+        HeaderSection()
         AddTravelItemSection(
             addTravelItemText = addTravelItemText,
             onAddTravelItemTextChanged = onAddTravelItemTextChanged,
@@ -72,6 +83,24 @@ private fun TravelScreenContent(
             onFirstTravelItemsCheckedChange = onFirstTravelItemsCheckedChange,
             onSecondTravelItemsCheckedChange = onSecondTravelItemsCheckedChange,
             onDeleteTravelItem = onDeleteTravelItem,
+        )
+    }
+}
+
+@Composable
+private fun HeaderSection() {
+    Row(
+        modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
+    ) {
+        Image(
+            modifier = Modifier.weight(1f),
+            painter = painterResource(id = R.drawable.icon_flag_of_zanzibar),
+            contentDescription = null
+        )
+        Image(
+            modifier = Modifier.weight(1f),
+            painter = painterResource(id = R.drawable.icon_palm_tree_color),
+            contentDescription = null
         )
     }
 }
@@ -125,7 +154,9 @@ private fun AddTravelItemSection(
     onAddTravelItemTextChanged: (String) -> Unit,
     onAddTravelItemSaveClicked: () -> Unit
 ) {
-    Column {
+    Column(
+        modifier = Modifier.padding(horizontal = 8.dp)
+    ) {
         TextField(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -137,8 +168,11 @@ private fun AddTravelItemSection(
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = cyan),
             content = {
-                Text(text = "Save new item")
+                Text(
+                    text = "Save new item"
+                )
             },
             onClick = onAddTravelItemSaveClicked,
         )
@@ -153,7 +187,7 @@ private fun ItemsList(
     onDeleteTravelItem: (TravelItem) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(horizontal = 8.dp),
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(listTitle, textAlign = TextAlign.Center)
@@ -186,7 +220,11 @@ private fun ListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = travelItem.text)
-        Checkbox(checked = travelItem.isChecked, onCheckedChange = { onCheckedChange(travelItem) })
+        Checkbox(
+            checked = travelItem.isChecked,
+            onCheckedChange = { onCheckedChange(travelItem) },
+            colors = CheckboxDefaults.colors(checkedColor = cyan),
+        )
     }
 }
 

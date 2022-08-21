@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jj.core.R
+import com.jj.core.framework.domain.cyan
 
 @Composable
 fun BottomNavigationBar(
@@ -26,13 +27,15 @@ fun BottomNavigationBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    BottomNavigation {
+    BottomNavigation(
+        backgroundColor = cyan,
+    ) {
         items.forEach {
             BottomNavigationItem(
                 icon = @Composable { Icon(painterResource(id = R.drawable.ic_tick), contentDescription = "") },
                 label = @Composable { Text(it) },
                 alwaysShowLabel = true,
-                selectedContentColor = Color.Red,
+                selectedContentColor = Color.Blue,
                 unselectedContentColor = Color.Gray,
                 selected = currentRoute == it,
                 onClick = {
