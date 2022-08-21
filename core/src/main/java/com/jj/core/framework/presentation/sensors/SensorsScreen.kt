@@ -1,4 +1,4 @@
-package com.jj.core.framework.presentation.screens
+package com.jj.core.framework.presentation.sensors
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,15 +36,12 @@ import com.jj.core.domain.samples.analysis.AnalysedSample
 import com.jj.core.domain.samples.analysis.AnalysedValue
 import com.jj.core.domain.samples.analysis.AnalysisResult
 import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
-import com.jj.core.framework.presentation.viewmodels.SensorsDataViewModel
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
-import com.jj.design.charts.BaseChart
 import com.jj.design.charts.ChartPoint
 import com.jj.design.charts.MultipleValuesChart
 import com.jj.design.components.BaseContainer
-import com.jj.design.components.BaseTopAppBar
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.absoluteValue

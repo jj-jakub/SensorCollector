@@ -19,10 +19,10 @@ import com.jj.core.framework.presentation.navigation.Route.MAIN_START_ROUTE
 import com.jj.core.framework.presentation.navigation.Route.SETTINGS_ROUTE
 import com.jj.core.framework.presentation.navigation.Route.TRAVEL_ROUTE
 import com.jj.core.framework.presentation.navigation.Route.UI_TESTING_ROUTE
-import com.jj.core.framework.presentation.screens.CameraScreen
-import com.jj.core.framework.presentation.screens.MainScreen
-import com.jj.core.framework.presentation.screens.SettingsScreen
-import com.jj.core.framework.presentation.screens.UITestingScreen
+import com.jj.core.framework.presentation.camera.CameraScreen
+import com.jj.core.framework.presentation.sensors.MainScreen
+import com.jj.core.framework.presentation.settings.SettingsScreen
+import com.jj.core.framework.presentation.uiplayground.UITestingScreen
 import com.jj.core.framework.presentation.travel.TravelScreen
 
 @Composable

@@ -1,4 +1,4 @@
-package com.jj.core.framework.presentation.viewmodels
+package com.jj.core.framework.presentation.camera
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

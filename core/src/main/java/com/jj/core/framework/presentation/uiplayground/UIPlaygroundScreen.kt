@@ -1,4 +1,4 @@
-package com.jj.core.framework.presentation.screens
+package com.jj.core.framework.presentation.uiplayground
 
 import android.util.Log
 import androidx.compose.animation.core.Animatable
@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.jj.core.framework.presentation.viewmodels.UITestingScreenViewModel
 import com.jj.design.canvas.custom.Insignia
 import com.jj.design.canvas.custom.Propeller
 import kotlinx.coroutines.launch
@@ -30,7 +29,7 @@ import kotlin.math.pow
 
 @Composable
 fun UITestingScreen(
-    viewModel: UITestingScreenViewModel = getViewModel()
+    viewModel: UIPlaygroundScreenViewModel = getViewModel()
 ) {
     val maxDegrees = 360F
     val minAnimationMillis = 17 // 17 is minimum value, it stops animating at 16

@@ -1,11 +1,11 @@
-package com.jj.core.framework.presentation.viewmodels
+package com.jj.core.framework.presentation.uiplayground
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.math.roundToInt
 
-class UITestingScreenViewModel : ViewModel() {
+class UIPlaygroundScreenViewModel : ViewModel() {
 
     val maxSliderSteps = 60F
     private val oneSecondMillis = 1000L

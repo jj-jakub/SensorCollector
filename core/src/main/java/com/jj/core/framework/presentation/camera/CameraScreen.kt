@@ -1,4 +1,4 @@
-package com.jj.core.framework.presentation.screens
+package com.jj.core.framework.presentation.camera
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.jj.core.R
 import com.jj.core.domain.status.camera.CameraStatus
-import com.jj.core.framework.presentation.viewmodels.CameraScreenViewModel
 import com.jj.design.CameraPreview
 import com.jj.design.components.BaseContainer
 import org.koin.androidx.compose.getViewModel
