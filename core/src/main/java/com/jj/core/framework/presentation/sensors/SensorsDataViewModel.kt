@@ -13,6 +13,7 @@ import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.text.AndroidColorMapper.toDomainColor
 import com.jj.core.framework.utils.BufferedMutableSharedFlow
+import com.jj.core.framework.utils.shouldStartNewJob
 import com.jj.domain.base.usecase.UseCase
 import com.jj.domain.base.usecase.invoke
 import com.jj.domain.model.analysis.analysis.AnalysedSample
@@ -46,12 +47,15 @@ class SensorsDataViewModel(
     private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<AndroidAnalysedAccUIData<AnnotatedString>>()
     val analysedAccelerometerSampleString = _analysedAccelerometerSampleString.asSharedFlow()
 
+    private var gyroscopeCollectingJob: Job? = null
     private val _gyroscopeSamples = BufferedMutableSharedFlow<SensorData>()
     val gyroscopeSamples = _gyroscopeSamples.asSharedFlow()
 
+    private var magneticFieldCollectingJob: Job? = null
     private val _magneticFieldSamples = BufferedMutableSharedFlow<SensorData>()
     val magneticFieldSamples = _magneticFieldSamples.asSharedFlow()
 
+    private var gpsCollectingJob: Job? = null
     private val _gpsSamples = BufferedMutableSharedFlow<SensorData>()
     val gpsSamples = _gpsSamples.asSharedFlow()
 
@@ -76,6 +80,33 @@ class SensorsDataViewModel(
 
     fun onStopAccelerometerClick() {
         viewModelScope startUseCase stopAccelerometerAnalysis
+    }
+
+    fun onStartGyroscopeClick() {
+        observeGyroscopeSamples()
+    }
+
+    fun onStopGyroscopeClick() {
+        gyroscopeCollectingJob?.cancel()
+        gyroscopeCollectingJob = null
+    }
+
+    fun onStartMagneticFieldClick() {
+        observeMagneticFieldSamples()
+    }
+
+    fun onStopMagneticFieldClick() {
+        magneticFieldCollectingJob?.cancel()
+        magneticFieldCollectingJob = null
+    }
+
+    fun onStartGPSClick() {
+        observeGPSSamples()
+    }
+
+    fun onStopGPSClick() {
+        gpsCollectingJob?.cancel()
+        gpsCollectingJob = null
     }
 
     fun onTakePhotoClick() {
@@ -109,25 +140,31 @@ class SensorsDataViewModel(
         )
 
     private fun observeGyroscopeSamples() {
-        viewModelScope.launch {
-            startGyroscopeCollection().collectLatest {
-                _gyroscopeSamples.emit(it)
+        if (gyroscopeCollectingJob.shouldStartNewJob()) {
+            gyroscopeCollectingJob = viewModelScope.launch {
+                startGyroscopeCollection().collectLatest {
+                    _gyroscopeSamples.emit(it)
+                }
             }
         }
     }
 
     private fun observeMagneticFieldSamples() {
-        viewModelScope.launch {
-            startMagneticFieldCollection().collectLatest {
-                _gyroscopeSamples.emit(it)
+        if (magneticFieldCollectingJob.shouldStartNewJob()) {
+            magneticFieldCollectingJob = viewModelScope.launch {
+                startMagneticFieldCollection().collectLatest {
+                    _magneticFieldSamples.emit(it)
+                }
             }
         }
     }
 
     private fun observeGPSSamples() {
-        viewModelScope.launch {
-            startGPSCollection().collectLatest {
-                _gpsSamples.emit(it)
+        if (gpsCollectingJob.shouldStartNewJob()) {
+            gpsCollectingJob = viewModelScope.launch {
+                startGPSCollection().collectLatest {
+                    _gpsSamples.emit(it)
+                }
             }
         }
     }

@@ -63,6 +63,12 @@ fun MainScreen(
     MainScreenContent(
         sensorsDataViewModel::onStartAccelerometerClick,
         sensorsDataViewModel::onStopAccelerometerClick,
+        sensorsDataViewModel::onStartGyroscopeClick,
+        sensorsDataViewModel::onStopGyroscopeClick,
+        sensorsDataViewModel::onStartMagneticFieldClick,
+        sensorsDataViewModel::onStopMagneticFieldClick,
+        sensorsDataViewModel::onStartGPSClick,
+        sensorsDataViewModel::onStopGPSClick,
         sensorsDataViewModel::onTakePhotoClick,
         sensorsDataViewModel::registerCameraPreview,
         sensorsDataViewModel.versionInfoText,
@@ -82,6 +88,12 @@ fun MainScreen(
 private fun MainScreenContent(
     onStartAccelerometerClick: () -> Unit,
     onStopAccelerometerClick: () -> Unit,
+    onStartGyroscopeClick: () -> Unit,
+    onStopGyroscopeClick: () -> Unit,
+    onStartMagneticFieldClick: () -> Unit,
+    onStopMagneticFieldClick: () -> Unit,
+    onStartGPSClick: () -> Unit,
+    onStopGPSClick: () -> Unit,
     onTakePhotoClick: () -> Unit,
     registerCameraPreview: (androidx.camera.core.Preview) -> Unit,
     versionInfoText: String,
@@ -114,19 +126,31 @@ private fun MainScreenContent(
 
                 AccelerometerStateView(state = accelerometerState)
                 AccelerometerValueView(androidAnalysedAccUIData = accelerometerSample)
-                AccelerometerControlButtons(
-                    onStartAccelerometerClick = onStartAccelerometerClick,
-                    onStopAccelerometerClick = onStopAccelerometerClick
+                ControlButtons(
+                    onStartClick = onStartAccelerometerClick,
+                    onStopClick = onStopAccelerometerClick,
                 )
 
                 GyroscopeStateView(state = gyroscopeState)
                 GyroscopeValueView(sensorData = gyroscopeSample)
+                ControlButtons(
+                    onStartClick = onStartGyroscopeClick,
+                    onStopClick = onStopGyroscopeClick,
+                )
 
                 MagneticFieldStateView(state = magneticFieldState)
                 MagneticFieldValueView(sensorData = magneticFieldSample)
+                ControlButtons(
+                    onStartClick = onStartMagneticFieldClick,
+                    onStopClick = onStopMagneticFieldClick,
+                )
 
                 GPSStateView(state = gpsState)
                 GPSValueView(sensorData = gpsSample)
+                ControlButtons(
+                    onStartClick = onStartGPSClick,
+                    onStopClick = onStopGPSClick,
+                )
 
                 CameraSection(onTakePhotoClick, registerCameraPreview)
             }
@@ -170,18 +194,24 @@ private fun AccelerometerControlButtons(
     onStartAccelerometerClick: () -> Unit,
     onStopAccelerometerClick: () -> Unit
 ) {
+}
+
+@Composable
+private fun ControlButtons(
+    onStartClick: () -> Unit,
+    onStopClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Button(onClick = onStartAccelerometerClick) {
-            Text(text = "Start acc")
+        Button(onClick = onStartClick) {
+            Text(text = "Start")
         }
-
-        Button(onClick = onStopAccelerometerClick) {
-            Text(text = "Stop acc")
+        Button(onClick = onStopClick) {
+            Text(text = "Stop")
         }
     }
 }
@@ -392,6 +422,12 @@ fun PreviewMainScreen() {
         ),
         gyroscopeSample = SensorData.GyroscopeSample(1.20f, 1.30f, 1.40f),
         magneticFieldSample = SensorData.MagneticFieldSample(1.50f, 1.60f, 1.70f),
-        gpsSample = SensorData.GPSSample(10.20, 20.40)
+        gpsSample = SensorData.GPSSample(10.20, 20.40),
+        onStartGyroscopeClick = { },
+        onStopGyroscopeClick = { },
+        onStartMagneticFieldClick = { },
+        onStopMagneticFieldClick = { },
+        onStartGPSClick = { },
+        onStopGPSClick = { },
     )
 }
