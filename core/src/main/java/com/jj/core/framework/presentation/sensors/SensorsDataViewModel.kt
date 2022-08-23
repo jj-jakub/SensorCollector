@@ -4,13 +4,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.core.data.text.VersionTextProvider
-import com.jj.domain.base.usecase.invoke
 import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.monitors.SystemStateMonitor
-import com.jj.domain.sensors.gps.GPSRepository
-import com.jj.core.domain.repository.SensorsRepository
-import com.jj.domain.model.sensors.SensorData
-import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.server.IPProvider
 import com.jj.core.domain.ui.colors.DomainColor
 import com.jj.core.domain.ui.text.TextComponent
@@ -19,24 +14,33 @@ import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.text.AndroidColorMapper.toDomainColor
 import com.jj.core.framework.utils.BufferedMutableSharedFlow
 import com.jj.domain.base.usecase.UseCase
+import com.jj.domain.base.usecase.invoke
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.domain.sensors.accelerometer.StartAccelerometerAnalysis
 import com.jj.domain.sensors.accelerometer.StopAccelerometerAnalysis
+import com.jj.domain.sensors.general.SensorsRepository
+import com.jj.domain.sensors.gps.usecase.StartGPSCollection
+import com.jj.domain.sensors.gyroscope.StartGyroscopeCollection
+import com.jj.domain.sensors.magneticfield.StartMagneticFieldCollection
+import com.jj.domain.sensors.model.SensorData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
-    private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<AnnotatedString>,
     private val startAccelerometerAnalysis: StartAccelerometerAnalysis,
     private val stopAccelerometerAnalysis: StopAccelerometerAnalysis,
+    private val startGyroscopeCollection: StartGyroscopeCollection,
+    private val startMagneticFieldCollection: StartMagneticFieldCollection,
+    private val startGPSCollection: StartGPSCollection,
     private val cameraManager: CameraManager,
     ipProvider: IPProvider,
     versionTextProvider: VersionTextProvider,
-    systemStateMonitor: SystemStateMonitor
+    systemStateMonitor: SystemStateMonitor,
 ) : ViewModel() {
 
     private val _analysedAccelerometerSampleString = BufferedMutableSharedFlow<AndroidAnalysedAccUIData<AnnotatedString>>()
@@ -106,28 +110,24 @@ class SensorsDataViewModel(
 
     private fun observeGyroscopeSamples() {
         viewModelScope.launch {
-            delay(5000L) // Debug
-            sensorsRepository.collectGyroscopeSamples().collect {
-                if (it is SensorData.GyroscopeSample) _gyroscopeSamples.tryEmit(it)
+            startGyroscopeCollection().collectLatest {
+                _gyroscopeSamples.emit(it)
             }
         }
     }
 
     private fun observeMagneticFieldSamples() {
         viewModelScope.launch {
-            delay(10000L) // Debug
-            sensorsRepository.collectMagneticFieldSamples().collect {
-                if (it is SensorData.MagneticFieldSample) _magneticFieldSamples.tryEmit(it)
+            startMagneticFieldCollection().collectLatest {
+                _gyroscopeSamples.emit(it)
             }
         }
     }
 
     private fun observeGPSSamples() {
         viewModelScope.launch {
-            gpsRepository.collectGPSSamples().collect {
-                if (it is SensorData.GPSSample || it is SensorData.Error) {
-                    _gpsSamples.tryEmit(it)
-                }
+            startGPSCollection().collectLatest {
+                _gpsSamples.emit(it)
             }
         }
     }

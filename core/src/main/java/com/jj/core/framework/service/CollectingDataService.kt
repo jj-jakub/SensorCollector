@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@Deprecated("Old implementation")
 class CollectingDataService : LifecycleService() {
 
     private val globalSensorManager: IGlobalSensorManager by inject()

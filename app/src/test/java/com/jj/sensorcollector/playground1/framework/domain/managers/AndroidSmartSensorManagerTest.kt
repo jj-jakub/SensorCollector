@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import app.cash.turbine.test
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.model.SensorData
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 import io.mockk.MockKAnnotations
 import io.mockk.every

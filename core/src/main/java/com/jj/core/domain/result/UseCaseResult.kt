@@ -1,5 +1,6 @@
 package com.jj.core.domain.result
 
+@Deprecated("Old implementation")
 sealed class UseCaseResult<out T> {
 
     private var hasBeenHandled = false

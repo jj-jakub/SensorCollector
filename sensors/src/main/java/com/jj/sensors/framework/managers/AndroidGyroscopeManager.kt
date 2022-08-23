@@ -5,7 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.managers.GyroscopeManager
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.model.SensorData
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 
 class AndroidGyroscopeManager(

@@ -4,7 +4,7 @@ import com.jj.core.data.coroutines.DefaultCoroutineScopeProvider
 import com.jj.core.data.samples.gps.DefaultGPSPathAnalyser
 import com.jj.core.domain.gps.GPSVelocityCalculator
 import com.jj.core.domain.repository.PathRepository
-import com.jj.domain.sensors.gps.GPSRepository
+import com.jj.domain.sensors.gps.repository.GPSRepository
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import io.mockk.MockKAnnotations
 import io.mockk.every

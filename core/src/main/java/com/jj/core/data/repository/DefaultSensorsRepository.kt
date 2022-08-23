@@ -1,10 +1,10 @@
 package com.jj.core.data.repository
 
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.model.SensorData
 import com.jj.core.domain.repository.AccelerometerRepository
 import com.jj.core.domain.repository.GyroscopeRepository
 import com.jj.core.domain.repository.MagneticFieldRepository
-import com.jj.core.domain.repository.SensorsRepository
+import com.jj.domain.sensors.general.SensorsRepository
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
 

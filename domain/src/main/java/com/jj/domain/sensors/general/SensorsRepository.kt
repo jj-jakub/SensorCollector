@@ -1,6 +1,6 @@
-package com.jj.core.domain.repository
+package com.jj.domain.sensors.general
 
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.model.SensorData
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import kotlinx.coroutines.flow.Flow
 

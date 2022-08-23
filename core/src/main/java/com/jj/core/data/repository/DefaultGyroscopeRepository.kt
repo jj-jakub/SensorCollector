@@ -1,6 +1,6 @@
 package com.jj.core.data.repository
 
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.model.SensorData
 import com.jj.core.domain.managers.GyroscopeManager
 import com.jj.core.domain.repository.GyroscopeRepository
 import kotlinx.coroutines.flow.Flow

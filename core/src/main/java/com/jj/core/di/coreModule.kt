@@ -39,11 +39,11 @@ import com.jj.core.domain.gps.GPSVelocityCalculator
 import com.jj.domain.sensors.general.AnalysisStarter
 import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.repository.AccelerometerRepository
-import com.jj.domain.sensors.gps.GPSRepository
+import com.jj.domain.sensors.gps.repository.GPSRepository
 import com.jj.core.domain.repository.GyroscopeRepository
 import com.jj.core.domain.repository.MagneticFieldRepository
 import com.jj.core.domain.repository.PathRepository
-import com.jj.core.domain.repository.SensorsRepository
+import com.jj.domain.sensors.general.SensorsRepository
 import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
 import com.jj.core.domain.gps.GPSSampleAnalyzer
 import com.jj.core.domain.sensors.IGlobalSensorManager
@@ -122,14 +122,16 @@ val coreModule = module {
     viewModel {
         SensorsDataViewModel(
             sensorsRepository = get(),
-            gpsRepository = get(),
             textCreator = get(),
             startAccelerometerAnalysis = get(),
             stopAccelerometerAnalysis = get(),
             cameraManager = get(),
             ipProvider = get(),
             versionTextProvider = get(),
-            systemStateMonitor = get()
+            systemStateMonitor = get(),
+            startGPSCollection = get(),
+            startGyroscopeCollection = get(),
+            startMagneticFieldCollection = get(),
         )
     }
     viewModel { SettingsScreenViewModel(get()) }

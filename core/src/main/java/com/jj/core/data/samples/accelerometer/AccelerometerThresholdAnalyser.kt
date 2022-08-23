@@ -1,6 +1,6 @@
 package com.jj.core.data.samples.accelerometer
 
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.model.SensorData
 import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.domain.model.analysis.analysis.AnalysedValue

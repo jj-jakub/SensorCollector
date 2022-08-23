@@ -2,8 +2,8 @@ package com.jj.core.data.sensors.accelerometer
 
 import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.repository.SensorsRepository
-import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.sensors.general.SensorsRepository
+import com.jj.domain.sensors.model.SensorData
 import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.time.TimeProvider
