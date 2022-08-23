@@ -5,10 +5,10 @@ import com.jj.core.data.sensors.GlobalSensorCollector
 import com.jj.core.domain.csv.CSVFileCreator
 import com.jj.core.domain.events.GlobalEventsRepository
 import com.jj.core.domain.sensors.SamplesRepository
-import com.jj.core.data.AccelerometerSampleAnalyzer
+import com.jj.core.data.sensors.accelerometer.AccelerometerSampleAnalyser
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.sensorcollector.domain.initializers.AppInitializer
-import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.domain.sensors.general.AnalysisStarter
 import com.jj.core.domain.monitors.SystemStateMonitor
 import com.jj.core.domain.gps.GPSPathAnalyser
 import kotlinx.coroutines.flow.first
@@ -19,8 +19,8 @@ class DefaultAppInitializer(
     private val samplesRepository: SamplesRepository,
     private val globalEventsRepository: GlobalEventsRepository,
     private val csvFileCreator: CSVFileCreator,
-    private val accelerometerSampleAnalyzer: AccelerometerSampleAnalyzer,
-    private val analyzerStarter: AnalyzerStarter,
+    private val accelerometerSampleAnalyser: AccelerometerSampleAnalyser,
+    private val analysisStarter: AnalysisStarter,
     private val serverStarter: com.jj.server.domain.server.ServerStarter,
     private val systemStateMonitor: SystemStateMonitor,
     private val gpsPathAnalyser: GPSPathAnalyser,
@@ -29,12 +29,12 @@ class DefaultAppInitializer(
 
     override fun initialize() {
         globalSensorCollector.start()
-        analyzerStarter.startPermanentAccelerometerAnalysis()
-        analyzerStarter.startPermanentGPSAnalysis()
+        analysisStarter.startPermanentAccelerometerAnalysis()
+        analysisStarter.startPermanentGPSAnalysis()
         serverStarter.startServer(8080)
         systemStateMonitor.startMonitoring()
         gpsPathAnalyser.start()
-        accelerometerSampleAnalyzer.startAnalysis()
+        accelerometerSampleAnalyser.startAnalysis()
 //        CollectingDataService.startCollectingGPS(this)
 //        CollectingDataService.startCollectingAccelerometer(this)
 

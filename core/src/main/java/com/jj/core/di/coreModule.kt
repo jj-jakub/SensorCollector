@@ -2,7 +2,7 @@ package com.jj.core.di
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.room.Room
-import com.jj.core.data.AccelerometerSampleAnalyzer
+import com.jj.core.data.sensors.accelerometer.AccelerometerSampleAnalyser
 import com.jj.core.data.api.DefaultAccelerometerAPI
 import com.jj.core.data.csv.DefaultCSVFileCreator
 import com.jj.core.data.database.AnalysedSamplesDatabase
@@ -17,7 +17,7 @@ import com.jj.core.data.repository.DefaultPathRepository
 import com.jj.core.data.repository.DefaultSamplesRepository
 import com.jj.core.data.repository.DefaultSensorsRepository
 import com.jj.core.data.repository.GlobalEventsCollector
-import com.jj.core.data.samples.accelerometer.AccelerometerThresholdAnalyzer
+import com.jj.core.data.samples.accelerometer.AccelerometerThresholdAnalyser
 import com.jj.core.data.samples.gps.DefaultGPSPathAnalyser
 import com.jj.core.data.samples.gps.DefaultGPSSampleAnalyzer
 import com.jj.core.data.samples.gps.DefaultGPSVelocityCalculator
@@ -36,22 +36,22 @@ import com.jj.core.domain.events.EventsCollector
 import com.jj.core.domain.events.GlobalEventsRepository
 import com.jj.core.domain.gps.GPSPathAnalyser
 import com.jj.core.domain.gps.GPSVelocityCalculator
-import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.domain.sensors.general.AnalysisStarter
 import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.repository.AccelerometerRepository
-import com.jj.domain.gps.GPSRepository
+import com.jj.domain.sensors.gps.GPSRepository
 import com.jj.core.domain.repository.GyroscopeRepository
 import com.jj.core.domain.repository.MagneticFieldRepository
 import com.jj.core.domain.repository.PathRepository
 import com.jj.core.domain.repository.SensorsRepository
-import com.jj.domain.samples.accelerometer.AccThresholdAnalyzer
-import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
+import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
+import com.jj.core.domain.gps.GPSSampleAnalyzer
 import com.jj.core.domain.sensors.IGlobalSensorManager
 import com.jj.core.domain.sensors.SamplesRepository
 import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.domain.ui.text.TextCreator
-import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
+import com.jj.core.framework.domain.managers.AndroidAnalysisStarter
 import com.jj.core.framework.managers.AndroidCameraManager
 import com.jj.core.framework.managers.CameraXProvider
 import com.jj.core.framework.notification.NotificationManagerBuilder
@@ -77,7 +77,7 @@ val coreModule = module {
 
     single { VersionTextProvider() }
     single<TimeProvider> { DefaultTimeProvider() }
-    single<AccThresholdAnalyzer> { AccelerometerThresholdAnalyzer(get()) }
+    single<AccThresholdAnalyser> { AccelerometerThresholdAnalyser(get()) }
     single<AccelerometerRepository> {
         DefaultAccelerometerRepository(
             accelerometerManager = get(),
@@ -99,9 +99,9 @@ val coreModule = module {
     single<PathRepository> { DefaultPathRepository() }
     single<TravelRepository> { DefaultTravelRepository(get<TravelDatabase>().travelItemDataDao) }
 
-    single { AccelerometerSampleAnalyzer(get(), get(), get(), get()) }
+    single { AccelerometerSampleAnalyser(get(), get(), get(), get()) }
     single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
-    single<AnalyzerStarter> { AndroidAnalyzerStarter(get()) }
+    single<AnalysisStarter> { AndroidAnalysisStarter(get()) }
 
     single<AccelerometerAPI> { DefaultAccelerometerAPI() }
 
@@ -119,7 +119,19 @@ val coreModule = module {
 
 //    single<TextCreator<Spannable>> { AndroidTextCreator() }
     single<TextCreator<AnnotatedString>> { ComposeTextCreator() }
-    viewModel { SensorsDataViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        SensorsDataViewModel(
+            sensorsRepository = get(),
+            gpsRepository = get(),
+            textCreator = get(),
+            startAccelerometerAnalysis = get(),
+            stopAccelerometerAnalysis = get(),
+            cameraManager = get(),
+            ipProvider = get(),
+            versionTextProvider = get(),
+            systemStateMonitor = get()
+        )
+    }
     viewModel { SettingsScreenViewModel(get()) }
     viewModel { CameraScreenViewModel(get()) }
     viewModel { TravelScreenViewModel(get(), get(), get()) }

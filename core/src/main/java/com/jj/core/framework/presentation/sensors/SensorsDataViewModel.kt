@@ -4,10 +4,10 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.core.data.text.VersionTextProvider
-import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.domain.base.usecase.invoke
 import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.monitors.SystemStateMonitor
-import com.jj.domain.gps.GPSRepository
+import com.jj.domain.sensors.gps.GPSRepository
 import com.jj.core.domain.repository.SensorsRepository
 import com.jj.domain.model.sensors.SensorData
 import com.jj.domain.model.analysis.analysis.AnalysedSample
@@ -18,6 +18,11 @@ import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.text.AndroidColorMapper.toDomainColor
 import com.jj.core.framework.utils.BufferedMutableSharedFlow
+import com.jj.domain.base.usecase.UseCase
+import com.jj.domain.sensors.accelerometer.StartAccelerometerAnalysis
+import com.jj.domain.sensors.accelerometer.StopAccelerometerAnalysis
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -26,7 +31,8 @@ class SensorsDataViewModel(
     private val sensorsRepository: SensorsRepository,
     private val gpsRepository: GPSRepository,
     private val textCreator: TextCreator<AnnotatedString>,
-    private val analyzerStarter: AnalyzerStarter,
+    private val startAccelerometerAnalysis: StartAccelerometerAnalysis,
+    private val stopAccelerometerAnalysis: StopAccelerometerAnalysis,
     private val cameraManager: CameraManager,
     ipProvider: IPProvider,
     versionTextProvider: VersionTextProvider,
@@ -61,11 +67,11 @@ class SensorsDataViewModel(
     }
 
     fun onStartAccelerometerClick() {
-        analyzerStarter.startPermanentAccelerometerAnalysis()
+        viewModelScope startUseCase startAccelerometerAnalysis
     }
 
     fun onStopAccelerometerClick() {
-        analyzerStarter.stopPermanentAccelerometerAnalysis()
+        viewModelScope startUseCase stopAccelerometerAnalysis
     }
 
     fun onTakePhotoClick() {
@@ -125,4 +131,6 @@ class SensorsDataViewModel(
             }
         }
     }
+
+    private infix fun CoroutineScope.startUseCase(useCase: UseCase<Unit, *>): Job = this.launch { useCase() }
 }

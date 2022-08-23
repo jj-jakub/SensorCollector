@@ -1,7 +1,7 @@
 package com.jj.core.data.samples.accelerometer
 
 import com.jj.domain.model.sensors.SensorData
-import com.jj.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.domain.model.analysis.analysis.AnalysedValue
 import com.jj.domain.model.analysis.analysis.AnalysisResult
@@ -10,11 +10,11 @@ import com.jj.domain.model.analysis.analysis.ThresholdValues.ACCELEROMETER_AXIS_
 import com.jj.core.domain.time.TimeProvider
 import kotlin.math.abs
 
-class AccelerometerThresholdAnalyzer(
+class AccelerometerThresholdAnalyser(
     private val timeProvider: TimeProvider
-) : AccThresholdAnalyzer {
+) : AccThresholdAnalyser {
 
-    override fun analyze(sensorData: SensorData.AccSample): AnalysedSample.AnalysedAccSample {
+    override fun performAnalysis(sensorData: SensorData.AccSample): AnalysedSample.AnalysedAccSample {
         val analysedX = analyzeFloat(sensorData.x)
         val analysedY = analyzeFloat(sensorData.y)
         val analysedZ = analyzeFloat(sensorData.z)

@@ -1,19 +1,19 @@
-package com.jj.core.data
+package com.jj.core.data.sensors.accelerometer
 
 import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.repository.SensorsRepository
 import com.jj.domain.model.sensors.SensorData
-import com.jj.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.framework.utils.shouldStartNewJob
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AccelerometerSampleAnalyzer(
+class AccelerometerSampleAnalyser(
     private val sensorsRepository: SensorsRepository,
-    private val accThresholdAnalyzer: AccThresholdAnalyzer,
+    private val accThresholdAnalyser: AccThresholdAnalyser,
     private val timeProvider: TimeProvider,
     private val coroutineScopeProvider: CoroutineScopeProvider
 ) {
@@ -46,7 +46,7 @@ class AccelerometerSampleAnalyzer(
     }
 
     private suspend fun analyseSample(sensorData: SensorData.AccSample) {
-        val analysedSample = accThresholdAnalyzer.analyze(sensorData)
+        val analysedSample = accThresholdAnalyser.performAnalysis(sensorData)
         sensorsRepository.insertAnalysedAccelerometerSample(analysedSample)
     }
 

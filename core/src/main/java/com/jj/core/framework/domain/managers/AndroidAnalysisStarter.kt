@@ -2,11 +2,11 @@ package com.jj.core.framework.domain.managers
 
 import android.content.Context
 import com.jj.core.framework.service.SensorCollectorService
-import com.jj.core.domain.managers.AnalyzerStarter
+import com.jj.domain.sensors.general.AnalysisStarter
 
-class AndroidAnalyzerStarter(
+class AndroidAnalysisStarter(
     private val context: Context
-) : AnalyzerStarter {
+) : AnalysisStarter {
 
     override fun startPermanentAccelerometerAnalysis() {
         SensorCollectorService.startCollectingAccelerometer(context)

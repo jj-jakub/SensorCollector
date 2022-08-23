@@ -1,4 +1,4 @@
-package com.jj.domain.gps
+package com.jj.domain.sensors.gps
 
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.domain.model.sensors.SensorData

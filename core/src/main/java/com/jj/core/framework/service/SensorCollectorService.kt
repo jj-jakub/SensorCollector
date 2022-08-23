@@ -4,15 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.lifecycle.LifecycleService
-import com.jj.core.data.AccelerometerSampleAnalyzer
-import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
+import com.jj.core.data.sensors.accelerometer.AccelerometerSampleAnalyser
+import com.jj.core.domain.gps.GPSSampleAnalyzer
 import com.jj.core.framework.notification.NOTIFICATION_SERVICE_ID
 import com.jj.core.framework.notification.NotificationManagerBuilder
 import org.koin.android.ext.android.inject
 
 class SensorCollectorService : LifecycleService() {
 
-    private val accelerometerSampleAnalyzer: AccelerometerSampleAnalyzer by inject()
+    private val accelerometerSampleAnalyser: AccelerometerSampleAnalyser by inject()
     private val gpsSampleAnalyzer: GPSSampleAnalyzer by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
 
@@ -32,11 +32,11 @@ class SensorCollectorService : LifecycleService() {
     }
 
     private fun onStartCollectingAccelerometer() {
-        accelerometerSampleAnalyzer.startAnalysis()
+        accelerometerSampleAnalyser.startAnalysis()
     }
 
     private fun onStopCollectingAccelerometer() {
-        accelerometerSampleAnalyzer.stopAnalysis()
+        accelerometerSampleAnalyser.stopAnalysis()
     }
 
     private fun onStartCollectingGPS() {

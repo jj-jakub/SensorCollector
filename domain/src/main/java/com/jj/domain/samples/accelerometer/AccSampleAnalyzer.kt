@@ -5,5 +5,5 @@ import com.jj.domain.model.analysis.analysis.AnalysedSample
 
 interface AccSampleAnalyzer {
 
-    fun analyze(sensorData: SensorData.AccSample): AnalysedSample.AnalysedAccSample
+    fun performAnalysis(sensorData: SensorData.AccSample): AnalysedSample.AnalysedAccSample
 }

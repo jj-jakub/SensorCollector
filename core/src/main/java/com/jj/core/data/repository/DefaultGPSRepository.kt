@@ -3,7 +3,7 @@ package com.jj.core.data.repository
 import com.jj.core.data.database.gps.AnalysedGPSSampleDao
 import com.jj.core.data.database.gps.toAnalysedGPSSample
 import com.jj.core.data.database.gps.toAnalysedGPSSampleEntity
-import com.jj.domain.gps.GPSRepository
+import com.jj.domain.sensors.gps.GPSRepository
 import com.jj.domain.model.sensors.SensorData
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.sensors.interfaces.GPSManager

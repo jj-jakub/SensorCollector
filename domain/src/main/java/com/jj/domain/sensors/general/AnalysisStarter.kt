@@ -1,6 +1,6 @@
-package com.jj.core.domain.managers
+package com.jj.domain.sensors.general
 
-interface AnalyzerStarter {
+interface AnalysisStarter {
 
     fun startPermanentAccelerometerAnalysis()
     fun stopPermanentAccelerometerAnalysis()
