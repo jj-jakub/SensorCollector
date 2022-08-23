@@ -1,10 +1,10 @@
 package com.jj.sensors.data.monitors
 
-import com.jj.domain.utils.shouldStartNewJob
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.monitors.SystemModuleState
-import com.jj.domain.sensors.general.ISensorManager
 import com.jj.core.domain.time.TimeProvider
+import com.jj.domain.sensors.general.ISensorManager
+import com.jj.domain.utils.shouldStartNewJob
 import com.jj.sensors.domain.monitors.SampleCollectionStateMonitor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,9 +16,9 @@ import kotlinx.coroutines.launch
 
 private const val FALLBACK_CHECK_INTERVAL = 500L
 
-abstract class DefaultSampleCollectionStateMonitor<SampleType>(
+abstract class DefaultSampleCollectionStateMonitor<RawSampleType, AnalysedSampleType>(
     private val observeSamples: Boolean,
-    private val sensorManager: ISensorManager,
+    private val sensorManager: ISensorManager<RawSampleType>,
     private val timeProvider: TimeProvider,
     private val coroutineScopeProvider: CoroutineScopeProvider
 ) : SampleCollectionStateMonitor {
@@ -35,7 +35,7 @@ abstract class DefaultSampleCollectionStateMonitor<SampleType>(
     private val _sampleCollectionState = MutableStateFlow<SystemModuleState>(SystemModuleState.Unknown)
     override val sampleCollectionState: StateFlow<SystemModuleState> = _sampleCollectionState.asStateFlow()
 
-    protected abstract fun analysedSamplesFlow(): Flow<SampleType>
+    protected abstract fun analysedSamplesFlow(): Flow<AnalysedSampleType>
 
     override fun startMonitoring() {
         startMonitoringJob()

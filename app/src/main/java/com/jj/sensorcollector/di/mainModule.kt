@@ -8,9 +8,6 @@ val mainModule = module {
 
     single<AppInitializer> {
         DefaultAppInitializer(
-            globalSensorCollector = get(),
-            samplesRepository = get(),
-            globalEventsRepository = get(),
             csvFileCreator = get(),
             accelerometerSampleAnalyser = get(),
             analysisStarter = get(),
@@ -20,5 +17,4 @@ val mainModule = module {
             coroutineScopeProvider = get()
         )
     }
-
 }

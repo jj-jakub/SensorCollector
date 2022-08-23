@@ -11,7 +11,7 @@ import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 class AndroidGyroscopeManager(
     context: Context,
     coroutineScopeProvider: CoroutineScopeProvider
-) : GyroscopeManager, AndroidSmartSensorManager<SensorData.GyroscopeSample>(
+) : GyroscopeManager, AndroidSmartSensorManager(
     context = context,
     sensorType = Sensor.TYPE_GYROSCOPE,
     scope = coroutineScopeProvider.getIOScope()

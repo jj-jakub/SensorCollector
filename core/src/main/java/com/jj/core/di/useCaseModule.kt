@@ -1,10 +1,5 @@
 package com.jj.core.di
 
-import com.jj.core.domain.sensors.SensorUseCases
-import com.jj.core.domain.sensors.StartAccelerometerUseCase
-import com.jj.core.domain.sensors.StartGPSUseCase
-import com.jj.core.domain.sensors.StopAccelerometerUseCase
-import com.jj.core.domain.sensors.StopGPSUseCase
 import com.jj.domain.sensors.accelerometer.StartAccelerometerAnalysis
 import com.jj.domain.sensors.accelerometer.StopAccelerometerAnalysis
 import com.jj.domain.sensors.gps.usecase.StartGPSCollection
@@ -19,9 +14,6 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
 
-    single { StartAccelerometerUseCase(globalSensorManager = get()) }
-    single { StopAccelerometerUseCase(globalSensorManager = get()) }
-
     single { StartAccelerometerAnalysis(analysisStarter = get()) }
     single { StopAccelerometerAnalysis(analysisStarter = get()) }
 
@@ -30,18 +22,6 @@ val useCaseModule = module {
     single { StartGyroscopeCollection(sensorsRepository = get()) }
 
     single { StartMagneticFieldCollection(sensorsRepository = get()) }
-
-    single { StartGPSUseCase(globalSensorManager = get()) }
-    single { StopGPSUseCase(globalSensorManager = get()) }
-
-    single {
-        SensorUseCases(
-            startAccelerometerUseCase = get(),
-            stopAccelerometerUseCase = get(),
-            startGPSUseCase = get(),
-            stopGPSUseCase = get()
-        )
-    }
 
     single { GetAllTravelItems(travelRepository = get()) }
     single { GetTravelItemsForList(travelRepository = get()) }

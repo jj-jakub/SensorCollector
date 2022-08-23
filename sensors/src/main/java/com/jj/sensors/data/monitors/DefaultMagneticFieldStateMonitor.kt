@@ -1,12 +1,11 @@
 package com.jj.sensors.data.monitors
 
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.domain.sensors.general.SensorsRepository
 import com.jj.core.domain.managers.MagneticFieldManager
 import com.jj.core.domain.monitors.SystemModuleState
-import com.jj.sensors.domain.monitors.markers.MagneticFieldStateMonitor
 import com.jj.core.domain.time.TimeProvider
 import com.jj.domain.sensors.model.SensorData
+import com.jj.sensors.domain.monitors.markers.MagneticFieldStateMonitor
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 
@@ -14,7 +13,7 @@ class DefaultMagneticFieldStateMonitor(
     magneticFieldManager: MagneticFieldManager,
     timeProvider: TimeProvider,
     coroutineScopeProvider: CoroutineScopeProvider
-) : DefaultSampleCollectionStateMonitor<SensorData>(
+) : DefaultSampleCollectionStateMonitor<SensorData, SensorData>(
     observeSamples = false,
     sensorManager = magneticFieldManager,
     timeProvider = timeProvider,

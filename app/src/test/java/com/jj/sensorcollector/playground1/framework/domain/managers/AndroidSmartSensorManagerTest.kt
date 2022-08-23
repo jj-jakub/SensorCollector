@@ -38,7 +38,7 @@ class AndroidSmartSensorManagerTest {
     @MockK
     private lateinit var sensor: Sensor
 
-    private lateinit var androidSmartSensorManager: AndroidSmartSensorManager<com.jj.core.domain.sensors.SensorData.AccelerometerData>
+    private lateinit var androidSmartSensorManager: AndroidSmartSensorManager
 
     private lateinit var testCoroutineScope: TestCoroutineScope
 
@@ -368,7 +368,7 @@ class AndroidSmartSensorManagerTest {
         inactiveCalls = 0
 
         androidSmartSensorManager =
-            object : AndroidSmartSensorManager<com.jj.core.domain.sensors.SensorData.AccelerometerData>(context, 1, testCoroutineScope) {
+            object : AndroidSmartSensorManager(context, 1, testCoroutineScope) {
                 override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData {
                     return SensorData.AccSample(1f, 1f, 1f)
                 }

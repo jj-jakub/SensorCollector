@@ -7,6 +7,7 @@ import com.jj.sensors.domain.monitors.markers.AccelerometerStateMonitor
 import com.jj.core.domain.sensors.interfaces.AccelerometerManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.sensors.model.SensorData
 import kotlinx.coroutines.flow.StateFlow
 
 class DefaultAccelerometerStateMonitor(
@@ -14,7 +15,7 @@ class DefaultAccelerometerStateMonitor(
     accelerometerManager: AccelerometerManager,
     timeProvider: TimeProvider,
     coroutineScopeProvider: CoroutineScopeProvider
-) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedAccSample>(
+) : DefaultSampleCollectionStateMonitor<SensorData, AnalysedSample.AnalysedAccSample>(
     observeSamples = true,
     sensorManager = accelerometerManager,
     timeProvider = timeProvider,

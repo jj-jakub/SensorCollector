@@ -12,7 +12,7 @@ import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 class AndroidAccelerometerManager(
     context: Context,
     coroutineScopeProvider: CoroutineScopeProvider
-) : AccelerometerManager, AndroidSmartSensorManager<com.jj.core.domain.sensors.SensorData.AccelerometerData>(
+) : AccelerometerManager, AndroidSmartSensorManager(
     context = context,
     sensorType = Sensor.TYPE_ACCELEROMETER,
     scope = coroutineScopeProvider.getIOScope() // TODO Inject

@@ -17,11 +17,11 @@ import kotlinx.coroutines.launch
  * Input -> collectIsActiveState
  *      Output -> Boolean state
  */
-abstract class AndroidSmartSensorManager<T>(
+abstract class AndroidSmartSensorManager(
     private val context: Context,
     private val sensorType: Int,
     scope: CoroutineScope
-) : SmartSensorManager<T>() {
+) : SmartSensorManager<SensorData>() {
 
     init {
         scope.launch {

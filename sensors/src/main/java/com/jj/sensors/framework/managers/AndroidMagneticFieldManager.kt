@@ -11,7 +11,7 @@ import com.jj.core.domain.managers.MagneticFieldManager
 class AndroidMagneticFieldManager(
     context: Context,
     coroutineScopeProvider: CoroutineScopeProvider
-) : MagneticFieldManager, AndroidSmartSensorManager<SensorData.MagneticFieldSample>(
+) : MagneticFieldManager, AndroidSmartSensorManager(
     context = context,
     sensorType = Sensor.TYPE_MAGNETIC_FIELD,
     scope = coroutineScopeProvider.getIOScope()

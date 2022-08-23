@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
-@Deprecated("Old code")
 class DefaultAccelerometerRepository(
     private val accelerometerManager: AccelerometerManager,
     private val accelerometerAPI: AccelerometerAPI,

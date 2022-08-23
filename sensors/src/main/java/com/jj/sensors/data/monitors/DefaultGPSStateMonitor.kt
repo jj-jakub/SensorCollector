@@ -6,6 +6,7 @@ import com.jj.core.domain.sensors.interfaces.GPSManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.domain.sensors.gps.repository.GPSRepository
 import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.sensors.model.SensorData
 import com.jj.sensors.domain.monitors.markers.GPSStateMonitor
 import kotlinx.coroutines.flow.StateFlow
 
@@ -14,7 +15,7 @@ class DefaultGPSStateMonitor(
     gpsManager: GPSManager,
     timeProvider: TimeProvider,
     coroutineScopeProvider: CoroutineScopeProvider
-) : DefaultSampleCollectionStateMonitor<AnalysedSample.AnalysedGPSSample>(
+) : DefaultSampleCollectionStateMonitor<SensorData, AnalysedSample.AnalysedGPSSample>( // TODO Make first param less generic
     observeSamples = true,
     sensorManager = gpsManager,
     timeProvider = timeProvider,

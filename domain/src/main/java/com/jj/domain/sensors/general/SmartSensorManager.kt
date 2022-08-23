@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.onEach
 /**
  * isActiveState - true as long as there are observers to flow, false otherwise
  */
-abstract class SmartSensorManager<T> : ISensorManager {
+abstract class SmartSensorManager<T> : ISensorManager<T> {
 
-    protected val sensorSamples = BufferedMutableSharedFlow<SensorData>()
+    protected val sensorSamples = BufferedMutableSharedFlow<T>()
     private val isActiveState = MutableStateFlow(false)
 
     // Call from child class after it is initialized to avoid null values being passed from constructor to
@@ -38,7 +38,7 @@ abstract class SmartSensorManager<T> : ISensorManager {
         )
     }
 
-    override fun collectRawSensorSamples(): Flow<SensorData> = sensorSamples.asSharedFlow()
+    override fun collectRawSensorSamples(): Flow<T> = sensorSamples.asSharedFlow()
     override fun collectIsActiveState(): StateFlow<Boolean> = isActiveState.asStateFlow()
 
     protected abstract suspend fun onActive(): Boolean
