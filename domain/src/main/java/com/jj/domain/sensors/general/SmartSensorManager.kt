@@ -24,7 +24,7 @@ abstract class SmartSensorManager<T> : ISensorManager {
     // Call from child class after it is initialized to avoid null values being passed from constructor to
     // onInactive and onActive methods
     protected suspend fun start() {
-        sensorSamples.subscriptionCount.actdisact2(
+        sensorSamples.subscriptionCount.detectActivity(
             onActive = {
                 val registeredSuccessfully = onActive()
                 if (registeredSuccessfully) {
@@ -47,6 +47,7 @@ abstract class SmartSensorManager<T> : ISensorManager {
         /* no-op */
     }
 
+    @Deprecated("This is not working properly and has been replaced by detectActivity")
     private suspend fun StateFlow<Int>.actdisact(onActive: () -> Unit, onInActive: () -> Unit) {
         coroutineScope {
             this@actdisact.map { count -> count > 0 }
@@ -58,9 +59,9 @@ abstract class SmartSensorManager<T> : ISensorManager {
         }
     }
 
-    private suspend fun StateFlow<Int>.actdisact2(onActive: suspend () -> Unit, onInActive: () -> Unit) {
+    private suspend fun StateFlow<Int>.detectActivity(onActive: suspend () -> Unit, onInActive: () -> Unit) {
         coroutineScope {
-            this@actdisact2
+            this@detectActivity
                 .onEach { count ->
                     val hasSubscribers = count > 0
                     if (hasSubscribers) {
