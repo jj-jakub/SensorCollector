@@ -1,4 +1,4 @@
-package com.jj.core.domain.travel.model
+package com.jj.domain.travel.model
 
 data class TravelItem(
     val id: Int? = null,

@@ -1,4 +1,4 @@
-package com.jj.core.data.travel.items
+package com.jj.core.data.travel.database
 
 import androidx.room.Dao
 import androidx.room.Delete

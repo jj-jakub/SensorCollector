@@ -1,4 +1,4 @@
-package com.jj.core.data.travel.items
+package com.jj.core.data.travel.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

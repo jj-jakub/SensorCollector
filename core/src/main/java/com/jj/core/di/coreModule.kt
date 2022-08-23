@@ -27,7 +27,7 @@ import com.jj.core.data.sensors.GlobalSensorCollector
 import com.jj.core.data.sensors.GlobalSensorManager
 import com.jj.core.data.text.VersionTextProvider
 import com.jj.core.data.time.DefaultTimeProvider
-import com.jj.core.data.travel.DefaultTravelRepository
+import com.jj.core.data.travel.repository.DefaultTravelRepository
 import com.jj.core.data.travel.database.TravelDatabase
 import com.jj.core.domain.api.AccelerometerAPI
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
@@ -44,18 +44,12 @@ import com.jj.core.domain.repository.GyroscopeRepository
 import com.jj.core.domain.repository.MagneticFieldRepository
 import com.jj.core.domain.repository.PathRepository
 import com.jj.core.domain.repository.SensorsRepository
-import com.jj.core.domain.repository.TravelRepository
 import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
 import com.jj.core.domain.sensors.IGlobalSensorManager
 import com.jj.core.domain.sensors.SamplesRepository
 import com.jj.core.domain.server.RemoteControlManager
 import com.jj.core.domain.time.TimeProvider
-import com.jj.core.domain.travel.ClearAllTravelItems
-import com.jj.core.domain.travel.DeleteTravelItem
-import com.jj.core.domain.travel.GetAllTravelItems
-import com.jj.core.domain.travel.GetTravelItemsForList
-import com.jj.core.domain.travel.SaveTravelItem
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.managers.AndroidAnalyzerStarter
 import com.jj.core.framework.managers.AndroidCameraManager
@@ -67,6 +61,7 @@ import com.jj.core.framework.presentation.settings.SettingsScreenViewModel
 import com.jj.core.framework.presentation.travel.TravelScreenViewModel
 import com.jj.core.framework.presentation.uiplayground.UIPlaygroundScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
+import com.jj.domain.travel.repository.TravelRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -147,10 +142,4 @@ val coreModule = module {
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
 
     single<GPSVelocityCalculator> { DefaultGPSVelocityCalculator() }
-
-    single { GetAllTravelItems(get()) }
-    single { GetTravelItemsForList(get()) }
-    single { SaveTravelItem(get()) }
-    single { ClearAllTravelItems(get()) }
-    single { DeleteTravelItem(get()) }
 }

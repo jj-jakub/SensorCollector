@@ -1,6 +1,6 @@
-package com.jj.core.data.travel.items
+package com.jj.core.data.travel.database
 
-import com.jj.core.domain.travel.model.TravelItem
+import com.jj.domain.travel.model.TravelItem
 
 fun TravelItemEntity.toTravelItem() = TravelItem(
     id = id,

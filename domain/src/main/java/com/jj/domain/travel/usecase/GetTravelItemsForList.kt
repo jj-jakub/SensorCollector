@@ -1,7 +1,7 @@
-package com.jj.core.domain.travel
+package com.jj.domain.travel.usecase
 
-import com.jj.core.domain.repository.TravelRepository
-import com.jj.core.domain.travel.model.TravelItem
+import com.jj.domain.travel.repository.TravelRepository
+import com.jj.domain.travel.model.TravelItem
 import kotlinx.coroutines.flow.Flow
 
 class GetTravelItemsForList(
