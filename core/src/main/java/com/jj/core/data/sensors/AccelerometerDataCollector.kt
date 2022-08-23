@@ -2,7 +2,7 @@ package com.jj.core.data.sensors
 
 import com.jj.core.domain.sensors.IDataCollector
 import com.jj.core.domain.sensors.SensorData
-import com.jj.core.framework.utils.BufferedMutableSharedFlow
+import com.jj.domain.utils.BufferedMutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 

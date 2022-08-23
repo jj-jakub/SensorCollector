@@ -1,8 +1,7 @@
-package com.jj.core.domain.managers
+package com.jj.domain.sensors.general
 
-import com.jj.core.framework.utils.BufferedMutableSharedFlow
+import com.jj.domain.utils.BufferedMutableSharedFlow
 import com.jj.domain.sensors.model.SensorData
-import com.jj.core.domain.sensors.interfaces.ISensorManager
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +13,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
+/**
+ * isActiveState - true as long as there are observers to flow, false otherwise
+ */
 abstract class SmartSensorManager<T> : ISensorManager {
 
     protected val sensorSamples = BufferedMutableSharedFlow<SensorData>()

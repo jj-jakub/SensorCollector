@@ -1,4 +1,4 @@
-package com.jj.core.framework.utils
+package com.jj.domain.utils
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow

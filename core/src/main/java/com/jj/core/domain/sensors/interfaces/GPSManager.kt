@@ -1,5 +1,5 @@
 package com.jj.core.domain.sensors.interfaces
 
-import com.jj.core.domain.sensors.SensorData.GPSData
+import com.jj.domain.sensors.general.ISensorManager
 
 interface GPSManager : ISensorManager

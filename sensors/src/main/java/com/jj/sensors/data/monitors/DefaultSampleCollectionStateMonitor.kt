@@ -1,9 +1,9 @@
 package com.jj.sensors.data.monitors
 
-import com.jj.core.framework.utils.shouldStartNewJob
+import com.jj.domain.utils.shouldStartNewJob
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.monitors.SystemModuleState
-import com.jj.core.domain.sensors.interfaces.ISensorManager
+import com.jj.domain.sensors.general.ISensorManager
 import com.jj.core.domain.time.TimeProvider
 import com.jj.sensors.domain.monitors.SampleCollectionStateMonitor
 import kotlinx.coroutines.Job
@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 private const val FALLBACK_CHECK_INTERVAL = 500L

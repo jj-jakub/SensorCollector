@@ -7,7 +7,7 @@ import com.jj.domain.sensors.model.SensorData
 import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
 import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.time.TimeProvider
-import com.jj.core.framework.utils.shouldStartNewJob
+import com.jj.domain.utils.shouldStartNewJob
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

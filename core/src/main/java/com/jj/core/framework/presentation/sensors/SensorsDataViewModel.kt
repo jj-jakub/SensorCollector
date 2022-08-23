@@ -12,8 +12,8 @@ import com.jj.core.domain.ui.text.TextComponent
 import com.jj.core.domain.ui.text.TextCreator
 import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.text.AndroidColorMapper.toDomainColor
-import com.jj.core.framework.utils.BufferedMutableSharedFlow
-import com.jj.core.framework.utils.shouldStartNewJob
+import com.jj.domain.utils.BufferedMutableSharedFlow
+import com.jj.domain.utils.shouldStartNewJob
 import com.jj.domain.base.usecase.UseCase
 import com.jj.domain.base.usecase.invoke
 import com.jj.domain.model.analysis.analysis.AnalysedSample
