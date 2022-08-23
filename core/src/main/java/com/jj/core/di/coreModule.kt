@@ -39,12 +39,12 @@ import com.jj.core.domain.gps.GPSVelocityCalculator
 import com.jj.core.domain.managers.AnalyzerStarter
 import com.jj.core.domain.managers.CameraManager
 import com.jj.core.domain.repository.AccelerometerRepository
-import com.jj.core.domain.repository.GPSRepository
+import com.jj.domain.gps.GPSRepository
 import com.jj.core.domain.repository.GyroscopeRepository
 import com.jj.core.domain.repository.MagneticFieldRepository
 import com.jj.core.domain.repository.PathRepository
 import com.jj.core.domain.repository.SensorsRepository
-import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.domain.samples.accelerometer.AccThresholdAnalyzer
 import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
 import com.jj.core.domain.sensors.IGlobalSensorManager
 import com.jj.core.domain.sensors.SamplesRepository

@@ -2,9 +2,9 @@ package com.jj.core.data.samples.gps
 
 import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.repository.GPSRepository
+import com.jj.domain.gps.GPSRepository
 import com.jj.core.domain.repository.PathRepository
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.gps.GPSPathAnalyser
 import com.jj.core.domain.gps.GPSVelocityCalculator
 import kotlinx.coroutines.launch

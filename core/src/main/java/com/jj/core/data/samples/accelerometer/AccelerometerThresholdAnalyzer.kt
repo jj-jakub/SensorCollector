@@ -1,12 +1,12 @@
 package com.jj.core.data.samples.accelerometer
 
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
-import com.jj.core.domain.samples.analysis.AnalysedSample
-import com.jj.core.domain.samples.analysis.AnalysedValue
-import com.jj.core.domain.samples.analysis.AnalysisResult
-import com.jj.core.domain.samples.analysis.ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL
-import com.jj.core.domain.samples.analysis.ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL
+import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedValue
+import com.jj.domain.model.analysis.analysis.AnalysisResult
+import com.jj.domain.model.analysis.analysis.ThresholdValues.ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL
+import com.jj.domain.model.analysis.analysis.ThresholdValues.ACCELEROMETER_AXIS_THRESHOLD_ABOVE_UNTIL
 import com.jj.core.domain.time.TimeProvider
 import kotlin.math.abs
 

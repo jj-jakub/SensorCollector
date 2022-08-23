@@ -2,10 +2,10 @@ package com.jj.sensors.data.monitors
 
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.monitors.SystemModuleState
-import com.jj.core.domain.repository.GPSRepository
-import com.jj.core.domain.samples.analysis.AnalysedSample
 import com.jj.core.domain.sensors.interfaces.GPSManager
 import com.jj.core.domain.time.TimeProvider
+import com.jj.domain.gps.GPSRepository
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.sensors.domain.monitors.markers.GPSStateMonitor
 import kotlinx.coroutines.flow.StateFlow
 

@@ -1,6 +1,6 @@
 package com.jj.core.domain.sensors.interfaces
 
-import com.jj.core.domain.samples.SensorData
+import com.jj.domain.model.sensors.SensorData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 

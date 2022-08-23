@@ -1,4 +1,4 @@
-package com.jj.core.domain.samples.analysis
+package com.jj.domain.model.analysis.analysis
 
 data class AnalysedValue<Value>(
     val value: Value,

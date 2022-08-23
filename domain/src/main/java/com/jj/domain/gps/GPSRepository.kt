@@ -1,7 +1,7 @@
-package com.jj.core.domain.repository
+package com.jj.domain.gps
 
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.model.sensors.SensorData
 import kotlinx.coroutines.flow.Flow
 
 interface GPSRepository {

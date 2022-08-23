@@ -1,7 +1,7 @@
 package com.jj.sensors.domain.ui.colors
 
 import com.jj.core.domain.ui.colors.DomainColor
-import com.jj.core.domain.samples.analysis.AnalysisResult
+import com.jj.domain.model.analysis.analysis.AnalysisResult
 
 interface ColorMapper<FrameworkOutputColor> {
 

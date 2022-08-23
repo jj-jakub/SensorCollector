@@ -1,6 +1,6 @@
 package com.jj.core.domain.gps
 
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 
 interface GPSVelocityCalculator {
 

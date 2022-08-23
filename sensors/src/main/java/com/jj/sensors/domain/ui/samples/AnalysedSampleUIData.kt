@@ -1,6 +1,7 @@
 package com.jj.sensors.domain.ui.samples
 
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
+
 
 interface AnalysedSampleUIData<FrameworkColorText> {
 

@@ -1,4 +1,4 @@
-package com.jj.core.domain.samples.analysis
+package com.jj.domain.model.analysis.analysis
 
 sealed class AnalysisResult {
     object Normal: AnalysisResult()

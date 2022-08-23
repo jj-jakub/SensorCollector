@@ -1,14 +1,13 @@
 package com.jj.core.data.samples.gps
 
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.repository.GPSRepository
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.gps.GPSRepository
+import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.samples.samples.gps.GPSSampleAnalyzer
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.framework.utils.shouldStartNewJob
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DefaultGPSSampleAnalyzer(

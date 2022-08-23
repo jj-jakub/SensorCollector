@@ -4,8 +4,8 @@ import com.jj.core.data.database.accelerometer.AnalysedAccelerometerSampleDao
 import com.jj.core.data.database.accelerometer.toAccelerationDataEntity
 import com.jj.core.data.database.accelerometer.toAnalysedAccSample
 import com.jj.core.domain.repository.AccelerometerRepository
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.api.AccelerometerAPI
 import com.jj.core.domain.sensors.interfaces.AccelerometerManager
 import kotlinx.coroutines.flow.Flow

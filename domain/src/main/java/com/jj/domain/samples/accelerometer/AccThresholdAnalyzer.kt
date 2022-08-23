@@ -1,3 +1,3 @@
-package com.jj.core.domain.samples.accelerometer
+package com.jj.domain.samples.accelerometer
 
 interface AccThresholdAnalyzer : AccSampleAnalyzer

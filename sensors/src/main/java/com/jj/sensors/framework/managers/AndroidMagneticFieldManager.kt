@@ -4,7 +4,7 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.samples.SensorData
+import com.jj.domain.model.sensors.SensorData
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 import com.jj.core.domain.managers.MagneticFieldManager
 

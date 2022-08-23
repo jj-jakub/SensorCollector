@@ -1,4 +1,4 @@
-package com.jj.core.domain.samples
+package com.jj.domain.model.sensors
 
 sealed class SensorData {
     data class AccSample(val x: Float?, val y: Float?, val z: Float?): SensorData()

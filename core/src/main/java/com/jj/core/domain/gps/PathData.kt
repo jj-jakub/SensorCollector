@@ -1,6 +1,6 @@
 package com.jj.core.domain.samples.samples.gps
 
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import java.util.Date
 
 data class PathData(

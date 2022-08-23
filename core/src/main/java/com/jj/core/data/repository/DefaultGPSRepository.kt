@@ -3,9 +3,9 @@ package com.jj.core.data.repository
 import com.jj.core.data.database.gps.AnalysedGPSSampleDao
 import com.jj.core.data.database.gps.toAnalysedGPSSample
 import com.jj.core.data.database.gps.toAnalysedGPSSampleEntity
-import com.jj.core.domain.repository.GPSRepository
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.gps.GPSRepository
+import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.sensors.interfaces.GPSManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull

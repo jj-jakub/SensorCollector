@@ -1,7 +1,7 @@
 package com.jj.core.data.database.accelerometer
 
-import com.jj.core.domain.samples.analysis.AnalysedSample
-import com.jj.core.domain.samples.analysis.AnalysedValue
+import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedValue
 
 fun AnalysedAccelerometerSampleEntity.toAnalysedAccSample(): AnalysedSample.AnalysedAccSample = AnalysedSample.AnalysedAccSample(
     analysedX = AnalysedValue(analysedXValue, analysedXResult),

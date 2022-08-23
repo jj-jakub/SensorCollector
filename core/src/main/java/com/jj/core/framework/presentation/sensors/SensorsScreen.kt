@@ -31,10 +31,10 @@ import androidx.navigation.NavController
 import com.jj.core.R
 import com.jj.core.domain.monitors.SystemModuleState
 import com.jj.core.domain.monitors.toTextAndColor
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.analysis.AnalysedSample
-import com.jj.core.domain.samples.analysis.AnalysedValue
-import com.jj.core.domain.samples.analysis.AnalysisResult
+import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedValue
+import com.jj.domain.model.analysis.analysis.AnalysisResult
 import com.jj.core.framework.domain.samples.AndroidAnalysedAccUIData
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor

@@ -2,7 +2,7 @@ package com.jj.core.data.database.accelerometer
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jj.core.domain.samples.analysis.AnalysisResult
+import com.jj.domain.model.analysis.analysis.AnalysisResult
 
 @Entity
 data class AnalysedAccelerometerSampleEntity(

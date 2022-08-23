@@ -4,9 +4,8 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
-import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.samples.SensorData
+import com.jj.domain.model.sensors.SensorData
 import com.jj.core.domain.sensors.interfaces.AccelerometerManager
 import com.jj.sensors.framework.domain.managers.AndroidSmartSensorManager
 

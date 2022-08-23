@@ -2,7 +2,7 @@ package com.jj.core.framework.presentation.charts
 
 import android.content.Context
 import android.util.AttributeSet
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 
 class AnalysedAccelerometerThreeAxisLinearChart @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

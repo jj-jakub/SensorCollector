@@ -3,14 +3,13 @@ package com.jj.core.data
 import android.util.Log
 import com.jj.core.domain.coroutines.CoroutineScopeProvider
 import com.jj.core.domain.repository.SensorsRepository
-import com.jj.core.domain.samples.SensorData
-import com.jj.core.domain.samples.accelerometer.AccThresholdAnalyzer
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.sensors.SensorData
+import com.jj.domain.samples.accelerometer.AccThresholdAnalyzer
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import com.jj.core.domain.time.TimeProvider
 import com.jj.core.framework.utils.shouldStartNewJob
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collect
 
 class AccelerometerSampleAnalyzer(
     private val sensorsRepository: SensorsRepository,

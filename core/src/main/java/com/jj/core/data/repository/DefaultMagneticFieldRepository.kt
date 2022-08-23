@@ -1,6 +1,6 @@
 package com.jj.core.data.repository
 
-import com.jj.core.domain.samples.SensorData
+import com.jj.domain.model.sensors.SensorData
 import com.jj.core.domain.managers.MagneticFieldManager
 import com.jj.core.domain.repository.MagneticFieldRepository
 import kotlinx.coroutines.flow.Flow

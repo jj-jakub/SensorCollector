@@ -1,6 +1,6 @@
-package com.jj.core.domain.samples
+package com.jj.domain.samples
 
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 
 interface AnalysedSampleUIData<FrameworkColorText> {
 

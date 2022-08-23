@@ -3,9 +3,9 @@ package com.jj.sensorcollector.playground1.data.samples.gps
 import com.jj.core.data.coroutines.DefaultCoroutineScopeProvider
 import com.jj.core.data.samples.gps.DefaultGPSPathAnalyser
 import com.jj.core.domain.gps.GPSVelocityCalculator
-import com.jj.core.domain.repository.GPSRepository
 import com.jj.core.domain.repository.PathRepository
-import com.jj.core.domain.samples.analysis.AnalysedSample
+import com.jj.domain.gps.GPSRepository
+import com.jj.domain.model.analysis.analysis.AnalysedSample
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
