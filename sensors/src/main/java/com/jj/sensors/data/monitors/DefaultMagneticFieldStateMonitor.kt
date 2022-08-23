@@ -8,9 +8,9 @@ import com.jj.sensors.domain.monitors.markers.MagneticFieldStateMonitor
 import com.jj.core.domain.time.TimeProvider
 import com.jj.domain.sensors.model.SensorData
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 
 class DefaultMagneticFieldStateMonitor(
-    private val sensorsRepository: SensorsRepository,
     magneticFieldManager: MagneticFieldManager,
     timeProvider: TimeProvider,
     coroutineScopeProvider: CoroutineScopeProvider
@@ -24,5 +24,5 @@ class DefaultMagneticFieldStateMonitor(
     override val sampleCollectionState: StateFlow<SystemModuleState>
         get() = super.sampleCollectionState
 
-    override fun analysedSamplesFlow() = sensorsRepository.collectMagneticFieldSamples()
+    override fun analysedSamplesFlow() = flow<SensorData> {} // MagneticField doesn't have analyser
 }

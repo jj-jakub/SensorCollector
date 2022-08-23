@@ -49,9 +49,42 @@ val sensorsModule = module {
         )
     }
 
-    single<AccelerometerStateMonitor> { DefaultAccelerometerStateMonitor(get(), get(), get(), get()) }
-    single<GyroscopeStateMonitor> { DefaultGyroscopeStateMonitor(get(), get(), get(), get()) }
-    single<MagneticFieldStateMonitor> { DefaultMagneticFieldStateMonitor(get(), get(), get(), get()) }
-    single<GPSStateMonitor> { DefaultGPSStateMonitor(get(), get(), get(), get()) }
-    single<SystemStateMonitor> { DefaultSystemStateMonitor(get(), get(), get(), get()) }
+    single<AccelerometerStateMonitor> {
+        DefaultAccelerometerStateMonitor(
+            sensorsRepository = get(),
+            accelerometerManager = get(),
+            timeProvider = get(),
+            coroutineScopeProvider = get()
+        )
+    }
+    single<GyroscopeStateMonitor> {
+        DefaultGyroscopeStateMonitor(
+            gyroscopeManager = get(),
+            timeProvider = get(),
+            coroutineScopeProvider = get()
+        )
+    }
+    single<MagneticFieldStateMonitor> {
+        DefaultMagneticFieldStateMonitor(
+            magneticFieldManager = get(),
+            timeProvider = get(),
+            coroutineScopeProvider = get()
+        )
+    }
+    single<GPSStateMonitor> {
+        DefaultGPSStateMonitor(
+            gpsRepository = get(),
+            gpsManager = get(),
+            timeProvider = get(),
+            coroutineScopeProvider = get()
+        )
+    }
+    single<SystemStateMonitor> {
+        DefaultSystemStateMonitor(
+            accelerometerStateMonitor = get(),
+            gyroscopeStateMonitor = get(),
+            magneticFieldStateMonitor = get(),
+            gpsStateMonitor = get()
+        )
+    }
 }

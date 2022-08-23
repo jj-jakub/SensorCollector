@@ -8,9 +8,9 @@ import com.jj.sensors.domain.monitors.markers.GyroscopeStateMonitor
 import com.jj.core.domain.time.TimeProvider
 import com.jj.domain.sensors.model.SensorData
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 
 class DefaultGyroscopeStateMonitor(
-    private val sensorsRepository: SensorsRepository,
     gyroscopeManager: GyroscopeManager,
     timeProvider: TimeProvider,
     coroutineScopeProvider: CoroutineScopeProvider
@@ -24,5 +24,5 @@ class DefaultGyroscopeStateMonitor(
     override val sampleCollectionState: StateFlow<SystemModuleState>
         get() = super.sampleCollectionState
 
-    override fun analysedSamplesFlow() = sensorsRepository.collectGyroscopeSamples()
+    override fun analysedSamplesFlow() = flow<SensorData> {} // Gyroscope doesn't have analyser
 }
