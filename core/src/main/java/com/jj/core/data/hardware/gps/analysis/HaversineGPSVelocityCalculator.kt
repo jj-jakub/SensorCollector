@@ -29,20 +29,21 @@ class HaversineGPSVelocityCalculator : GPSVelocityCalculator {
         return distanceKM / timeHours
     }
 
-    override fun calculateAverageVelocity(
+    override fun calculateStackedAverageVelocity(
         currentAverageVelocity: Double,
         currentSamplesAmount: Int,
         lastSample: AnalysedSample.AnalysedGPSSample,
         nextSample: AnalysedSample.AnalysedGPSSample,
     ): Double {
+        if (currentSamplesAmount <= 1) return 0.0
         val currentIntervalSpeed = calculateCurrentVelocity(
             firstSample = lastSample,
             secondSample = nextSample
         )
-        return ((currentAverageVelocity * currentSamplesAmount) + currentIntervalSpeed) / (currentSamplesAmount + 1)
+        return (currentAverageVelocity * (currentSamplesAmount - 2) + currentIntervalSpeed) / (currentSamplesAmount - 1)
     }
 
-    override fun calculateAverageVelocity(samples: List<AnalysedSample.AnalysedGPSSample>): Double {
+    override fun calculateAllSamplesAverageVelocity(samples: List<AnalysedSample.AnalysedGPSSample>): Double {
         if (samples.size <= 1) return 0.0
 
         var averageVelocity = 0.0
@@ -51,7 +52,7 @@ class HaversineGPSVelocityCalculator : GPSVelocityCalculator {
             averageVelocity += calculateCurrentVelocity(firstSample = samples[index - 1], secondSample = sample)
         }
 
-        return averageVelocity / samples.size
+        return averageVelocity / (samples.size - 1)
     }
 
     /** @return Distance in KM */

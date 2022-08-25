@@ -13,6 +13,7 @@ import com.jj.core.data.hardware.general.DefaultSensorsRepository
 import com.jj.core.data.hardware.gps.analysis.DefaultGPSPathAnalyser
 import com.jj.core.data.hardware.gps.analysis.DefaultGPSSampleAnalyser
 import com.jj.core.data.hardware.gps.analysis.HaversineGPSVelocityCalculator
+import com.jj.core.data.hardware.gps.analysis.VelocityCalculatorBufferPersistence
 import com.jj.core.data.hardware.gps.repository.DefaultGPSRepository
 import com.jj.core.data.hardware.gps.repository.DefaultPathRepository
 import com.jj.core.data.hardware.gyroscope.DefaultGyroscopeRepository
@@ -127,7 +128,7 @@ val coreModule = module {
         VelocityScreenViewModel(
             gpsStateMonitor = get(),
             gpsRepository = get(),
-            gpsVelocityCalculator = get()
+            velocityCalculatorBufferPersistence = get(),
         )
     }
 
@@ -153,4 +154,9 @@ val coreModule = module {
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
 
     single<GPSVelocityCalculator> { HaversineGPSVelocityCalculator() }
+    single {
+        VelocityCalculatorBufferPersistence(
+            gpsVelocityCalculator = get()
+        )
+    }
 }

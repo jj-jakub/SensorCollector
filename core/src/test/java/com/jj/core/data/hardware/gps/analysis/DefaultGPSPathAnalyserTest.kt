@@ -1,4 +1,4 @@
-package com.jj.sensorcollector.data.hardware.gps.analysis
+package com.jj.core.data.hardware.gps.analysis
 
 import com.jj.core.data.coroutines.DefaultCoroutineScopeProvider
 import com.jj.core.data.hardware.gps.analysis.DefaultGPSPathAnalyser

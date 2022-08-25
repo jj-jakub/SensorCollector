@@ -1,8 +1,7 @@
 package com.jj.core
 
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 /**
  * Example local unit test, which will execute on the development machine (host).

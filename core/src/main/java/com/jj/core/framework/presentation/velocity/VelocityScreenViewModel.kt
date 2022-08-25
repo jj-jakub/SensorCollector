@@ -2,9 +2,9 @@ package com.jj.core.framework.presentation.velocity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
+import com.jj.core.data.hardware.gps.analysis.VelocityCalculatorBufferPersistence
+import com.jj.core.data.hardware.gps.analysis.model.Velocities
 import com.jj.domain.hardware.gps.repository.GPSRepository
-import com.jj.domain.model.analysis.AnalysedSample
 import com.jj.domain.monitoring.GPSStateMonitor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,13 +13,10 @@ import kotlinx.coroutines.launch
 class VelocityScreenViewModel(
     gpsStateMonitor: GPSStateMonitor,
     private val gpsRepository: GPSRepository,
-    private val gpsVelocityCalculator: GPSVelocityCalculator,
+    private val velocityCalculatorBufferPersistence: VelocityCalculatorBufferPersistence,
 ) : ViewModel() {
 
     val gpsState = gpsStateMonitor.sampleCollectionState
-
-    private val collectedSamples = mutableListOf<AnalysedSample.AnalysedGPSSample>()
-    private var calculatedSamplesAmount = 0
 
     private val _currentVelocity = MutableStateFlow(0.0)
     val currentVelocity = _currentVelocity.asStateFlow()
@@ -30,8 +27,6 @@ class VelocityScreenViewModel(
     private val _averageVelocity2 = MutableStateFlow(0.0)
     val averageVelocity2 = _averageVelocity2.asStateFlow()
 
-    private var previousGPSSample: AnalysedSample.AnalysedGPSSample? = null
-
     init {
         viewModelScope.launch {
             collectGPSSamples()
@@ -40,45 +35,21 @@ class VelocityScreenViewModel(
 
     private suspend fun collectGPSSamples() {
         gpsRepository.collectAnalysedGPSSamples().collect { newSample ->
-            val previousSample = previousGPSSample
 
-            if (previousSample != null) {
-                val currentVelocity = gpsVelocityCalculator.calculateCurrentVelocity(firstSample = previousSample, secondSample = newSample)
-                calculateVelocities(currentVelocity, previousSample, newSample)
-                previousGPSSample = newSample
-            }
-
-            previousGPSSample = newSample
-            calculatedSamplesAmount++
-            collectedSamples.add(newSample)
+            val velocities = velocityCalculatorBufferPersistence.onNewSample(newSample = newSample)
+            processVelocities(velocities = velocities)
         }
     }
 
-    private fun calculateVelocities(
-        currentVelocity: Double,
-        previousSample: AnalysedSample.AnalysedGPSSample,
-        newSample: AnalysedSample.AnalysedGPSSample
-    ) {
-        _currentVelocity.value = currentVelocity
-        val averageVelocity1 = _averageVelocity1.value
-        _averageVelocity1.value = gpsVelocityCalculator.calculateAverageVelocity(
-            if (averageVelocity1.isNaN()) 0.0 else averageVelocity1,
-            currentSamplesAmount = calculatedSamplesAmount,
-            previousSample,
-            newSample
-        )
-        _averageVelocity2.value = gpsVelocityCalculator.calculateAverageVelocity(
-            samples = collectedSamples
-        )
+    private fun processVelocities(velocities: Velocities) {
+        _currentVelocity.value = velocities.currentVelocity
+        _averageVelocity1.value = velocities.stackedAverageVelocity
+        _averageVelocity2.value = velocities.allSamplesAverageVelocity
+
     }
 
     fun onClearVelocitiesClick() {
-        calculatedSamplesAmount = 0
-        collectedSamples.clear()
-        calculateVelocities(
-            currentVelocity = 0.0,
-            previousSample = AnalysedSample.AnalysedGPSSample(0.0, 0.0, 0),
-            newSample = AnalysedSample.AnalysedGPSSample(0.0, 0.0, 0)
-        )
+        val velocities = velocityCalculatorBufferPersistence.resetVelocities()
+        processVelocities(velocities = velocities)
     }
 }

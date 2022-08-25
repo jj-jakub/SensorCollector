@@ -7,12 +7,12 @@ interface GPSVelocityCalculator {
         firstSample: AnalysedSample.AnalysedGPSSample,
         secondSample: AnalysedSample.AnalysedGPSSample
     ): Double
-    fun calculateAverageVelocity(
+    fun calculateStackedAverageVelocity(
         currentAverageVelocity: Double,
         currentSamplesAmount: Int,
         lastSample: AnalysedSample.AnalysedGPSSample,
         nextSample: AnalysedSample.AnalysedGPSSample
     ): Double
 
-    fun calculateAverageVelocity(samples: List<AnalysedSample.AnalysedGPSSample>): Double
+    fun calculateAllSamplesAverageVelocity(samples: List<AnalysedSample.AnalysedGPSSample>): Double
 }
