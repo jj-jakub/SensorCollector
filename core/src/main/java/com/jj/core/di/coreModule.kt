@@ -32,6 +32,7 @@ import com.jj.core.framework.presentation.sensors.SensorsDataViewModel
 import com.jj.core.framework.presentation.settings.SettingsScreenViewModel
 import com.jj.core.framework.presentation.travel.TravelScreenViewModel
 import com.jj.core.framework.presentation.uiplayground.UIPlaygroundScreenViewModel
+import com.jj.core.framework.presentation.velocity.VelocityScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
 import com.jj.domain.api.AccelerometerAPI
 import com.jj.domain.coroutines.CoroutineScopeProvider
@@ -112,10 +113,23 @@ val coreModule = module {
             startMagneticFieldCollection = get(),
         )
     }
-    viewModel { SettingsScreenViewModel(get()) }
-    viewModel { CameraScreenViewModel(get()) }
-    viewModel { TravelScreenViewModel(get(), get(), get()) }
+    viewModel { SettingsScreenViewModel(cameraManager = get()) }
+    viewModel { CameraScreenViewModel(cameraManager = get()) }
+    viewModel {
+        TravelScreenViewModel(
+            getTravelItemsForList = get(),
+            saveTravelItem = get(),
+            deleteTravelItem = get()
+        )
+    }
     viewModel { UIPlaygroundScreenViewModel() }
+    viewModel {
+        VelocityScreenViewModel(
+            gpsStateMonitor = get(),
+            gpsRepository = get(),
+            gpsVelocityCalculator = get()
+        )
+    }
 
     single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
 

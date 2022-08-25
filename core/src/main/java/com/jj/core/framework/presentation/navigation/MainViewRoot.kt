@@ -20,10 +20,12 @@ import com.jj.core.framework.presentation.navigation.Route.SETTINGS_ROUTE
 import com.jj.core.framework.presentation.navigation.Route.TRAVEL_ROUTE
 import com.jj.core.framework.presentation.navigation.Route.UI_TESTING_ROUTE
 import com.jj.core.framework.presentation.camera.CameraScreen
+import com.jj.core.framework.presentation.navigation.Route.VELOCITY_ROUTE
 import com.jj.core.framework.presentation.sensors.MainScreen
 import com.jj.core.framework.presentation.settings.SettingsScreen
 import com.jj.core.framework.presentation.uiplayground.UITestingScreen
 import com.jj.core.framework.presentation.travel.TravelScreen
+import com.jj.core.framework.presentation.velocity.VelocityScreen
 
 @Composable
 fun MainViewRoot(
@@ -67,6 +69,9 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         }
         composable(route = CAMERA_ROUTE) {
             CameraScreen()
+        }
+        composable(route = VELOCITY_ROUTE) {
+            VelocityScreen()
         }
         composable(route = TRAVEL_ROUTE) {
             TravelScreen()

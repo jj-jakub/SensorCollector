@@ -6,6 +6,7 @@ object Route {
     const val MAIN_START_ROUTE = "StartRoute"
     const val SETTINGS_ROUTE = "SETTINGS_ROUTE"
     const val CAMERA_ROUTE = "CAMERA_ROUTE"
+    const val VELOCITY_ROUTE = "VELOCITY_ROUTE"
     const val TRAVEL_ROUTE = "TRAVEL_ROUTE"
     const val UI_TESTING_ROUTE = "UI_TESTING_ROUTE"
 
@@ -13,6 +14,7 @@ object Route {
         MAIN_START_ROUTE,
         SETTINGS_ROUTE,
         CAMERA_ROUTE,
+        VELOCITY_ROUTE,
         TRAVEL_ROUTE,
         UI_TESTING_ROUTE
     )

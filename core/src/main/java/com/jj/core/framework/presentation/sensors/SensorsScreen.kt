@@ -35,6 +35,8 @@ import com.jj.domain.model.analysis.AnalysedValue
 import com.jj.domain.model.analysis.AnalysisResult
 import com.jj.core.framework.data.analysis.AndroidAnalysedAccUIData
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
+import com.jj.core.framework.presentation.components.hardware.StateInfoRow
+import com.jj.core.framework.presentation.components.hardware.ValueInfoRow
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
 import com.jj.design.charts.ChartPoint
@@ -268,25 +270,6 @@ private fun GPSStateView(state: SystemModuleState) {
 }
 
 @Composable
-private fun StateInfoRow(firstLabel: String, state: SystemModuleState) {
-    val textAndColor = state.toTextAndColor()
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = firstLabel
-        )
-        Text(
-            text = textAndColor.first,
-            color = Color(textAndColor.second.toTextColor())
-        )
-    }
-}
-
-@Composable
 private fun AccelerometerValueView(androidAnalysedAccUIData: AndroidAnalysedAccUIData<AnnotatedString>?) {
     androidAnalysedAccUIData?.let { data ->
         ValueInfoRow(firstLabel = "Accelerometer: ", value = data.analysedSampleString)
@@ -332,23 +315,6 @@ private fun GPSValueView(sensorData: SensorData?) {
                 value = AnnotatedString("Lat: ${data.latitude}, Lng: ${data.longitude}")
             )
         }
-    }
-}
-
-@Composable
-private fun ValueInfoRow(firstLabel: String, value: AnnotatedString) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = firstLabel
-        )
-        Text(
-            text = value
-        )
     }
 }
 
