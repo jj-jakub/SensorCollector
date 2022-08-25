@@ -2,7 +2,7 @@ rootProject.name = "SensorCollector"
 include ':app'
 //include ':design'
 include ':design'
-include ':sensors'
+include ':hardware'
 include ':core'
 include ':server'
 include ':domain'

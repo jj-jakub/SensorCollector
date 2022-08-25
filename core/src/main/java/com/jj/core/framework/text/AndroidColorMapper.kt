@@ -1,9 +1,9 @@
 package com.jj.core.framework.text
 
 import android.graphics.Color
-import com.jj.domain.model.analysis.analysis.AnalysisResult
-import com.jj.core.domain.ui.colors.ColorMapper
-import com.jj.core.domain.ui.colors.DomainColor
+import com.jj.domain.model.analysis.AnalysisResult
+import com.jj.domain.ui.colors.ColorMapper
+import com.jj.domain.ui.colors.DomainColor
 
 object AndroidColorMapper : ColorMapper<Int> {
 

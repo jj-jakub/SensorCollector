@@ -1,15 +1,15 @@
 package com.jj.sensorcollector.di
 
-import com.jj.sensorcollector.data.initializers.DefaultAppInitializer
-import com.jj.sensorcollector.domain.initializers.AppInitializer
+import com.jj.sensorcollector.data.base.initializer.DefaultProgramInitializer
+import com.jj.domain.base.initializer.ProgramInitializer
 import org.koin.dsl.module
 
 val mainModule = module {
 
-    single<AppInitializer> {
-        DefaultAppInitializer(
+    single<ProgramInitializer> {
+        DefaultProgramInitializer(
             csvFileCreator = get(),
-            accelerometerSampleAnalyser = get(),
+            defaultAccelerometerSampleAnalyser = get(),
             analysisStarter = get(),
             serverStarter = get(),
             systemStateMonitor = get(),

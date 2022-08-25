@@ -66,7 +66,7 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":design"))
-    implementation(project(":sensors"))
+    implementation implementation(project(':hardware',))
     implementation(project(":server"))
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.8.0'

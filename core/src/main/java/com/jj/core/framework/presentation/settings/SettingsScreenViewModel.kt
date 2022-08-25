@@ -1,7 +1,7 @@
 package com.jj.core.framework.presentation.settings
 
 import androidx.lifecycle.ViewModel
-import com.jj.core.domain.managers.CameraManager
+import com.jj.core.framework.data.hardware.camera.CameraManager
 
 class SettingsScreenViewModel(
     private val cameraManager: CameraManager,

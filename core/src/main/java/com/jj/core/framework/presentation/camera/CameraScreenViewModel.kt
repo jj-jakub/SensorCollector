@@ -2,8 +2,8 @@ package com.jj.core.framework.presentation.camera
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jj.core.domain.managers.CameraManager
-import com.jj.core.domain.result.CameraPhotoResult
+import com.jj.core.framework.data.hardware.camera.CameraManager
+import com.jj.domain.hardware.camera.model.CameraPhotoResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

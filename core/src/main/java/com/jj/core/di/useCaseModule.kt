@@ -1,10 +1,10 @@
 package com.jj.core.di
 
-import com.jj.domain.sensors.accelerometer.StartAccelerometerAnalysis
-import com.jj.domain.sensors.accelerometer.StopAccelerometerAnalysis
-import com.jj.domain.sensors.gps.usecase.StartGPSCollection
-import com.jj.domain.sensors.gyroscope.StartGyroscopeCollection
-import com.jj.domain.sensors.magneticfield.StartMagneticFieldCollection
+import com.jj.domain.hardware.accelerometer.usecase.StartAccelerometerAnalysis
+import com.jj.domain.hardware.accelerometer.usecase.StopAccelerometerAnalysis
+import com.jj.domain.hardware.gps.usecase.StartGPSCollection
+import com.jj.domain.hardware.gyroscope.usecase.StartGyroscopeCollection
+import com.jj.domain.hardware.magneticfield.usecase.StartMagneticFieldCollection
 import com.jj.domain.travel.usecase.ClearAllTravelItems
 import com.jj.domain.travel.usecase.DeleteTravelItem
 import com.jj.domain.travel.usecase.GetAllTravelItems

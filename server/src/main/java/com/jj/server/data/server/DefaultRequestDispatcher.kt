@@ -1,9 +1,9 @@
 package com.jj.server.data.server
 
-import com.jj.core.domain.server.RemoteControlManager
-import com.jj.core.domain.server.requests.RequestType
-import com.jj.server.domain.server.requests.RequestDispatcher
-import com.jj.server.domain.server.requests.model.RequestResult
+import com.jj.domain.server.RemoteControlManager
+import com.jj.domain.server.model.RequestType
+import com.jj.domain.server.RequestDispatcher
+import com.jj.domain.server.model.RequestResult
 
 class DefaultRequestDispatcher(
     private val remoteControlManager: RemoteControlManager

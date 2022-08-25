@@ -1,7 +1,7 @@
 package com.jj.core.data.database
 
 import androidx.room.TypeConverter
-import com.jj.domain.model.analysis.analysis.AnalysisResult
+import com.jj.domain.model.analysis.AnalysisResult
 
 class AnalysisResultTypeConverter {
     @TypeConverter

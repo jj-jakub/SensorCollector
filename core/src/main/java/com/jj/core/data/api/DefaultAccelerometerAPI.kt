@@ -1,7 +1,7 @@
 package com.jj.core.data.api
 
 import android.util.Log
-import com.jj.core.domain.api.AccelerometerAPI
+import com.jj.domain.api.AccelerometerAPI
 
 class DefaultAccelerometerAPI : AccelerometerAPI {
 

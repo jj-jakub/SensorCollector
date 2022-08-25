@@ -10,8 +10,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.jj.core.databinding.BaseLinearChartBinding
-import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.ui.colors.DomainColor
+import com.jj.domain.coroutines.CoroutineScopeProvider
+import com.jj.domain.ui.colors.DomainColor
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

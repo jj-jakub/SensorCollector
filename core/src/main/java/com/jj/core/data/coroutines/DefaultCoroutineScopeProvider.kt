@@ -1,6 +1,6 @@
 package com.jj.core.data.coroutines
 
-import com.jj.core.domain.coroutines.CoroutineScopeProvider
+import com.jj.domain.coroutines.CoroutineScopeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 

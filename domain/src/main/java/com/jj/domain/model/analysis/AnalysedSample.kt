@@ -1,6 +1,6 @@
-package com.jj.domain.model.analysis.analysis
+package com.jj.domain.model.analysis
 
-import com.jj.domain.sensors.model.SensorData
+import com.jj.domain.hardware.model.SensorData
 
 sealed class AnalysedSample(val time: Long) {
     data class AnalysedAccSample(

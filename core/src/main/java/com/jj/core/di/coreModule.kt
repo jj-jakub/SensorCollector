@@ -6,39 +6,26 @@ import com.jj.core.data.api.DefaultAccelerometerAPI
 import com.jj.core.data.csv.DefaultCSVFileCreator
 import com.jj.core.data.database.AnalysedSamplesDatabase
 import com.jj.core.data.database.SamplesDatabase
-import com.jj.core.data.managers.DefaultRemoteControlManager
-import com.jj.core.data.repository.DefaultAccelerometerRepository
-import com.jj.core.data.repository.DefaultGPSRepository
-import com.jj.core.data.repository.DefaultGyroscopeRepository
-import com.jj.core.data.repository.DefaultMagneticFieldRepository
-import com.jj.core.data.repository.DefaultPathRepository
-import com.jj.core.data.repository.DefaultSensorsRepository
-import com.jj.core.data.samples.accelerometer.AccelerometerThresholdAnalyser
-import com.jj.core.data.samples.gps.DefaultGPSPathAnalyser
-import com.jj.core.data.samples.gps.DefaultGPSSampleAnalyzer
-import com.jj.core.data.samples.gps.DefaultGPSVelocityCalculator
-import com.jj.core.data.sensors.accelerometer.AccelerometerSampleAnalyser
+import com.jj.core.data.hardware.accelerometer.analysis.DefaultAccelerometerSampleAnalyser
+import com.jj.core.data.hardware.accelerometer.analysis.DefaultAccelerometerThresholdAnalyser
+import com.jj.core.data.hardware.accelerometer.repository.DefaultAccelerometerRepository
+import com.jj.core.data.hardware.general.DefaultSensorsRepository
+import com.jj.core.data.hardware.gps.analysis.DefaultGPSPathAnalyser
+import com.jj.core.data.hardware.gps.analysis.DefaultGPSSampleAnalyser
+import com.jj.core.data.hardware.gps.analysis.DefaultGPSVelocityCalculator
+import com.jj.core.data.hardware.gps.repository.DefaultGPSRepository
+import com.jj.core.data.hardware.gps.repository.DefaultPathRepository
+import com.jj.core.data.hardware.gyroscope.DefaultGyroscopeRepository
+import com.jj.core.data.hardware.magneticfield.DefaultMagneticFieldRepository
+import com.jj.core.data.server.DefaultRemoteControlManager
 import com.jj.core.data.text.VersionTextProvider
 import com.jj.core.data.time.DefaultTimeProvider
 import com.jj.core.data.travel.database.TravelDatabase
 import com.jj.core.data.travel.repository.DefaultTravelRepository
-import com.jj.core.domain.api.AccelerometerAPI
-import com.jj.core.domain.coroutines.CoroutineScopeProvider
-import com.jj.core.domain.csv.CSVFileCreator
-import com.jj.core.domain.gps.GPSPathAnalyser
-import com.jj.core.domain.gps.GPSSampleAnalyzer
-import com.jj.core.domain.gps.GPSVelocityCalculator
-import com.jj.core.domain.managers.CameraManager
-import com.jj.core.domain.repository.AccelerometerRepository
-import com.jj.core.domain.repository.GyroscopeRepository
-import com.jj.core.domain.repository.MagneticFieldRepository
-import com.jj.core.domain.repository.PathRepository
-import com.jj.core.domain.server.RemoteControlManager
-import com.jj.core.domain.time.TimeProvider
-import com.jj.core.domain.ui.text.TextCreator
-import com.jj.core.framework.domain.managers.AndroidAnalysisStarter
-import com.jj.core.framework.managers.AndroidCameraManager
-import com.jj.core.framework.managers.CameraXProvider
+import com.jj.core.framework.data.hardware.camera.AndroidCameraManager
+import com.jj.core.framework.data.hardware.camera.CameraManager
+import com.jj.core.framework.data.hardware.camera.CameraXProvider
+import com.jj.core.framework.data.hardware.general.AndroidAnalysisStarter
 import com.jj.core.framework.notification.NotificationManagerBuilder
 import com.jj.core.framework.presentation.camera.CameraScreenViewModel
 import com.jj.core.framework.presentation.sensors.SensorsDataViewModel
@@ -46,11 +33,24 @@ import com.jj.core.framework.presentation.settings.SettingsScreenViewModel
 import com.jj.core.framework.presentation.travel.TravelScreenViewModel
 import com.jj.core.framework.presentation.uiplayground.UIPlaygroundScreenViewModel
 import com.jj.core.framework.text.ComposeTextCreator
-import com.jj.domain.samples.accelerometer.AccThresholdAnalyser
-import com.jj.domain.sensors.general.AnalysisStarter
-import com.jj.domain.sensors.general.SensorsRepository
-import com.jj.domain.sensors.gps.repository.GPSRepository
+import com.jj.domain.api.AccelerometerAPI
+import com.jj.domain.coroutines.CoroutineScopeProvider
+import com.jj.domain.csv.CSVFileCreator
+import com.jj.domain.hardware.accelerometer.analysis.AccelerometerThresholdAnalyser
+import com.jj.domain.hardware.accelerometer.repository.AccelerometerRepository
+import com.jj.domain.hardware.general.AnalysisStarter
+import com.jj.domain.hardware.general.SensorsRepository
+import com.jj.domain.hardware.gps.analysis.GPSPathAnalyser
+import com.jj.domain.hardware.gps.analysis.GPSSampleAnalyser
+import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
+import com.jj.domain.hardware.gps.repository.GPSRepository
+import com.jj.domain.hardware.gps.repository.PathRepository
+import com.jj.domain.hardware.gyroscope.repository.GyroscopeRepository
+import com.jj.domain.hardware.magneticfield.repository.MagneticFieldRepository
+import com.jj.domain.server.RemoteControlManager
+import com.jj.domain.time.TimeProvider
 import com.jj.domain.travel.repository.TravelRepository
+import com.jj.domain.ui.text.TextCreator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -64,7 +64,7 @@ val coreModule = module {
 
     single { VersionTextProvider() }
     single<TimeProvider> { DefaultTimeProvider() }
-    single<AccThresholdAnalyser> { AccelerometerThresholdAnalyser(get()) }
+    single<AccelerometerThresholdAnalyser> { DefaultAccelerometerThresholdAnalyser(get()) }
     single<AccelerometerRepository> {
         DefaultAccelerometerRepository(
             accelerometerManager = get(),
@@ -86,8 +86,8 @@ val coreModule = module {
     single<PathRepository> { DefaultPathRepository() }
     single<TravelRepository> { DefaultTravelRepository(get<TravelDatabase>().travelItemDataDao) }
 
-    single { AccelerometerSampleAnalyser(get(), get(), get(), get()) }
-    single<GPSSampleAnalyzer> { DefaultGPSSampleAnalyzer(get(), get(), get()) }
+    single { DefaultAccelerometerSampleAnalyser(get(), get(), get(), get()) }
+    single<GPSSampleAnalyser> { DefaultGPSSampleAnalyser(get(), get(), get()) }
     single<AnalysisStarter> { AndroidAnalysisStarter(get()) }
 
     single<AccelerometerAPI> { DefaultAccelerometerAPI() }
@@ -120,7 +120,12 @@ val coreModule = module {
     single<RemoteControlManager> { DefaultRemoteControlManager(get(), get()) }
 
     single { CameraXProvider(androidContext()) }
-    single<CameraManager> { AndroidCameraManager(androidContext(), get()) }
+    single<CameraManager> {
+        AndroidCameraManager(
+            androidContext(),
+            get()
+        )
+    }
 
     single<GPSPathAnalyser> {
         DefaultGPSPathAnalyser(

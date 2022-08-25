@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jj.core.R
-import com.jj.core.framework.domain.cyan
+import com.jj.core.framework.data.cyan
 
 @Composable
 fun BottomNavigationBar(

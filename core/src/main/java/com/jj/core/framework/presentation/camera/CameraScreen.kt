@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.jj.core.R
-import com.jj.core.domain.status.camera.CameraStatus
+import com.jj.domain.hardware.camera.model.CameraStatus
 import com.jj.design.CameraPreview
 import com.jj.design.components.BaseContainer
 import org.koin.androidx.compose.getViewModel

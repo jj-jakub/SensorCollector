@@ -5,8 +5,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import com.jj.core.domain.ui.text.TextComponent
-import com.jj.core.domain.ui.text.TextCreator
+import com.jj.domain.ui.text.TextComponent
+import com.jj.domain.ui.text.TextCreator
 import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 
 class ComposeTextCreator : TextCreator<AnnotatedString> {

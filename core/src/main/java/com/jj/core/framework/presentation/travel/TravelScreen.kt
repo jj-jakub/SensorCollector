@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jj.core.R
 import com.jj.domain.travel.model.TravelItem
-import com.jj.core.framework.domain.cyan
+import com.jj.core.framework.data.cyan
 import org.koin.androidx.compose.getViewModel
 
 @Composable

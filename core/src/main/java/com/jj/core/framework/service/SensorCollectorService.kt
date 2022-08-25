@@ -4,16 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.lifecycle.LifecycleService
-import com.jj.core.data.sensors.accelerometer.AccelerometerSampleAnalyser
-import com.jj.core.domain.gps.GPSSampleAnalyzer
+import com.jj.core.data.hardware.accelerometer.analysis.DefaultAccelerometerSampleAnalyser
+import com.jj.domain.hardware.gps.analysis.GPSSampleAnalyser
 import com.jj.core.framework.notification.NOTIFICATION_SERVICE_ID
 import com.jj.core.framework.notification.NotificationManagerBuilder
 import org.koin.android.ext.android.inject
 
 class SensorCollectorService : LifecycleService() {
 
-    private val accelerometerSampleAnalyser: AccelerometerSampleAnalyser by inject()
-    private val gpsSampleAnalyzer: GPSSampleAnalyzer by inject()
+    private val defaultAccelerometerSampleAnalyser: DefaultAccelerometerSampleAnalyser by inject()
+    private val gpsSampleAnalyser: GPSSampleAnalyser by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
 
     override fun onCreate() {
@@ -32,16 +32,16 @@ class SensorCollectorService : LifecycleService() {
     }
 
     private fun onStartCollectingAccelerometer() {
-        accelerometerSampleAnalyser.startAnalysis()
+        defaultAccelerometerSampleAnalyser.startAnalysis()
     }
 
     private fun onStopCollectingAccelerometer() {
-        accelerometerSampleAnalyser.stopAnalysis()
+        defaultAccelerometerSampleAnalyser.stopAnalysis()
         stopSelf()
     }
 
     private fun onStartCollectingGPS() {
-        gpsSampleAnalyzer.startAnalysis()
+        gpsSampleAnalyser.startAnalysis()
     }
 
     companion object {

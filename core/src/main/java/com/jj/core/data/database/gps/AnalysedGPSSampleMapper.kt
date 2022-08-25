@@ -1,6 +1,6 @@
 package com.jj.core.data.database.gps
 
-import com.jj.domain.model.analysis.analysis.AnalysedSample
+import com.jj.domain.model.analysis.AnalysedSample
 
 fun AnalysedGPSSampleEntity.toAnalysedGPSSample() = AnalysedSample.AnalysedGPSSample(
     latitude = this.latitude,

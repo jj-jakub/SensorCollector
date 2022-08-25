@@ -1,4 +1,4 @@
-package com.jj.domain.model.analysis.analysis
+package com.jj.domain.model.analysis
 
 object ThresholdValues {
     const val ACCELEROMETER_AXIS_NORMAL_THRESHOLD_NORMAL_UNTIL: Float = 5.0F
