@@ -1,6 +1,5 @@
 package com.jj.core.data.hardware.gps.analysis
 
-import android.util.Log
 import com.jj.domain.model.analysis.AnalysedSample
 import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
 import kotlin.math.asin
@@ -8,9 +7,9 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class DefaultGPSVelocityCalculator : GPSVelocityCalculator {
+class HaversineGPSVelocityCalculator : GPSVelocityCalculator {
 
-    override fun calculateAverageVelocity(
+    override fun calculateCurrentVelocity(
         firstSample: AnalysedSample.AnalysedGPSSample,
         secondSample: AnalysedSample.AnalysedGPSSample
     ): Double {
@@ -26,8 +25,33 @@ class DefaultGPSVelocityCalculator : GPSVelocityCalculator {
         val timeMinutes = timeSeconds / 60.0
         val timeHours = timeMinutes / 60.0
 
-        Log.d("ABABV", "distanceKM: $distanceKM, timeHours: $timeHours, timeMillis: $timeMillis")
+//        Log.d("ABABV", "distanceKM: $distanceKM, timeHours: $timeHours, timeMillis: $timeMillis")
         return distanceKM / timeHours
+    }
+
+    override fun calculateAverageVelocity(
+        currentAverageVelocity: Double,
+        currentSamplesAmount: Int,
+        lastSample: AnalysedSample.AnalysedGPSSample,
+        nextSample: AnalysedSample.AnalysedGPSSample,
+    ): Double {
+        val currentIntervalSpeed = calculateCurrentVelocity(
+            firstSample = lastSample,
+            secondSample = nextSample
+        )
+        return ((currentAverageVelocity * currentSamplesAmount) + currentIntervalSpeed) / (currentSamplesAmount + 1)
+    }
+
+    override fun calculateAverageVelocity(samples: List<AnalysedSample.AnalysedGPSSample>): Double {
+        if (samples.size <= 1) return 0.0
+
+        var averageVelocity = 0.0
+        samples.forEachIndexed { index, sample ->
+            if (index == 0) return@forEachIndexed
+            averageVelocity += calculateCurrentVelocity(firstSample = samples[index - 1], secondSample = sample)
+        }
+
+        return averageVelocity / samples.size
     }
 
     /** @return Distance in KM */

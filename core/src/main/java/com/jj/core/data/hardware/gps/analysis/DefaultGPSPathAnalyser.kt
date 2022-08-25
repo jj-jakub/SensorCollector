@@ -33,7 +33,7 @@ class DefaultGPSPathAnalyser(
 
     private fun onAnalysedSampleAvailable(analysedGPSSample: AnalysedSample.AnalysedGPSSample) {
         previousSample?.let { prevSample ->
-            val velocity = gpsVelocityCalculator.calculateAverageVelocity(prevSample, analysedGPSSample)
+            val velocity = gpsVelocityCalculator.calculateCurrentVelocity(prevSample, analysedGPSSample)
             val roundedVelocity = ((velocity * 100).roundToInt()) / 100
             Log.d("ABABV", "Current velocity: $roundedVelocity")
         } ?: run {
