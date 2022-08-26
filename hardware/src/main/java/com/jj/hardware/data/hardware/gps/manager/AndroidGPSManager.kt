@@ -7,17 +7,16 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import com.jj.domain.coroutines.CoroutineScopeProvider
-import com.jj.domain.hardware.general.SmartSensorManager
 import com.jj.domain.hardware.general.model.SensorInitializationResult
-import com.jj.domain.hardware.model.SensorData
 import com.jj.domain.hardware.gps.manager.GPSManager
+import com.jj.domain.hardware.model.SensorData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AndroidGPSManager(
     private val context: Context,
     private val coroutineScopeProvider: CoroutineScopeProvider
-) : GPSManager, SmartSensorManager<SensorData>() {
+) : GPSManager() {
 
     private val listener = object : LocationListener {
         override fun onLocationChanged(location: Location) {

@@ -16,7 +16,6 @@ class AndroidGyroscopeManager(
     sensorType = Sensor.TYPE_GYROSCOPE,
     scope = coroutineScopeProvider.getIOScope()
 ) {
-
-    override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData =
+    override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData.GyroscopeSample =
         SensorData.GyroscopeSample(sensorEvent?.values?.first(), sensorEvent?.values?.get(1), sensorEvent?.values?.get(2))
 }

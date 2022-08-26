@@ -15,17 +15,15 @@ class AndroidAccelerometerManager(
 ) : AccelerometerManager, AndroidSmartSensorManager(
     context = context,
     sensorType = Sensor.TYPE_ACCELEROMETER,
-    scope = coroutineScopeProvider.getIOScope() // TODO Inject
+    scope = coroutineScopeProvider.getIOScope()
 ) {
 
     override fun convertSensorEvent(sensorEvent: SensorEvent?): SensorData =
         SensorData.AccSample(sensorEvent?.values?.first(), sensorEvent?.values?.get(1), sensorEvent?.values?.get(2))
 
-
     override val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(p0: SensorEvent?) {
             val sensorData = convertSensorEvent(p0)
-//            Log.d("ABABX", "emit: ${p0?.values?.get(0)} ${p0?.values?.get(1)} ${p0?.values?.get(2)}")
             sensorSamples.tryEmit(sensorData)
         }
 

@@ -15,15 +15,11 @@ class DefaultAccelerometerStateMonitor(
     accelerometerManager: AccelerometerManager,
     timeProvider: TimeProvider,
     coroutineScopeProvider: CoroutineScopeProvider
-) : DefaultSampleCollectionStateMonitor<SensorData, AnalysedSample.AnalysedAccSample>(
+) : AccelerometerStateMonitor(
     observeSamples = true,
     sensorManager = accelerometerManager,
     timeProvider = timeProvider,
-    coroutineScopeProvider = coroutineScopeProvider
-), AccelerometerStateMonitor {
-
-    override val sampleCollectionState: StateFlow<SystemModuleState>
-        get() = super.sampleCollectionState
-
+    coroutineScopeProvider = coroutineScopeProvider,
+) {
     override fun analysedSamplesFlow() = sensorsRepository.collectAnalysedAccelerometerSamples()
 }
