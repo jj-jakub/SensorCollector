@@ -11,7 +11,7 @@ class StartGPSCollection(
 ) : UseCase<Unit, Flow<SensorData>> {
 
     override suspend fun invoke(param: Unit): Flow<SensorData> = flow {
-        gpsRepository.collectGPSSamples().collect {
+        gpsRepository.collectRawGPSSamples().collect {
             if (it is SensorData.GPSSample || it is SensorData.Error) {
                 emit(it)
             }

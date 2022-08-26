@@ -22,7 +22,7 @@ class DefaultGPSSampleAnalyser(
         if (collectorJob.shouldStartNewJob()) {
             collectorJob = coroutineScopeProvider.getIOScope().launch {
                 // Consider it to have independent collector that runs forever
-                gpsRepository.collectGPSSamples().collect {
+                gpsRepository.collectRawGPSSamples().collect {
                     onSampleAvailable(it)
                 }
             }

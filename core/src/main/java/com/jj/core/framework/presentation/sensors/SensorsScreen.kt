@@ -29,21 +29,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.jj.core.R
-import com.jj.domain.hardware.model.SensorData
-import com.jj.domain.model.analysis.AnalysedSample
-import com.jj.domain.model.analysis.AnalysedValue
-import com.jj.domain.model.analysis.AnalysisResult
 import com.jj.core.framework.data.analysis.AndroidAnalysedAccUIData
 import com.jj.core.framework.presentation.charts.AnalysedAccelerometerThreeAxisLinearChart
 import com.jj.core.framework.presentation.components.hardware.StateInfoRow
 import com.jj.core.framework.presentation.components.hardware.ValueInfoRow
-import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.design.CameraPreview
 import com.jj.design.charts.ChartPoint
 import com.jj.design.charts.MultipleValuesChart
 import com.jj.design.components.BaseContainer
+import com.jj.domain.hardware.model.SensorData
+import com.jj.domain.model.analysis.AnalysedSample
+import com.jj.domain.model.analysis.AnalysedValue
+import com.jj.domain.model.analysis.AnalysisResult
 import com.jj.domain.monitoring.model.SystemModuleState
-import com.jj.domain.monitoring.model.toTextAndColor
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.absoluteValue
@@ -107,7 +105,7 @@ private fun MainScreenContent(
     magneticFieldState: SystemModuleState,
     magneticFieldSample: SensorData?,
     gpsState: SystemModuleState,
-    gpsSample: SensorData?
+    gpsSample: AnalysedSample.AnalysedGPSSample?
 ) {
     val scrollState = rememberScrollState()
 
@@ -189,13 +187,6 @@ private fun CameraSection(
             Text("Take Photo")
         }
     }
-}
-
-@Composable
-private fun AccelerometerControlButtons(
-    onStartAccelerometerClick: () -> Unit,
-    onStopAccelerometerClick: () -> Unit
-) {
 }
 
 @Composable
@@ -307,14 +298,12 @@ private fun MagneticFieldValueView(sensorData: SensorData?) {
 }
 
 @Composable
-private fun GPSValueView(sensorData: SensorData?) {
+private fun GPSValueView(sensorData: AnalysedSample.AnalysedGPSSample?) {
     sensorData?.let { data ->
-        if (data is SensorData.GPSSample) {
-            ValueInfoRow(
-                firstLabel = "GPS position: ",
-                value = AnnotatedString("Lat: ${data.latitude}, Lng: ${data.longitude}")
-            )
-        }
+        ValueInfoRow(
+            firstLabel = "GPS position: ",
+            value = AnnotatedString("Lat: ${data.latitude}, Lng: ${data.longitude}")
+        )
     }
 }
 
@@ -388,7 +377,7 @@ fun PreviewMainScreen() {
         ),
         gyroscopeSample = SensorData.GyroscopeSample(1.20f, 1.30f, 1.40f),
         magneticFieldSample = SensorData.MagneticFieldSample(1.50f, 1.60f, 1.70f),
-        gpsSample = SensorData.GPSSample(10.20, 20.40),
+        gpsSample = AnalysedSample.AnalysedGPSSample(10.20, 20.40, 1),
         onStartGyroscopeClick = { },
         onStopGyroscopeClick = { },
         onStartMagneticFieldClick = { },

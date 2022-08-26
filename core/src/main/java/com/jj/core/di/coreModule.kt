@@ -109,7 +109,7 @@ val coreModule = module {
             ipProvider = get(),
             versionTextProvider = get(),
             systemStateMonitor = get(),
-            startGPSCollection = get(),
+            gpsRepository = get(),
             startGyroscopeCollection = get(),
             startMagneticFieldCollection = get(),
         )

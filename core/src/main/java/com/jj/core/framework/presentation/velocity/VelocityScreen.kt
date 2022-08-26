@@ -62,15 +62,29 @@ fun VelocityScreen(
 
 @Composable
 fun CheckLocationPermission(onPermissionGranted: () -> Unit) {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted ->
-            if (granted) onPermissionGranted()
-        }
-    )
+    val context = LocalContext.current
+    val permission = Manifest.permission.ACCESS_FINE_LOCATION
 
-    LaunchedEffect(key1 = true) {
-        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    val hasFineLocationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    if (!hasFineLocationPermission) {
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { granted ->
+                if (granted) onPermissionGranted()
+            }
+        )
+
+        LaunchedEffect(key1 = true) {
+            launcher.launch(permission)
+        }
     }
 }
 

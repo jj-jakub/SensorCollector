@@ -20,6 +20,7 @@ import com.jj.domain.model.analysis.AnalysedSample
 import com.jj.domain.hardware.accelerometer.usecase.StartAccelerometerAnalysis
 import com.jj.domain.hardware.accelerometer.usecase.StopAccelerometerAnalysis
 import com.jj.domain.hardware.general.SensorsRepository
+import com.jj.domain.hardware.gps.repository.GPSRepository
 import com.jj.domain.hardware.gps.usecase.StartGPSCollection
 import com.jj.domain.hardware.gyroscope.usecase.StartGyroscopeCollection
 import com.jj.domain.hardware.magneticfield.usecase.StartMagneticFieldCollection
@@ -37,7 +38,7 @@ class SensorsDataViewModel(
     private val stopAccelerometerAnalysis: StopAccelerometerAnalysis,
     private val startGyroscopeCollection: StartGyroscopeCollection,
     private val startMagneticFieldCollection: StartMagneticFieldCollection,
-    private val startGPSCollection: StartGPSCollection,
+    private val gpsRepository: GPSRepository,
     private val cameraManager: CameraManager,
     ipProvider: IPProvider,
     versionTextProvider: VersionTextProvider,
@@ -56,7 +57,7 @@ class SensorsDataViewModel(
     val magneticFieldSamples = _magneticFieldSamples.asSharedFlow()
 
     private var gpsCollectingJob: Job? = null
-    private val _gpsSamples = BufferedMutableSharedFlow<SensorData>()
+    private val _gpsSamples = BufferedMutableSharedFlow<AnalysedSample.AnalysedGPSSample>()
     val gpsSamples = _gpsSamples.asSharedFlow()
 
     val versionInfoText = versionTextProvider.getAboutVersionText()
@@ -162,7 +163,7 @@ class SensorsDataViewModel(
     private fun observeGPSSamples() {
         if (gpsCollectingJob.shouldStartNewJob()) {
             gpsCollectingJob = viewModelScope.launch {
-                startGPSCollection().collectLatest {
+                gpsRepository.collectAnalysedGPSSamples().collectLatest {
                     _gpsSamples.emit(it)
                 }
             }

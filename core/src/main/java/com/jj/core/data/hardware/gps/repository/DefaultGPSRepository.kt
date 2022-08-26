@@ -16,7 +16,7 @@ class DefaultGPSRepository(
     private val analysedGPSSampleDao: AnalysedGPSSampleDao
 ) : GPSRepository {
 
-    override fun collectGPSSamples(): Flow<SensorData> = gpsManager.collectRawSensorSamples()
+    override fun collectRawGPSSamples(): Flow<SensorData> = gpsManager.collectRawSensorSamples()
 
     override fun collectAnalysedGPSSamples(): Flow<AnalysedSample.AnalysedGPSSample> =
         analysedGPSSampleDao.getLatestAnalysedGPSSampleEntity().filterNotNull()
