@@ -3,7 +3,7 @@ package com.jj.core.framework.service
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import com.jj.core.utils.isAndroid8OrHigher
+import com.jj.core.framework.utils.isAndroid8OrHigher
 
 interface ServiceStarter {
 

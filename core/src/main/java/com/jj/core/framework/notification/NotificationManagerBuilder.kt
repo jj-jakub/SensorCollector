@@ -11,8 +11,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.jj.core.R
-import com.jj.core.utils.ifIsEmpty
-import com.jj.core.utils.ifNotEmpty
+import com.jj.core.framework.utils.ifIsEmpty
+import com.jj.core.framework.utils.ifNotEmpty
 
 const val NOTIFICATION_MAIN_ID = 1
 const val NOTIFICATION_MAIN_CHANNEL_ID = "NOTIFICATION_MAIN_CHANNEL"

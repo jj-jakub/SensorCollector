@@ -1,4 +1,4 @@
-package com.fluffycat.sensorsmanager.data
+package com.jj.core.data.database.samples.accelerometer
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

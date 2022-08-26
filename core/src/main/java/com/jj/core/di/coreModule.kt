@@ -38,6 +38,7 @@ import com.jj.core.framework.text.ComposeTextCreator
 import com.jj.domain.api.AccelerometerAPI
 import com.jj.domain.coroutines.CoroutineScopeProvider
 import com.jj.domain.csv.CSVFileCreator
+import com.jj.domain.hardware.accelerometer.analysis.AccelerometerSampleAnalyser
 import com.jj.domain.hardware.accelerometer.analysis.AccelerometerThresholdAnalyser
 import com.jj.domain.hardware.accelerometer.repository.AccelerometerRepository
 import com.jj.domain.hardware.general.AnalysisStarter
@@ -88,7 +89,7 @@ val coreModule = module {
     single<PathRepository> { DefaultPathRepository() }
     single<TravelRepository> { DefaultTravelRepository(get<TravelDatabase>().travelItemDataDao) }
 
-    single { DefaultAccelerometerSampleAnalyser(get(), get(), get(), get()) }
+    single<AccelerometerSampleAnalyser> { DefaultAccelerometerSampleAnalyser(get(), get(), get(), get()) }
     single<GPSSampleAnalyser> { DefaultGPSSampleAnalyser(get(), get(), get()) }
     single<AnalysisStarter> { AndroidAnalysisStarter(get()) }
 

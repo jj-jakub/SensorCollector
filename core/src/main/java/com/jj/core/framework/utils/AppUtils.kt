@@ -1,4 +1,4 @@
-package com.jj.core.utils
+package com.jj.core.framework.utils
 
 import android.content.Context
 import android.hardware.SensorManager
@@ -19,7 +19,7 @@ val Any.tag: String get() = this.javaClass.simpleName.take(LOG_TAG_MAX_LENGTH) i
 fun doesSensorExist(context: Context, sensorType: Int): Boolean =
     (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager).getDefaultSensor(sensorType) != null
 
-infix fun String.ifIsEmpty(value: String): String = if (isEmpty()) value else this
+infix fun String.ifIsEmpty(value: String): String = ifEmpty { value }
 
 infix fun String.ifNotEmpty(value: () -> Unit) {
     if (this.isNotEmpty()) value.invoke()

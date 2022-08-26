@@ -10,9 +10,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.jj.core.databinding.BaseLinearChartBinding
+import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import com.jj.domain.coroutines.CoroutineScopeProvider
 import com.jj.domain.ui.colors.DomainColor
-import com.jj.core.framework.text.AndroidColorMapper.toTextColor
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -85,7 +85,7 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
             removePadding(this)
 
             setBackgroundColor(Color.GRAY) //TODO Style
-            setVisibleXRangeMaximum(com.jj.core.framework.presentation.charts.MAX_VISIBLE_SAMPLES.toFloat())
+            setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat())
             invalidate()
         }
     }
@@ -117,9 +117,9 @@ open class BaseThreeAxisLinearChart @JvmOverloads constructor(
     private suspend fun invalidateChart() {
         withContext(coroutineScopeProvider.main) {
             with(baseLinearChartBinding.lineChart) {
-                setVisibleXRangeMaximum(com.jj.core.framework.presentation.charts.MAX_VISIBLE_SAMPLES.toFloat())
+                setVisibleXRangeMaximum(MAX_VISIBLE_SAMPLES.toFloat())
                 data = LineData(lineDataSetX, lineDataSetY, lineDataSetZ)
-                moveViewToX(max(0, xDataCounter - com.jj.core.framework.presentation.charts.MAX_VISIBLE_SAMPLES - 1).toFloat())
+                moveViewToX(max(0, xDataCounter - MAX_VISIBLE_SAMPLES - 1).toFloat())
                 invalidate()
                 cleanupDataset(lineDataSetX)
                 cleanupDataset(lineDataSetY)

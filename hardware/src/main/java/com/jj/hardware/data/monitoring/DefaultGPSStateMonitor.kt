@@ -3,10 +3,7 @@ package com.jj.hardware.data.monitoring
 import com.jj.domain.coroutines.CoroutineScopeProvider
 import com.jj.domain.hardware.gps.manager.GPSManager
 import com.jj.domain.hardware.gps.repository.GPSRepository
-import com.jj.domain.hardware.model.SensorData
-import com.jj.domain.model.analysis.AnalysedSample
 import com.jj.domain.monitoring.GPSStateMonitor
-import com.jj.domain.monitoring.SampleCollectionStateMonitor
 import com.jj.domain.time.TimeProvider
 
 class DefaultGPSStateMonitor(

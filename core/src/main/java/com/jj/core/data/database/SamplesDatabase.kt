@@ -2,7 +2,7 @@ package com.jj.core.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.fluffycat.sensorsmanager.data.AccelerationDataEntity
+import com.jj.core.data.database.samples.accelerometer.AccelerationDataEntity
 import com.jj.core.data.database.events.GlobalEventDataDao
 import com.jj.core.data.database.events.GlobalEventEntity
 import com.jj.core.data.database.samples.accelerometer.AccelerationDataDao
