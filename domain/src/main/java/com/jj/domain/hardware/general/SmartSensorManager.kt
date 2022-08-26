@@ -35,7 +35,10 @@ abstract class SmartSensorManager<T> : ISensorManager<T> {
                 }
             },
             onInActive = {
-                isActiveState.value = SensorActivityState.Off.Inactive
+                val activeState = isActiveState.value
+                if (activeState is SensorActivityState.Active) { // If state is Error, then don't override it by saving Inactive
+                    isActiveState.value = SensorActivityState.Off.Inactive
+                }
                 onInactive()
             }
         )

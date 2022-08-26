@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.view.WindowManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,6 +55,8 @@ fun VelocityScreen(
         avrVelocity1 = avrVelocity1,
         avrVelocity2 = avrVelocity2,
         onClearVelocitiesClick = velocityScreenViewModel::onClearVelocitiesClick,
+        onStartGPSAnalysisClick = velocityScreenViewModel::onStartGPSAnalysisClick,
+        onStopGPSAnalysisClick = velocityScreenViewModel::onStopGPSAnalysisClick,
     )
 }
 
@@ -78,6 +81,8 @@ private fun VelocityScreenContent(
     avrVelocity1: Double,
     avrVelocity2: Double,
     onClearVelocitiesClick: () -> Unit,
+    onStartGPSAnalysisClick: () -> Unit,
+    onStopGPSAnalysisClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(8.dp),
@@ -106,10 +111,22 @@ private fun VelocityScreenContent(
             )
             LargeVelocityText(velocity = avrVelocity2)
         }
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
+            Button(
+                onClick = onStopGPSAnalysisClick,
+            ) {
+                Text(text = "Stop GPS")
+            }
+            Button(
+                onClick = onStartGPSAnalysisClick,
+            ) {
+                Text(text = "Start GPS")
+            }
             Button(
                 onClick = onClearVelocitiesClick,
             ) {
@@ -157,5 +174,7 @@ fun PreviewVelocityScreenContent() {
         avrVelocity1 = 0.0,
         avrVelocity2 = 0.0,
         onClearVelocitiesClick = {},
+        onStartGPSAnalysisClick = {},
+        onStopGPSAnalysisClick = {},
     )
 }
