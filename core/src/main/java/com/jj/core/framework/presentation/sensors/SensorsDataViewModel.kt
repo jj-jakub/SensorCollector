@@ -21,7 +21,6 @@ import com.jj.domain.hardware.accelerometer.usecase.StartAccelerometerAnalysis
 import com.jj.domain.hardware.accelerometer.usecase.StopAccelerometerAnalysis
 import com.jj.domain.hardware.general.SensorsRepository
 import com.jj.domain.hardware.gps.repository.GPSRepository
-import com.jj.domain.hardware.gps.usecase.StartGPSCollection
 import com.jj.domain.hardware.gyroscope.usecase.StartGyroscopeCollection
 import com.jj.domain.hardware.magneticfield.usecase.StartMagneticFieldCollection
 import com.jj.domain.hardware.model.SensorData

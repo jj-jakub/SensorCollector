@@ -8,11 +8,12 @@ import com.jj.core.data.hardware.accelerometer.analysis.DefaultAccelerometerSamp
 import com.jj.domain.hardware.gps.analysis.GPSSampleAnalyser
 import com.jj.core.framework.notification.NOTIFICATION_SERVICE_ID
 import com.jj.core.framework.notification.NotificationManagerBuilder
+import com.jj.domain.hardware.accelerometer.analysis.AccelerometerSampleAnalyser
 import org.koin.android.ext.android.inject
 
 class SensorCollectorService : LifecycleService() {
 
-    private val defaultAccelerometerSampleAnalyser: DefaultAccelerometerSampleAnalyser by inject()
+    private val defaultAccelerometerSampleAnalyser: AccelerometerSampleAnalyser by inject()
     private val gpsSampleAnalyser: GPSSampleAnalyser by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
 
