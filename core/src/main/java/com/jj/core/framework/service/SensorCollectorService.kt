@@ -4,17 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.lifecycle.LifecycleService
-import com.jj.core.data.hardware.accelerometer.analysis.DefaultAccelerometerSampleAnalyser
-import com.jj.domain.hardware.gps.analysis.GPSSampleAnalyser
+import androidx.lifecycle.lifecycleScope
 import com.jj.core.framework.notification.NOTIFICATION_SERVICE_ID
 import com.jj.core.framework.notification.NotificationManagerBuilder
+import com.jj.domain.base.usecase.invoke
 import com.jj.domain.hardware.accelerometer.analysis.AccelerometerSampleAnalyser
+import com.jj.domain.hardware.gps.usecase.StartGPSAnalysis
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class SensorCollectorService : LifecycleService() {
 
     private val defaultAccelerometerSampleAnalyser: AccelerometerSampleAnalyser by inject()
-    private val gpsSampleAnalyser: GPSSampleAnalyser by inject()
+    private val startGPSAnalysis: StartGPSAnalysis by inject()
     private val notificationManagerBuilder: NotificationManagerBuilder by inject()
 
     override fun onCreate() {
@@ -42,7 +44,9 @@ class SensorCollectorService : LifecycleService() {
     }
 
     private fun onStartCollectingGPS() {
-        gpsSampleAnalyser.startAnalysis()
+        lifecycleScope.launch {
+            startGPSAnalysis()
+        }
     }
 
     companion object {

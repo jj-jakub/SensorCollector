@@ -1,5 +1,5 @@
 package com.jj.domain.base.initializer
 
 interface ProgramInitializer {
-    fun initialize()
+    suspend fun initialize()
 }
