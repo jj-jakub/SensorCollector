@@ -1,9 +1,13 @@
 package com.jj.core.framework.presentation.velocity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
 import android.view.WindowManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +16,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +29,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.jj.core.framework.presentation.components.hardware.StateInfoRow
 import com.jj.core.framework.presentation.components.hardware.ValueInfoRow
 import com.jj.domain.monitoring.model.SystemModuleState
@@ -36,6 +45,9 @@ fun VelocityScreen(
     val avrVelocity2 by velocityScreenViewModel.averageVelocity2.collectAsState()
 
     KeepScreenOn()
+    CheckLocationPermission(
+        onPermissionGranted = velocityScreenViewModel::onPermissionGranted
+    )
     VelocityScreenContent(
         gpsState = gpsState,
         currentVelocity = currentVelocity,
@@ -43,6 +55,20 @@ fun VelocityScreen(
         avrVelocity2 = avrVelocity2,
         onClearVelocitiesClick = velocityScreenViewModel::onClearVelocitiesClick,
     )
+}
+
+@Composable
+fun CheckLocationPermission(onPermissionGranted: () -> Unit) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            if (granted) onPermissionGranted()
+        }
+    )
+
+    LaunchedEffect(key1 = true) {
+        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
 }
 
 @Composable

@@ -1,5 +1,7 @@
 package com.jj.domain.hardware.general
 
+import com.jj.domain.hardware.general.model.SensorActivityState
+import com.jj.domain.hardware.general.model.SensorInitializationResult
 import com.jj.domain.utils.BufferedMutableSharedFlow
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -18,29 +20,31 @@ import kotlinx.coroutines.flow.onEach
 abstract class SmartSensorManager<T> : ISensorManager<T> {
 
     protected val sensorSamples = BufferedMutableSharedFlow<T>()
-    private val isActiveState = MutableStateFlow(false)
+    private val isActiveState = MutableStateFlow<SensorActivityState>(SensorActivityState.Off.Inactive)
 
     // Call from child class after it is initialized to avoid null values being passed from constructor to
     // onInactive and onActive methods
     protected suspend fun start() {
         sensorSamples.subscriptionCount.detectActivity(
             onActive = {
-                val registeredSuccessfully = onActive()
-                if (registeredSuccessfully) {
-                    isActiveState.value = true
+                val sensorInitializationResult = onActive()
+                if (sensorInitializationResult is SensorInitializationResult.InitializationError) {
+                    isActiveState.value = SensorActivityState.Off.Error(sensorInitializationResult.message)
+                } else {
+                    isActiveState.value = SensorActivityState.Active
                 }
             },
             onInActive = {
-                isActiveState.value = false
+                isActiveState.value = SensorActivityState.Off.Inactive
                 onInactive()
             }
         )
     }
 
     override fun collectRawSensorSamples(): Flow<T> = sensorSamples.asSharedFlow()
-    override fun collectIsActiveState(): StateFlow<Boolean> = isActiveState.asStateFlow()
+    override fun collectSensorActivityState(): StateFlow<SensorActivityState> = isActiveState.asStateFlow()
 
-    protected abstract suspend fun onActive(): Boolean
+    protected abstract suspend fun onActive(): SensorInitializationResult
 
     protected open fun onInactive() {
         /* no-op */
@@ -64,9 +68,9 @@ abstract class SmartSensorManager<T> : ISensorManager<T> {
                 .onEach { count ->
                     val hasSubscribers = count > 0
                     if (hasSubscribers) {
-                        if (!isActiveState.value) onActive()
-                    }
-                    else onInActive()
+                        // This restarts the sensor if there is one more observer coming but first one failed to initialize the sensor
+                        if (isActiveState.value != SensorActivityState.Active) onActive()
+                    } else onInActive()
                 }.launchIn(this)
         }
     }

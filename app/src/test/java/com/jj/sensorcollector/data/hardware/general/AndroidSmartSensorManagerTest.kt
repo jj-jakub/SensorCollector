@@ -7,6 +7,8 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import app.cash.turbine.test
+import com.jj.domain.hardware.general.model.SensorInitializationResult
+import com.jj.domain.hardware.general.model.isActive
 import com.jj.domain.hardware.model.SensorData
 import com.jj.hardware.data.hardware.general.AndroidSmartSensorManager
 import io.mockk.MockKAnnotations
@@ -116,7 +118,7 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 2) { context.getSystemService(Context.SENSOR_SERVICE) }
         assertEquals(1, activeCalls)
 
-        assertFalse(androidSmartSensorManager.collectIsActiveState().value)
+        assertFalse(androidSmartSensorManager.collectSensorActivityState().value.isActive())
     }
 
     @Test
@@ -130,7 +132,7 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 1) { context.getSystemService(Context.SENSOR_SERVICE) }
         assertEquals(1, activeCalls)
 
-        assertFalse(androidSmartSensorManager.collectIsActiveState().value)
+        assertFalse(androidSmartSensorManager.collectSensorActivityState().value.isActive())
     }
 
     @Test
@@ -142,7 +144,7 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 1) { context.getSystemService(Context.SENSOR_SERVICE) }
         assertEquals(1, activeCalls)
 
-        assertTrue(androidSmartSensorManager.collectIsActiveState().value)
+        assertTrue(androidSmartSensorManager.collectSensorActivityState().value.isActive())
     }
 
     @Test
@@ -192,10 +194,10 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 1) { context.getSystemService(Context.SENSOR_SERVICE) }
 
         assertEquals(1, inactiveCalls)
-        assertTrue(androidSmartSensorManager.collectIsActiveState().value)
+        assertTrue(androidSmartSensorManager.collectSensorActivityState().value.isActive())
         collectingJob.cancel()
         assertEquals(2, inactiveCalls)
-        assertFalse(androidSmartSensorManager.collectIsActiveState().value)
+        assertFalse(androidSmartSensorManager.collectSensorActivityState().value.isActive())
     }
 
     @Test
@@ -284,10 +286,10 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 1) { context.getSystemService(Context.SENSOR_SERVICE) }
 
         assertEquals(1, inactiveCalls)
-        assertTrue(androidSmartSensorManager.collectIsActiveState().value)
+        assertTrue(androidSmartSensorManager.collectSensorActivityState().value.isActive())
         collectingJob.cancel()
         assertEquals(2, inactiveCalls)
-        assertFalse(androidSmartSensorManager.collectIsActiveState().value)
+        assertFalse(androidSmartSensorManager.collectSensorActivityState().value.isActive())
 
         // 1 -> unregister onInactive call
         verify(exactly = 1) { sensorManager.unregisterListener(any(), any<Sensor>()) }
@@ -302,10 +304,10 @@ class AndroidSmartSensorManagerTest {
         verify(exactly = 1) { context.getSystemService(Context.SENSOR_SERVICE) }
 
         assertEquals(1, inactiveCalls)
-        assertTrue(androidSmartSensorManager.collectIsActiveState().value)
+        assertTrue(androidSmartSensorManager.collectSensorActivityState().value.isActive())
         secondCollectingJob.cancel()
         assertEquals(1, inactiveCalls)
-        assertTrue(androidSmartSensorManager.collectIsActiveState().value)
+        assertTrue(androidSmartSensorManager.collectSensorActivityState().value.isActive())
 
         verify(exactly = 0) { sensorManager.unregisterListener(any(), any<Sensor>()) }
     }
@@ -373,7 +375,7 @@ class AndroidSmartSensorManagerTest {
                     return SensorData.AccSample(1f, 1f, 1f)
                 }
 
-                override suspend fun onActive(): Boolean {
+                override suspend fun onActive(): SensorInitializationResult {
                     activeCalls++
                     return super.onActive()
                 }

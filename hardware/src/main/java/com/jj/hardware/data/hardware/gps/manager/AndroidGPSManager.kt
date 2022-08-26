@@ -8,6 +8,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import com.jj.domain.coroutines.CoroutineScopeProvider
 import com.jj.domain.hardware.general.SmartSensorManager
+import com.jj.domain.hardware.general.model.SensorInitializationResult
 import com.jj.domain.hardware.model.SensorData
 import com.jj.domain.hardware.gps.manager.GPSManager
 import kotlinx.coroutines.launch
@@ -45,24 +46,24 @@ class AndroidGPSManager(
     }
 
     @SuppressLint("MissingPermission")
-    override suspend fun onActive(): Boolean {
+    override suspend fun onActive(): SensorInitializationResult {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        var registered: Boolean
+        var registered: SensorInitializationResult
         withContext(coroutineScopeProvider.main) {
             registered = try {
                 locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
-                true
+                SensorInitializationResult.Success
             } catch (e: Exception) {
-                val error = SensorData.Error(
-                    SensorData.ErrorType.InitializationFailure(
-                        "Error occurred during GPS listener registration"
-                    ), e
-                )
-                sensorSamples.tryEmit(error)
-                false
+                onInitializationError(e)
+                SensorInitializationResult.InitializationError(e.message ?: "Error")
             }
         }
         return registered
+    }
+
+    private fun onInitializationError(e: Exception) {
+        val sensorData = SensorData.Error(SensorData.ErrorType.InitializationFailure("Error occurred during GPS listener registration"), e)
+        sensorSamples.tryEmit(sensorData)
     }
 
     override fun onInactive() {

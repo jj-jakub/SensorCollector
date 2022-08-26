@@ -129,6 +129,7 @@ val coreModule = module {
             gpsStateMonitor = get(),
             gpsRepository = get(),
             velocityCalculatorBufferPersistence = get(),
+            startGPSAnalysis = get()
         )
     }
 

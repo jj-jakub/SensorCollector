@@ -33,12 +33,12 @@ class SmartSensorManagerTest {
 
     @Test
     fun `isActiveState should be false after class init`() {
-        assertFalse(smartSensorManager.collectIsActiveState().value)
+        assertFalse(smartSensorManager.collectSensorActivityState().value)
     }
 
     @Test
     fun `isActiveState should be true if there is active observing job`() = runTest {
-        launch { smartSensorManager.collectIsActiveState().collect {} }
-        assertTrue(smartSensorManager.collectIsActiveState().value)
+        launch { smartSensorManager.collectSensorActivityState().collect {} }
+        assertTrue(smartSensorManager.collectSensorActivityState().value)
     }
 }

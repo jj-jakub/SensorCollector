@@ -38,7 +38,7 @@ class DefaultGPSSampleAnalyser(
 
     private suspend fun onSampleAvailable(sensorData: SensorData) {
         val analysedSample = when (sensorData) {
-            is SensorData.GPSSample -> analyze(sensorData)
+            is SensorData.GPSSample -> performAnalysis(sensorData)
             is SensorData.Error -> AnalysedSample.Error(sensorData, sensorData.errorType.errorCause, timeProvider.getNowMillis())
             else -> AnalysedSample.Error(sensorData, "WrongSample", timeProvider.getNowMillis())
         }
@@ -47,15 +47,14 @@ class DefaultGPSSampleAnalyser(
             gpsRepository.insertAnalysedGPSSample(analysedSample)
         else {
             // TODO Handle analysis errors!!!
+            stopAnalysis()
         }
     }
 
-    private fun analyze(sensorData: SensorData.GPSSample): AnalysedSample.AnalysedGPSSample {
-
-        return AnalysedSample.AnalysedGPSSample(
+    private fun performAnalysis(sensorData: SensorData.GPSSample): AnalysedSample.AnalysedGPSSample =
+        AnalysedSample.AnalysedGPSSample(
             latitude = sensorData.latitude,
             longitude = sensorData.longitude,
             sampleTime = timeProvider.getNowMillis()
         )
-    }
 }

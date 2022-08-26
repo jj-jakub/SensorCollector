@@ -2,6 +2,7 @@ package com.jj.hardware.data.monitoring
 
 import com.jj.domain.coroutines.CoroutineScopeProvider
 import com.jj.domain.hardware.general.ISensorManager
+import com.jj.domain.hardware.general.model.SensorActivityState
 import com.jj.domain.monitoring.SampleCollectionStateMonitor
 import com.jj.domain.monitoring.model.SystemModuleState
 import com.jj.domain.time.TimeProvider
@@ -58,12 +59,17 @@ abstract class DefaultSampleCollectionStateMonitor<RawSampleType, AnalysedSample
     private fun startMonitoringJob() {
         if (monitoringJob.shouldStartNewJob()) {
             monitoringJob = coroutineScopeProvider.getIOScope().launch {
-                sensorManager.collectIsActiveState().collect { isActive ->
-                    if (isActive) {
-                        changeCollectionState(SystemModuleState.Working)
-                    } else {
-                        timeSinceTurnedOff = timeProvider.getNowMillis()
-                        changeCollectionState(SystemModuleState.Off())
+                sensorManager.collectSensorActivityState().collect { activityState ->
+                    when (activityState) {
+                        SensorActivityState.Active -> changeCollectionState(SystemModuleState.Working)
+                        is SensorActivityState.Off -> {
+                            timeSinceTurnedOff = timeProvider.getNowMillis()
+                            if (activityState is SensorActivityState.Off.Error) {
+                                changeCollectionState(SystemModuleState.Off.Error(activityState.message))
+                            } else {
+                                changeCollectionState(SystemModuleState.Off.Inactive)
+                            }
+                        }
                     }
                 }
             }
@@ -75,20 +81,34 @@ abstract class DefaultSampleCollectionStateMonitor<RawSampleType, AnalysedSample
             fallbackMonitoringJob = coroutineScopeProvider.getIOScope().launch {
                 while (true) {
                     val currentTime = timeProvider.getNowMillis()
-                    if (currentTime - timeSinceLastSample > maxIntervalBetweenSamplesMillis) {
-                        if (sensorManager.collectIsActiveState().value) {
-                            changeCollectionState(SystemModuleState.Off.OnButTimeExceeded)
-                        } else {
-                            changeCollectionState(SystemModuleState.Off())
-                        }
+                    if (isTimeBetweenSamplesExceeded(currentTime)) {
+                        checkSensorActivityState()
                     } else {
                         // When collector is stopped manually, then Working state flickers because analyser
-                        // Saves sample some time after collector had been stopped
+                        // saves sample some time after collector had been stopped
                         if (timeProvider.getNowMillis() - timeSinceTurnedOff > maxIntervalBetweenSamplesMillis) {
                             changeCollectionState(SystemModuleState.Working)
                         }
                     }
                     delay(FALLBACK_CHECK_INTERVAL)
+                }
+            }
+        }
+    }
+
+    private fun isTimeBetweenSamplesExceeded(currentTime: Long): Boolean =
+        currentTime - timeSinceLastSample > maxIntervalBetweenSamplesMillis
+
+    private suspend fun checkSensorActivityState() {
+        when (val state = sensorManager.collectSensorActivityState().value) {
+            is SensorActivityState.Active -> {
+                changeCollectionState(SystemModuleState.Off.OnButTimeExceeded)
+            }
+            is SensorActivityState.Off -> {
+                if (state is SensorActivityState.Off.Error) {
+                    changeCollectionState(SystemModuleState.Off.Error(state.message))
+                } else {
+                    changeCollectionState(SystemModuleState.Off.Inactive)
                 }
             }
         }

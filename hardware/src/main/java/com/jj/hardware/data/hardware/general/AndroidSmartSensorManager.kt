@@ -6,6 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.jj.domain.hardware.general.SmartSensorManager
+import com.jj.domain.hardware.general.model.SensorInitializationResult
 import com.jj.domain.hardware.model.SensorData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,13 +33,15 @@ abstract class AndroidSmartSensorManager(
     private var sensorManager: SensorManager? = getSensorManager()
     private var sensor: Sensor? = sensorManager?.getDefaultSensor(sensorType)
 
-    override suspend fun onActive(): Boolean {
+    override suspend fun onActive(): SensorInitializationResult {
         if (sensorNotInitialized()) initializeSensorManager()
         val registered = sensorManager?.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_GAME)
-        if (registered != true) {
+        return if (registered == true) {
+            SensorInitializationResult.Success
+        } else {
             onInitializationError("Failed to register listener")
+            SensorInitializationResult.InitializationError("Failed to register listener")
         }
-        return registered == true
     }
 
     override fun onInactive() {
@@ -51,6 +54,7 @@ abstract class AndroidSmartSensorManager(
         sensor = sensorManager?.getDefaultSensor(sensorType)
     }
 
+    @Suppress("SameParameterValue")
     private fun onInitializationError(errorMessage: String) {
         val sensorData = SensorData.Error(SensorData.ErrorType.InitializationFailure(errorMessage), null)
         sensorSamples.tryEmit(sensorData)

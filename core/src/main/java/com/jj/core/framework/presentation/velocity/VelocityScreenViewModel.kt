@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jj.core.data.hardware.gps.analysis.VelocityCalculatorBufferPersistence
 import com.jj.core.data.hardware.gps.analysis.model.Velocities
+import com.jj.domain.base.usecase.invoke
 import com.jj.domain.hardware.gps.repository.GPSRepository
+import com.jj.domain.hardware.gps.usecase.StartGPSAnalysis
 import com.jj.domain.monitoring.GPSStateMonitor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +16,7 @@ class VelocityScreenViewModel(
     gpsStateMonitor: GPSStateMonitor,
     private val gpsRepository: GPSRepository,
     private val velocityCalculatorBufferPersistence: VelocityCalculatorBufferPersistence,
+    private val startGPSAnalysis: StartGPSAnalysis,
 ) : ViewModel() {
 
     val gpsState = gpsStateMonitor.sampleCollectionState
@@ -35,7 +38,6 @@ class VelocityScreenViewModel(
 
     private suspend fun collectGPSSamples() {
         gpsRepository.collectAnalysedGPSSamples().collect { newSample ->
-
             val velocities = velocityCalculatorBufferPersistence.onNewSample(newSample = newSample)
             processVelocities(velocities = velocities)
         }
@@ -51,5 +53,9 @@ class VelocityScreenViewModel(
     fun onClearVelocitiesClick() {
         val velocities = velocityCalculatorBufferPersistence.resetVelocities()
         processVelocities(velocities = velocities)
+    }
+
+    fun onPermissionGranted() {
+        viewModelScope.launch { startGPSAnalysis() }
     }
 }

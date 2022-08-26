@@ -2,6 +2,7 @@ package com.jj.core.di
 
 import com.jj.domain.hardware.accelerometer.usecase.StartAccelerometerAnalysis
 import com.jj.domain.hardware.accelerometer.usecase.StopAccelerometerAnalysis
+import com.jj.domain.hardware.gps.usecase.StartGPSAnalysis
 import com.jj.domain.hardware.gps.usecase.StartGPSCollection
 import com.jj.domain.hardware.gyroscope.usecase.StartGyroscopeCollection
 import com.jj.domain.hardware.magneticfield.usecase.StartMagneticFieldCollection
@@ -18,6 +19,7 @@ val useCaseModule = module {
     single { StopAccelerometerAnalysis(analysisStarter = get()) }
 
     single { StartGPSCollection(gpsRepository = get()) }
+    single { StartGPSAnalysis(gpsSampleAnalyser = get()) }
 
     single { StartGyroscopeCollection(sensorsRepository = get()) }
 
