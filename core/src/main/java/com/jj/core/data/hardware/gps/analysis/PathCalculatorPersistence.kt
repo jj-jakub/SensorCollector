@@ -77,8 +77,8 @@ class PathCalculatorPersistence(
 
     private fun process(velocities: Velocities, distances: Distances) {
         val averagePathVelocity = velocities.stackedAverageVelocity
-        val stackedPathDistance = distances.stackedAverageDistanceKm
-        val allSamplesPathDistance = distances.allSamplesAverageDistanceKm
+        val stackedPathDistance = distances.stackedDistanceKm
+        val allSamplesPathDistance = distances.allSamplesDistanceKm
 
         _averagePathVelocity.value = averagePathVelocity
         _stackedPathDistance.value = stackedPathDistance

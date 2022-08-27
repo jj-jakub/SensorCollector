@@ -9,43 +9,40 @@ class DistanceCalculatorBufferPersistence(
     private val gpsDistanceCalculator: GPSDistanceCalculator,
 ) {
 
-    private var stackedAverageDistance = 0.0
+    private var stackedDistance = 0.0
     private val collectedSamples = mutableListOf<AnalysedSample.AnalysedGPSSample>()
-    private var currentSamplesAmount = 0
     private var previousGPSSample: AnalysedSample.AnalysedGPSSample? = null
 
     fun onNewSample(newSample: AnalysedSample.AnalysedGPSSample): Distances {
         val previousSample = prepareSampleData(newSample)
-        val stackedAverageDistanceValue = stackedAverageDistance
+        val stackedDistanceValue = stackedDistance
 
         val currentDistance = calculateCurrentDistance(previousSample, newSample)
-        val currentStackedAverageDistance = calculateStackedAverageDistance(
+        val currentStackedDistance = calculateStackedDistance(
             previousSample = previousSample,
             newSample = newSample,
-            currentAverageDistance = if (stackedAverageDistanceValue.isNaN()) 0.0 else stackedAverageDistanceValue,
-            currentSamplesAmount = currentSamplesAmount
+            currentDistance = if (stackedDistanceValue.isNaN()) 0.0 else stackedDistanceValue,
         )
-        val currentAllSamplesAverageDistance = calculateAllSamplesAverageDistance(collectedSamples.toList())
+        val currentAllSamplesDistance = calculateAllSamplesDistance(collectedSamples.toList())
 
-        saveData(currentStackedAverageDistance = currentStackedAverageDistance)
+        saveData(currentStackedDistance = currentStackedDistance)
 
         return Distances(
-            currentDistanceKm = currentDistance,
-            stackedAverageDistanceKm = currentStackedAverageDistance,
-            allSamplesAverageDistanceKm = currentAllSamplesAverageDistance,
+            currentIntervalDistanceKm = currentDistance,
+            stackedDistanceKm = currentStackedDistance,
+            allSamplesDistanceKm = currentAllSamplesDistance,
         )
     }
 
     private fun prepareSampleData(newSample: AnalysedSample.AnalysedGPSSample): AnalysedSample.AnalysedGPSSample? {
         val previousSample = previousGPSSample
         previousGPSSample = newSample
-        currentSamplesAmount++
         collectedSamples.add(newSample)
         return previousSample
     }
 
-    private fun saveData(currentStackedAverageDistance: Double) {
-        stackedAverageDistance = currentStackedAverageDistance
+    private fun saveData(currentStackedDistance: Double) {
+        stackedDistance = currentStackedDistance
     }
 
     private fun calculateCurrentDistance(
@@ -55,15 +52,13 @@ class DistanceCalculatorBufferPersistence(
         if (previousSample != null) gpsDistanceCalculator.calculateCurrentDistance(previousSample, newSample)
         else 0.0
 
-    private fun calculateStackedAverageDistance(
+    private fun calculateStackedDistance(
         previousSample: AnalysedSample.AnalysedGPSSample?,
         newSample: AnalysedSample.AnalysedGPSSample,
-        currentAverageDistance: Double,
-        currentSamplesAmount: Int
+        currentDistance: Double,
     ): Double = if (previousSample != null) {
-        gpsDistanceCalculator.calculateStackedAverageDistance(
-            currentAverageDistance = currentAverageDistance,
-            currentSamplesAmount = currentSamplesAmount,
+        gpsDistanceCalculator.calculateStackedDistance(
+            currentDistance = currentDistance,
             lastSample = previousSample,
             nextSample = newSample,
         )
@@ -71,19 +66,18 @@ class DistanceCalculatorBufferPersistence(
         0.0
     }
 
-    private fun calculateAllSamplesAverageDistance(collectedSamples: List<AnalysedSample.AnalysedGPSSample>): Double =
-        gpsDistanceCalculator.calculateAllSamplesAverageDistance(collectedSamples)
+    private fun calculateAllSamplesDistance(collectedSamples: List<AnalysedSample.AnalysedGPSSample>): Double =
+        gpsDistanceCalculator.calculateAllSamplesDistance(collectedSamples)
 
     fun resetDistances(): Distances {
-        currentSamplesAmount = 0
         collectedSamples.clear()
         previousGPSSample = null
-        stackedAverageDistance = 0.0
+        stackedDistance = 0.0
 
         return Distances(
-            currentDistanceKm = 0.0,
-            stackedAverageDistanceKm = stackedAverageDistance,
-            allSamplesAverageDistanceKm = 0.0,
+            currentIntervalDistanceKm = 0.0,
+            stackedDistanceKm = stackedDistance,
+            allSamplesDistanceKm = 0.0,
         )
     }
 }

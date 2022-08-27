@@ -7,12 +7,11 @@ interface GPSDistanceCalculator {
         firstSample: AnalysedSample.AnalysedGPSSample,
         secondSample: AnalysedSample.AnalysedGPSSample
     ): Double
-    fun calculateStackedAverageDistance(
-        currentAverageDistance: Double,
-        currentSamplesAmount: Int,
+    fun calculateStackedDistance(
+        currentDistance: Double,
         lastSample: AnalysedSample.AnalysedGPSSample,
         nextSample: AnalysedSample.AnalysedGPSSample
     ): Double
 
-    fun calculateAllSamplesAverageDistance(samples: List<AnalysedSample.AnalysedGPSSample>): Double
+    fun calculateAllSamplesDistance(samples: List<AnalysedSample.AnalysedGPSSample>): Double
 }

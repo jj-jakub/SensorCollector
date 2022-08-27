@@ -18,30 +18,28 @@ class HaversineGPSDistanceCalculator: GPSDistanceCalculator {
         secondLon = secondSample.longitude
     )
 
-    override fun calculateStackedAverageDistance(
-        currentAverageDistance: Double,
-        currentSamplesAmount: Int,
+    override fun calculateStackedDistance(
+        currentDistance: Double,
         lastSample: AnalysedSample.AnalysedGPSSample,
         nextSample: AnalysedSample.AnalysedGPSSample
     ): Double {
-        if (currentSamplesAmount <= 1) return 0.0
-        val currentIntervalSpeed = calculateCurrentDistance(
+        val currentIntervalDistance = calculateCurrentDistance(
             firstSample = lastSample,
             secondSample = nextSample
         )
-        return (currentAverageDistance * (currentSamplesAmount - 2) + currentIntervalSpeed) / (currentSamplesAmount - 1)
+        return currentDistance + currentIntervalDistance
     }
 
-    override fun calculateAllSamplesAverageDistance(samples: List<AnalysedSample.AnalysedGPSSample>): Double {
+    override fun calculateAllSamplesDistance(samples: List<AnalysedSample.AnalysedGPSSample>): Double {
         if (samples.size <= 1) return 0.0
 
-        var averageDistance = 0.0
+        var distance = 0.0
         samples.forEachIndexed { index, sample ->
             if (index == 0) return@forEachIndexed
-            averageDistance += calculateCurrentDistance(firstSample = samples[index - 1], secondSample = sample)
+            distance += calculateCurrentDistance(firstSample = samples[index - 1], secondSample = sample)
         }
 
-        return averageDistance / (samples.size - 1)
+        return distance
     }
 
     /** @return Distance in KM */
