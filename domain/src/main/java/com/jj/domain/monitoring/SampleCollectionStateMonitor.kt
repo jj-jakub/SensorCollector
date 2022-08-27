@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 private const val FALLBACK_CHECK_INTERVAL = 500L
 
@@ -92,7 +93,7 @@ abstract class SampleCollectionStateMonitor<RawSampleType, AnalysedSampleType>(
     }
 
     private fun isTimeBetweenSamplesExceeded(currentTime: Long): Boolean =
-        currentTime - timeSinceLastSample > maxIntervalBetweenSamplesMillis
+        abs(currentTime - timeSinceLastSample) > maxIntervalBetweenSamplesMillis
 
     private suspend fun checkSensorActivityState(activityState: SensorActivityState, timeExceeded: Boolean) {
         activityState.toSystemModuleState(timeBetweenSamplesExceeded = timeExceeded).let { systemModuleState ->
