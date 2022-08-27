@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -117,10 +119,11 @@ private fun VelocityScreenContent(
     onStopPathClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .verticalScroll(state = rememberScrollState()),
     ) {
         Column(
-            modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             StateInfoRow(
@@ -158,6 +161,7 @@ private fun VelocityScreenContent(
                 firstLabel = "Stacked Path Distance km",
                 value = AnnotatedString(text = stackedPathDistance.toString())
             )
+            LargeDistanceText(distance = stackedPathDistance)
             ValueInfoRow(
                 firstLabel = "All samples Path Distance km",
                 value = AnnotatedString(text = allSamplesPathDistance.toString())
@@ -209,6 +213,14 @@ private fun LargeVelocityText(velocity: Double) {
     Text(
         fontSize = 100.sp,
         text = String.format("%.2f", velocity)
+    )
+}
+
+@Composable
+private fun LargeDistanceText(distance: Double) {
+    Text(
+        fontSize = 70.sp,
+        text = String.format("%.3f", distance)
     )
 }
 
