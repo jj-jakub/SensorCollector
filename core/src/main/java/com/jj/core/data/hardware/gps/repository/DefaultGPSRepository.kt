@@ -1,8 +1,8 @@
 package com.jj.core.data.hardware.gps.repository
 
-import com.jj.core.data.database.gps.AnalysedGPSSampleDao
-import com.jj.core.data.database.gps.toAnalysedGPSSample
-import com.jj.core.data.database.gps.toAnalysedGPSSampleEntity
+import com.jj.core.data.database.gps.analysis.AnalysedGPSSampleDao
+import com.jj.core.data.database.gps.analysis.toAnalysedGPSSample
+import com.jj.core.data.database.gps.analysis.toAnalysedGPSSampleEntity
 import com.jj.domain.hardware.gps.repository.GPSRepository
 import com.jj.domain.hardware.model.SensorData
 import com.jj.domain.model.analysis.AnalysedSample

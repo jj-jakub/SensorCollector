@@ -12,7 +12,10 @@ import com.jj.core.data.hardware.accelerometer.repository.DefaultAccelerometerRe
 import com.jj.core.data.hardware.general.DefaultSensorsRepository
 import com.jj.core.data.hardware.gps.analysis.DefaultGPSPathAnalyser
 import com.jj.core.data.hardware.gps.analysis.DefaultGPSSampleAnalyser
-import com.jj.core.data.hardware.gps.analysis.HaversineGPSVelocityCalculator
+import com.jj.core.data.hardware.gps.analysis.DefaultGPSVelocityCalculator
+import com.jj.core.data.hardware.gps.analysis.DistanceCalculatorBufferPersistence
+import com.jj.core.data.hardware.gps.analysis.HaversineGPSDistanceCalculator
+import com.jj.core.data.hardware.gps.analysis.PathCalculatorPersistence
 import com.jj.core.data.hardware.gps.analysis.VelocityCalculatorBufferPersistence
 import com.jj.core.data.hardware.gps.repository.DefaultGPSRepository
 import com.jj.core.data.hardware.gps.repository.DefaultPathRepository
@@ -43,9 +46,10 @@ import com.jj.domain.hardware.accelerometer.analysis.AccelerometerThresholdAnaly
 import com.jj.domain.hardware.accelerometer.repository.AccelerometerRepository
 import com.jj.domain.hardware.general.AnalysisStarter
 import com.jj.domain.hardware.general.SensorsRepository
-import com.jj.domain.hardware.gps.analysis.GPSPathAnalyser
+import com.jj.domain.hardware.gps.analysis.GPSDistanceCalculator
 import com.jj.domain.hardware.gps.analysis.GPSSampleAnalyser
 import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
+import com.jj.domain.hardware.gps.analysis.path.GPSPathAnalyser
 import com.jj.domain.hardware.gps.repository.GPSRepository
 import com.jj.domain.hardware.gps.repository.PathRepository
 import com.jj.domain.hardware.gyroscope.repository.GyroscopeRepository
@@ -85,9 +89,23 @@ val coreModule = module {
         )
     }
 
-    single<SensorsRepository> { DefaultSensorsRepository(get(), get(), get()) }
-    single<PathRepository> { DefaultPathRepository() }
-    single<TravelRepository> { DefaultTravelRepository(get<TravelDatabase>().travelItemDataDao) }
+    single<SensorsRepository> {
+        DefaultSensorsRepository(
+            accelerometerRepository = get(),
+            gyroscopeRepository = get(),
+            magneticFieldRepository = get()
+        )
+    }
+    single<PathRepository> {
+        DefaultPathRepository(
+            gpsPathDataDao = get<SamplesDatabase>().gpsPathDataDao
+        )
+    }
+    single<TravelRepository> {
+        DefaultTravelRepository(
+            travelItemDataDao = get<TravelDatabase>().travelItemDataDao
+        )
+    }
 
     single<AccelerometerSampleAnalyser> { DefaultAccelerometerSampleAnalyser(get(), get(), get(), get()) }
     single<GPSSampleAnalyser> { DefaultGPSSampleAnalyser(get(), get(), get()) }
@@ -130,6 +148,7 @@ val coreModule = module {
             gpsStateMonitor = get(),
             gpsRepository = get(),
             velocityCalculatorBufferPersistence = get(),
+            pathCalculatorPersistence = get(),
             startGPSAnalysis = get(),
             stopGPSAnalysis = get(),
         )
@@ -156,10 +175,30 @@ val coreModule = module {
 
     single<CSVFileCreator> { DefaultCSVFileCreator(androidContext()) }
 
-    single<GPSVelocityCalculator> { HaversineGPSVelocityCalculator() }
-    single {
+    single<GPSDistanceCalculator> { HaversineGPSDistanceCalculator() }
+    single<GPSVelocityCalculator> {
+        DefaultGPSVelocityCalculator(
+            gpsDistanceCalculator = get()
+        )
+    }
+    factory {
         VelocityCalculatorBufferPersistence(
             gpsVelocityCalculator = get()
+        )
+    }
+    factory {
+        DistanceCalculatorBufferPersistence(
+            gpsDistanceCalculator = get()
+        )
+    }
+    factory {
+        PathCalculatorPersistence(
+            gpsRepository = get(),
+            startPath = get(),
+            finishPath = get(),
+            coroutineScopeProvider = get(),
+            velocityCalculatorBufferPersistence = get(),
+            distanceCalculatorBufferPersistence = get(),
         )
     }
 }

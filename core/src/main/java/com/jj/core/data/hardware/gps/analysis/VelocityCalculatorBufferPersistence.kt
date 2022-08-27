@@ -4,6 +4,7 @@ import com.jj.core.data.hardware.gps.analysis.model.Velocities
 import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
 import com.jj.domain.model.analysis.AnalysedSample
 
+// TODO Unify with DistanceCalculatorBufferPersistence
 class VelocityCalculatorBufferPersistence(
     private val gpsVelocityCalculator: GPSVelocityCalculator,
 ) {

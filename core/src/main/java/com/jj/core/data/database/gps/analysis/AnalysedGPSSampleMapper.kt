@@ -1,4 +1,4 @@
-package com.jj.core.data.database.gps
+package com.jj.core.data.database.gps.analysis
 
 import com.jj.domain.model.analysis.AnalysedSample
 

@@ -2,6 +2,7 @@ package com.jj.core.framework.presentation.velocity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jj.core.data.hardware.gps.analysis.PathCalculatorPersistence
 import com.jj.core.data.hardware.gps.analysis.VelocityCalculatorBufferPersistence
 import com.jj.core.data.hardware.gps.analysis.model.Velocities
 import com.jj.domain.base.usecase.invoke
@@ -17,6 +18,7 @@ class VelocityScreenViewModel(
     gpsStateMonitor: GPSStateMonitor,
     private val gpsRepository: GPSRepository,
     private val velocityCalculatorBufferPersistence: VelocityCalculatorBufferPersistence,
+    private val pathCalculatorPersistence: PathCalculatorPersistence,
     private val startGPSAnalysis: StartGPSAnalysis,
     private val stopGPSAnalysis: StopGPSAnalysis,
 ) : ViewModel() {
@@ -31,6 +33,11 @@ class VelocityScreenViewModel(
 
     private val _averageVelocity2 = MutableStateFlow(0.0)
     val averageVelocity2 = _averageVelocity2.asStateFlow()
+
+    val averagePathVelocity = pathCalculatorPersistence.averagePathVelocity
+    val stackedPathDistance = pathCalculatorPersistence.stackedPathDistance
+    val allSamplesPathDistance = pathCalculatorPersistence.allSamplesPathDistance
+    val isPathRecording = pathCalculatorPersistence.isPathRecording
 
     init {
         viewModelScope.launch {
@@ -49,7 +56,6 @@ class VelocityScreenViewModel(
         _currentVelocity.value = velocities.currentVelocity
         _averageVelocity1.value = velocities.stackedAverageVelocity
         _averageVelocity2.value = velocities.allSamplesAverageVelocity
-
     }
 
     fun onClearVelocitiesClick() {
@@ -67,5 +73,13 @@ class VelocityScreenViewModel(
 
     fun onStopGPSAnalysisClick() {
         viewModelScope.launch { stopGPSAnalysis() }
+    }
+
+    fun startPathClick() {
+        viewModelScope.launch { pathCalculatorPersistence.startTrackingPath() }
+    }
+
+    fun stopPathClick() {
+        viewModelScope.launch { pathCalculatorPersistence.stopTrackingPath() }
     }
 }

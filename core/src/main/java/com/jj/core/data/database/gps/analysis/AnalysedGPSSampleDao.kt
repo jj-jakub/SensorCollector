@@ -1,4 +1,4 @@
-package com.jj.core.data.database.gps
+package com.jj.core.data.database.gps.analysis
 
 import androidx.room.Dao
 import androidx.room.Insert

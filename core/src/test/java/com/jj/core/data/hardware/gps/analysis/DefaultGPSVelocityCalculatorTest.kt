@@ -10,13 +10,16 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
-class HaversineGPSVelocityCalculatorTest {
+class DefaultGPSVelocityCalculatorTest {
 
-    private lateinit var haversineGPSVelocityCalculator: HaversineGPSVelocityCalculator
+    private lateinit var defaultGPSVelocityCalculator: DefaultGPSVelocityCalculator
+
+    private lateinit var haversineGPSDistanceCalculator: HaversineGPSDistanceCalculator
 
     @BeforeEach
     fun setup() {
-        haversineGPSVelocityCalculator = HaversineGPSVelocityCalculator()
+        haversineGPSDistanceCalculator = HaversineGPSDistanceCalculator()
+        defaultGPSVelocityCalculator = DefaultGPSVelocityCalculator(gpsDistanceCalculator = haversineGPSDistanceCalculator)
     }
 
     @ParameterizedTest
@@ -24,7 +27,7 @@ class HaversineGPSVelocityCalculatorTest {
     fun `calculate current velocity from two samples`(currentVelocityTestingParam: VelocityTestUtils.CurrentVelocityTestingParam) {
         assertEquals(
             expected = currentVelocityTestingParam.currentVelocity,
-            actual = haversineGPSVelocityCalculator.calculateCurrentVelocity(
+            actual = defaultGPSVelocityCalculator.calculateCurrentVelocity(
                 firstSample = currentVelocityTestingParam.firstSample,
                 secondSample = currentVelocityTestingParam.secondSample
             )
@@ -36,7 +39,7 @@ class HaversineGPSVelocityCalculatorTest {
         var currentAverageVelocity = 0.0
         averageVelocityTestingSet.forEachIndexed { index, averageVelocityTestingParam ->
             if (index == 0) return@forEachIndexed
-            currentAverageVelocity = haversineGPSVelocityCalculator.calculateStackedAverageVelocity(
+            currentAverageVelocity = defaultGPSVelocityCalculator.calculateStackedAverageVelocity(
                 currentAverageVelocity = currentAverageVelocity,
                 currentSamplesAmount = index + 1,
                 lastSample = averageVelocityTestingSet[index - 1].sample,
@@ -49,7 +52,7 @@ class HaversineGPSVelocityCalculatorTest {
 
     @Test
     fun `calculate velocity from list of samples`() {
-        val calculatedAverageVelocity = haversineGPSVelocityCalculator.calculateAllSamplesAverageVelocity(analysedGPSSamples)
+        val calculatedAverageVelocity = defaultGPSVelocityCalculator.calculateAllSamplesAverageVelocity(analysedGPSSamples)
         assertEquals(FINAL_AVERAGE_VELOCITY, calculatedAverageVelocity)
     }
 

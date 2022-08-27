@@ -3,7 +3,6 @@ package com.jj.core.data.hardware.gps.analysis
 import com.jj.core.data.hardware.gps.analysis.VelocityTestUtils.Companion.averageVelocityTestingSet
 import com.jj.core.data.hardware.gps.analysis.VelocityTestUtils.Companion.velocityTolerance
 import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
-import com.jj.domain.model.analysis.AnalysedSample
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -16,7 +15,7 @@ class VelocityCalculatorBufferPersistenceTest {
 
     @BeforeEach
     fun setup() {
-        gpsVelocityCalculator = HaversineGPSVelocityCalculator()
+        gpsVelocityCalculator = DefaultGPSVelocityCalculator()
         velocityCalculatorBufferPersistence = VelocityCalculatorBufferPersistence(gpsVelocityCalculator = gpsVelocityCalculator)
     }
 

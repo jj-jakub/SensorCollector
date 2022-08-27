@@ -5,6 +5,8 @@ import com.jj.domain.hardware.accelerometer.usecase.StopAccelerometerAnalysis
 import com.jj.domain.hardware.general.usecase.StartAnalysis
 import com.jj.domain.hardware.gps.usecase.StartGPSAnalysis
 import com.jj.domain.hardware.gps.usecase.StopGPSAnalysis
+import com.jj.domain.hardware.gps.usecase.path.FinishPath
+import com.jj.domain.hardware.gps.usecase.path.StartPath
 import com.jj.domain.hardware.gyroscope.usecase.StartGyroscopeCollection
 import com.jj.domain.hardware.magneticfield.usecase.StartMagneticFieldCollection
 import com.jj.domain.travel.usecase.ClearAllTravelItems
@@ -21,6 +23,17 @@ val useCaseModule = module {
 
     single { StartGPSAnalysis(gpsSampleAnalyser = get()) }
     single { StopGPSAnalysis(gpsSampleAnalyser = get()) }
+
+    single {
+        StartPath(
+            pathRepository = get(), timeProvider = get()
+        )
+    }
+    single {
+        FinishPath(
+            pathRepository = get(), timeProvider = get()
+        )
+    }
 
     single { StartAnalysis(analysisStarter = get()) }
 

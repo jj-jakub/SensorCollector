@@ -64,6 +64,7 @@ abstract class SampleCollectionStateMonitor<RawSampleType, AnalysedSampleType>(
             collectorJob = coroutineScopeProvider.getIOScope().launch {
                 analysedSamplesFlow().collect {
                     timeSinceLastSample = timeProvider.getNowMillis()
+                    refreshSystemModuleState()
                 }
             }
         }
@@ -73,21 +74,25 @@ abstract class SampleCollectionStateMonitor<RawSampleType, AnalysedSampleType>(
         if (fallbackMonitoringJob.shouldStartNewJob()) {
             fallbackMonitoringJob = coroutineScopeProvider.getIOScope().launch {
                 while (true) {
-                    val currentTime = timeProvider.getNowMillis()
-                    if (isTimeBetweenSamplesExceeded(currentTime)) {
-                        checkSensorActivityState(
-                            activityState = sensorManager.collectSensorActivityState().value,
-                            timeExceeded = true
-                        )
-                    } else {
-                        // When collector is stopped manually, then Working state flickers because analyser
-                        // saves sample some time after collector had been stopped
-                        if (timeProvider.getNowMillis() - timeSinceTurnedOff > maxIntervalBetweenSamplesMillis) {
-                            changeCollectionState(SystemModuleState.Working)
-                        }
-                    }
+                    refreshSystemModuleState()
                     delay(FALLBACK_CHECK_INTERVAL)
                 }
+            }
+        }
+    }
+
+    private suspend fun refreshSystemModuleState() {
+        val currentTime = timeProvider.getNowMillis()
+        if (isTimeBetweenSamplesExceeded(currentTime)) {
+            checkSensorActivityState( // TODO Investigate why it gets stuck at TimeExceeded when GPS is turned off for ~10s and then turned on againa
+                activityState = sensorManager.collectSensorActivityState().value,
+                timeExceeded = true
+            )
+        } else {
+            // When collector is stopped manually, then Working state flickers because analyser
+            // saves sample some time after collector had been stopped
+            if (abs(timeProvider.getNowMillis() - timeSinceTurnedOff) > maxIntervalBetweenSamplesMillis) {
+                changeCollectionState(SystemModuleState.Working)
             }
         }
     }

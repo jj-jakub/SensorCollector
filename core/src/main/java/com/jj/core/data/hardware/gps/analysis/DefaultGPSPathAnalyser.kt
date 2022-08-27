@@ -2,7 +2,7 @@ package com.jj.core.data.hardware.gps.analysis
 
 import android.util.Log
 import com.jj.domain.coroutines.CoroutineScopeProvider
-import com.jj.domain.hardware.gps.analysis.GPSPathAnalyser
+import com.jj.domain.hardware.gps.analysis.path.GPSPathAnalyser
 import com.jj.domain.hardware.gps.analysis.GPSVelocityCalculator
 import com.jj.domain.hardware.gps.repository.GPSRepository
 import com.jj.domain.hardware.gps.repository.PathRepository

@@ -3,7 +3,7 @@ package com.jj.sensorcollector.data.base.initializer
 import com.jj.domain.base.initializer.ProgramInitializer
 import com.jj.domain.base.usecase.invoke
 import com.jj.domain.hardware.general.usecase.StartAnalysis
-import com.jj.domain.hardware.gps.analysis.GPSPathAnalyser
+import com.jj.domain.hardware.gps.analysis.path.GPSPathAnalyser
 import com.jj.domain.monitoring.SystemStateMonitor
 import com.jj.domain.server.ServerStarter
 

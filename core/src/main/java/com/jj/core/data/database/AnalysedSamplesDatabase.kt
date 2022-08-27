@@ -5,8 +5,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.jj.core.data.database.accelerometer.AnalysedAccelerometerSampleDao
 import com.jj.core.data.database.accelerometer.AnalysedAccelerometerSampleEntity
-import com.jj.core.data.database.gps.AnalysedGPSSampleDao
-import com.jj.core.data.database.gps.AnalysedGPSSampleEntity
+import com.jj.core.data.database.gps.analysis.AnalysedGPSSampleDao
+import com.jj.core.data.database.gps.analysis.AnalysedGPSSampleEntity
 
 @Database(
     entities = [
