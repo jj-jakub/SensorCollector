@@ -78,8 +78,12 @@ class DistanceCalculatorBufferPersistence(
         currentSamplesAmount = 0
         collectedSamples.clear()
         previousGPSSample = null
-        return onNewSample(
-            newSample = AnalysedSample.AnalysedGPSSample(0.0, 0.0, 0)
+        stackedAverageDistance = 0.0
+
+        return Distances(
+            currentDistanceKm = 0.0,
+            stackedAverageDistanceKm = stackedAverageDistance,
+            allSamplesAverageDistanceKm = 0.0,
         )
     }
 }

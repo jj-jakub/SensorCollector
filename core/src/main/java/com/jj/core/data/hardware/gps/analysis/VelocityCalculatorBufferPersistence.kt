@@ -78,8 +78,12 @@ class VelocityCalculatorBufferPersistence(
         currentSamplesAmount = 0
         collectedSamples.clear()
         previousGPSSample = null
-        return onNewSample(
-            newSample = AnalysedSample.AnalysedGPSSample(0.0, 0.0, 0)
+        stackedAverageVelocity = 0.0
+
+        return Velocities(
+            currentVelocity = 0.0,
+            stackedAverageVelocity = stackedAverageVelocity,
+            allSamplesAverageVelocity = 0.0,
         )
     }
 }
