@@ -40,7 +40,6 @@ class SensorCollectorService : LifecycleService() {
 
     private fun onStopCollectingAccelerometer() {
         defaultAccelerometerSampleAnalyser.stopAnalysis()
-        stopSelf()
     }
 
     private fun onStartCollectingGPS() {
